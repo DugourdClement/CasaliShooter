@@ -87,11 +87,19 @@ void moveVecSprite(jeu &vecSprite){
             move(sprite, vecSprite.droiteOuGauche *5, 0);
         }
     }
-    // Si les sprites au extrémité touches les bords, changer de direction
-    if(vecSprite.vecSprite[4].getPosition().getX() > (600-64+50) && vecSprite.droiteOuGauche == 1) vecSprite.droiteOuGauche = -1;
-    if(vecSprite.vecSprite[0].getPosition().getX() < 0+50 && vecSprite.droiteOuGauche == -1)vecSprite.droiteOuGauche = 1;
-
-
+    // Si les sprites au extrémité touches les bords, changer de direction et dessendre les sprites de 10 pixels
+    if(vecSprite.vecSprite[4].getPosition().getX() > (600-64+50) && vecSprite.droiteOuGauche == 1){
+        vecSprite.droiteOuGauche = -1;
+        for(Sprite &sprite : vecSprite.vecSprite){
+            move(sprite, 0, 10);
+        }
+    }else if(vecSprite.vecSprite[0].getPosition().getX() < 0+50 && vecSprite.droiteOuGauche == -1){
+        vecSprite.droiteOuGauche = 1;
+        for(Sprite &sprite : vecSprite.vecSprite){
+            move(sprite, 0, 10);
+        }
+    }
+    if(vecSprite.vecSprite[0].getPosition().getY()>(600))exit(0);
 }
 
 void genereVecSprite(jeu &IPPs, const unsigned posY, const string pathSprite){
