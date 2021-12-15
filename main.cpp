@@ -51,16 +51,12 @@ void clavier(MinGL &window, Sprite &sprite)
         sprite.setPosition(positionF);
     }
 }
-void dessiner(MinGL &window)
-{
-    // On dessine le rectangle
-        window << nsShape::Rectangle(rectPos, rectPos + nsGraphics::Vec2D(2, 10), nsGraphics::KCyan);
-}
+
 void deplacement(){
     rectPos.setY(rectPos.getY() - 16);
 }
 
-bool clavierM(MinGL &window, nsGui::Sprite &mug, bool &debut, bool &isPressed)
+bool clavierM(MinGL &window, Sprite &mug, bool &debut, bool &isPressed)
 {
     if (window.isPressed({'x', false})){
         isPressed = true;
@@ -79,34 +75,23 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, bool &debut, bool &isPressed)
     return isPressed;
 }
 
-void tirer(MinGL &window, int mugX, int mugY)
-{
-    if (window.isPressed({'x', false})){
-        Sprite missile("spritesi2/i++.si2", Vec2D(mugX, mugY - 32)); // 300 - taille sprite (32)/2 = 284
-        Vec2D position = missile.getPosition();
-        int misX = position.getX();
-        int misY = position.getY();
-        while(misY > -32){
-            window << missile;
-            Vec2D position = missile.getPosition();
-            misY = position.getY();
-            Vec2D positionF (misX, misY-30);
-            missile.setPosition(positionF);
-        }
-    }
-}
-
 void move(Sprite &position, const int &x, const int &y) {
     position.setPosition(Vec2D(position.getPosition().getX() + x, position.getPosition().getY() + y));
 }
 
 void moveVecSprite(jeu &vecSprite){
-    // bouger tout les sprites en même temps
-    for(Sprite &sprite : vecSprite.vecSprite){
-        move(sprite, vecSprite.droiteOuGauche *10, 0);
-        if (sprite.getPosition().getX() > (600-64+50) && vecSprite.droiteOuGauche == 1) vecSprite.droiteOuGauche = -1;
-        if (sprite.getPosition().getX() < 0+50 && vecSprite.droiteOuGauche == -1) vecSprite.droiteOuGauche = 1;
+    // Si les sprites au extrémité ne touches pas les bords,bouger tout les sprites en même temps
+    if (vecSprite.vecSprite[0].getPosition().getX() < (600-64+50) ||
+        vecSprite.vecSprite[4].getPosition().getX() > 0+50){
+        for(Sprite &sprite : vecSprite.vecSprite){
+            move(sprite, vecSprite.droiteOuGauche *5, 0);
+        }
     }
+    // Si les sprites au extrémité touches les bords, changer de direction
+    if(vecSprite.vecSprite[4].getPosition().getX() > (600-64+50) && vecSprite.droiteOuGauche == 1) vecSprite.droiteOuGauche = -1;
+    if(vecSprite.vecSprite[0].getPosition().getX() < 0+50 && vecSprite.droiteOuGauche == -1)vecSprite.droiteOuGauche = 1;
+
+
 }
 
 void genereVecSprite(jeu &IPPs, const unsigned posY, const string pathSprite){
@@ -166,7 +151,6 @@ int main(){
         JPPs.update(window);
         KPPs.update(window);
 
-        //tirer(window, mug);
 
         clavier(window, mug);
 
@@ -175,7 +159,7 @@ int main(){
         moveVecSprite(JPPs);
 
         isPressed = clavierM(window, mug, debut, isPressed);
-        dessiner(window);
+        window << nsShape::Rectangle(rectPos, rectPos + Vec2D(2, 10), KCyan);
 
 
         // On finit la frame en cours
