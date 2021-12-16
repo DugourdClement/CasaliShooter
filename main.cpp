@@ -23,10 +23,7 @@ using namespace chrono;
 
 Vec2D misPos;
 
-struct posEn{
-    Vec2D positionXY;
-    Vec2D positionXYbis;
-};
+
 
 struct jeu {
     vector<Sprite> vecSprite;
@@ -62,16 +59,26 @@ bool CATOUCHE (const Vec2D a, const Vec2D b, const Vec2D test){
     if ((test.getX() <= b.getX() && test.getY() <= b.getY()) && (test.getX() >= a.getX() && test.getY() >= a.getY())) return true;
 }
 
+bool colision(const Vec2D misPos, const jeu &vecSprite){
+    for (unsigned i = 0; i < vecSprite.vecSprite.size(); ++i) {
+        Vec2D a = vecSprite.vecSprite[i].getPosition();
+        int bX = vecSprite.vecSprite[i].getPosition().getX()+55;
+        int bY = vecSprite.vecSprite[i].getPosition().getY()+50;
+        Vec2D b {bX,bY};
+        if(CATOUCHE(a,b,misPos)) return true;
+    }
+}
+
 void dessiner(MinGL &window){
     // On dessine le rectangle
-        window << nsShape::Rectangle(misPos, misPos + nsGraphics::Vec2D(2, 10), nsGraphics::KCyan);
+        window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
 }
 
 void deplacement(){
     misPos.setY(misPos.getY() - 16);
 }
 
-bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &vecSprite, bool &debut, bool &isPressed){
+bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs, bool &debut, bool &isPressed){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
@@ -82,26 +89,10 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &vecSprite, bool &debut, bo
             int mugY = position.getY();
             misPos.setX(mugX + 16);
             misPos.setY(mugY);
-        }//Test si il y a colision avec la fenètre
-        if (misPos.getY() <= 150){
+        }//Test si il y a colision avec la fenètre ou si il y a colision avec un enemi
+        if ((misPos.getY() <= 150) || colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
             debut = true;
             return isPressed = false;
-        }
-        else{ //Test si il y a colision avec un enemi
-            for (unsigned i = 0; i < vecSprite.vecSprite.size(); ++i) {
-                Vec2D a = vecSprite.vecSprite[i].getPosition();
-                int bX = vecSprite.vecSprite[i].getPosition().getX()+64;
-                int bY = vecSprite.vecSprite[i].getPosition().getY()+64;
-                Vec2D b {bX,bY};
-                cout << a << b << endl;
-                if(CATOUCHE(a,b,misPos)){
-                    cout << a << b << endl;
-                    cout << "ff" << CATOUCHE(a,b,misPos) << endl;
-                    cout << "mm" << misPos.getX() << misPos.getY() << endl;
-                    debut = true;
-                    return isPressed = false;
-                }
-            }
         }
         debut = false;
         deplacement();
@@ -206,7 +197,7 @@ int main()
         moveVecSprite(JPPs);
 
 
-        isPressed = clavierM(window, mug, IPPs, debut, isPressed);
+        isPressed = clavierM(window, mug, IPPs, KPPs, JPPs, debut, isPressed);
         if(isPressed == true) dessiner(window);
 
         // On finit la frame en cours
