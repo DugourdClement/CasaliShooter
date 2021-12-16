@@ -5,15 +5,12 @@
 #include <chrono>
 #include<unistd.h>
 
+#include "mingl/mingl.h"
+
+#include "mingl/gui/sprite.h"
+
+#include "mingl/graphics/vec2d.h"
 #include "mingl/shape/rectangle.h"
-
-#include "MinGL/include/mingl/mingl.h"
-
-#include "MinGL/include/mingl/gui/sprite.h"
-
-#include <MinGL/include/mingl/graphics/vec2d.h>
-
-#include "MinGL/include/mingl/shape/rectangle.h"
 
 
 using namespace std;
@@ -23,15 +20,19 @@ using namespace chrono;
 
 Vec2D misPos;
 
-
-
 struct jeu {
     vector<Sprite> vecSprite;
     int droiteOuGauche;
+    vector<bool> state;
 
     void update(MinGL &window){
-        for (const auto &sprite : vecSprite) {
-            window << sprite;
+        for (unsigned i = 0; i < vecSprite.size(); ++i) {
+            if (state[i]){
+                window << vecSprite[i];
+            }else{
+                Vec2D position {0,0};
+                vecSprite[i].setPosition(position);
+            }
         }
     }
 };
@@ -54,24 +55,27 @@ void clavier(MinGL &window, Sprite &sprite)
         sprite.setPosition(positionF);
     }
 }
-
 bool CATOUCHE (const Vec2D a, const Vec2D b, const Vec2D test){
     if ((test.getX() <= b.getX() && test.getY() <= b.getY()) && (test.getX() >= a.getX() && test.getY() >= a.getY())) return true;
 }
 
-bool colision(const Vec2D misPos, const jeu &vecSprite){
+bool colision(const Vec2D misPos, jeu &vecSprite){
     for (unsigned i = 0; i < vecSprite.vecSprite.size(); ++i) {
         Vec2D a = vecSprite.vecSprite[i].getPosition();
         int bX = vecSprite.vecSprite[i].getPosition().getX()+55;
         int bY = vecSprite.vecSprite[i].getPosition().getY()+50;
         Vec2D b {bX,bY};
-        if(CATOUCHE(a,b,misPos)) return true;
+        if(CATOUCHE(a,b,misPos)) {
+            vecSprite.state[i] = false;
+            return true;
+        }
     }
 }
 
+
 void dessiner(MinGL &window){
     // On dessine le rectangle
-        window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
+        window << nsShape::Rectangle(misPos, misPos + nsGraphics::Vec2D(2, 10), nsGraphics::KCyan);
 }
 
 void deplacement(){
@@ -93,6 +97,41 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs
         if ((misPos.getY() <= 150) || colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
             debut = true;
             return isPressed = false;
+        }
+        debut = false;
+        deplacement();
+        return isPressed;
+    }
+}
+
+bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &vecSprite, bool &debut, bool &isPressed){
+    if (window.isPressed({'x', false})){
+        isPressed = true;
+    }
+    if (isPressed == true){
+        if(debut == true){//Si première apparition/clique
+            Vec2D position = mug.getPosition();
+            int mugX = position.getX();
+            int mugY = position.getY();
+            misPos.setX(mugX + 16);
+            misPos.setY(mugY);
+        }//Test si il y a colision avec la fenètre
+        if (misPos.getY() <= 150){
+            debut = true;
+            return isPressed = false;
+        }
+        else{ //Test si il y a colision avec un enemi
+            for (unsigned i = 0; i < vecSprite.vecSprite.size(); ++i) {
+                Vec2D a = vecSprite.vecSprite[i].getPosition();
+                int bX = vecSprite.vecSprite[i].getPosition().getX()+64;
+                int bY = vecSprite.vecSprite[i].getPosition().getY()+64;
+                Vec2D b {bX,bY};
+                if(CATOUCHE(a,b,misPos)){
+                    debut = true;
+                    vecSprite.state[i] = false;
+                    return isPressed = false;
+                }
+            }
         }
         debut = false;
         deplacement();
@@ -137,6 +176,7 @@ void genereVecSprite(jeu &IPPs, const int posY, const string pathSprite){
         ipp.setY(138+posY);
         Sprite sprite(pathSprite, ipp);
         IPPs.vecSprite.push_back(sprite);
+        IPPs.state.push_back(true);
     }
 }
 
@@ -214,3 +254,5 @@ int main()
     }
     return 0;
 }
+
+
