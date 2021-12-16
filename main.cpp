@@ -3,15 +3,17 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include <vector>
 #include<unistd.h>
 
-#include "mingl/mingl.h"
-
-#include "mingl/gui/sprite.h"
-
-#include "mingl/graphics/vec2d.h"
 #include "mingl/shape/rectangle.h"
+
+#include "MinGL/include/mingl/mingl.h"
+
+#include "MinGL/include/mingl/gui/sprite.h"
+
+#include <MinGL/include/mingl/graphics/vec2d.h>
+
+#include "MinGL/include/mingl/shape/rectangle.h"
 
 
 using namespace std;
@@ -19,8 +21,12 @@ using namespace nsGraphics;
 using namespace nsGui;
 using namespace chrono;
 
+Vec2D misPos;
 
-Vec2D rectPos;
+struct posEn{
+    Vec2D positionXY;
+    Vec2D positionXYbis;
+};
 
 struct jeu {
     vector<Sprite> vecSprite;
@@ -52,27 +58,44 @@ void clavier(MinGL &window, Sprite &sprite)
     }
 }
 
-void deplacement(){
-    rectPos.setY(rectPos.getY() - 16);
+
+void dessiner(MinGL &window){
+    // On dessine le rectangle
+        window << nsShape::Rectangle(misPos, misPos + nsGraphics::Vec2D(2, 10), nsGraphics::KCyan);
 }
 
-bool clavierM(MinGL &window, Sprite &mug, bool &debut, bool &isPressed)
-{
+void deplacement(){
+    misPos.setY(misPos.getY() - 16);
+}
+
+bool clavierM(MinGL &window, nsGui::Sprite &mug, vector<posEn> posEnemi, bool &debut, bool &isPressed){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
     if (isPressed == true){
-        if(debut == true){
+        if(debut == true){//Si première apparition/clique
             Vec2D position = mug.getPosition();
             int mugX = position.getX();
             int mugY = position.getY();
-            rectPos.setX(mugX + 16);
-            rectPos.setY(mugY);
+            misPos.setX(mugX + 16);
+            misPos.setY(mugY);
+        }//Test si il y a colision avec la fenètre
+        if (misPos.getY() <= 0){
+            debut = true;
+            return isPressed = false;
+        }
+        else{ //Test si il y a colision avec un enemi
+            for (unsigned i = 0; i < posEnemi.size(); ++i) {
+                if(misPos.isColliding(posEnemi[i].positionXY, posEnemi[i].positionXYbis)){
+                    debut = true;
+                    return isPressed = false;
+                }
+            }
         }
         debut = false;
         deplacement();
+        return isPressed;
     }
-    return isPressed;
 }
 
 void move(Sprite &position, const int &x, const int &y) {
@@ -113,7 +136,9 @@ void genereVecSprite(jeu &IPPs, const unsigned posY, const string pathSprite){
     }
 }
 
-int main(){
+
+int main()
+{
 
     Sprite back("spritesi2/back.si2", Vec2D(0, 0)); // 300 - taille sprite (32)/2 = 284
 
@@ -136,22 +161,23 @@ int main(){
     window.initGlut();
     window.initGraphic();
 
+
     // Variable qui tient le temps de frame
-    microseconds frameTime = microseconds::zero();
+    chrono::microseconds frameTime = chrono::microseconds::zero();
 
     bool debut = true;
     bool isPressed = false;
+    vector<posEn> posEnemi;
 
     // On fait tourner la boucle tant que la fenêtre est ouverte
-    while (window.isOpen())
-    {
+    while (window.isOpen()){
         // Récupère l'heure actuelle
-        time_point<steady_clock> start = steady_clock::now();
+        chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
 
         // On efface la fenêtre
         window.clearScreen();
 
-        // On affiche le fond et les sprites
+        // On fait tourner les procédures
         window << back;
         window << mug;
 
@@ -166,9 +192,9 @@ int main(){
         moveVecSprite(KPPs);
         moveVecSprite(JPPs);
 
-        isPressed = clavierM(window, mug, debut, isPressed);
-        window << nsShape::Rectangle(rectPos, rectPos + Vec2D(2, 10), KCyan);
 
+        isPressed = clavierM(window, mug, posEnemi, debut, isPressed);
+        if(isPressed == true) dessiner(window);
 
         // On finit la frame en cours
         window.finishFrame();
@@ -177,11 +203,10 @@ int main(){
         window.getEventManager().clearEvents();
 
         // On attend un peu pour limiter le framerate et soulager le CPU
-        this_thread::sleep_for(milliseconds(1000 / FPS_LIMIT) - duration_cast<microseconds>(steady_clock::now() - start));
+        this_thread::sleep_for(chrono::milliseconds(3000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start));
 
         // On récupère le temps de frame
-        frameTime = duration_cast<microseconds>(steady_clock::now() - start);
+        frameTime = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start);
     }
-
     return 0;
 }
