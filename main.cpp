@@ -80,13 +80,17 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &vecSprite, bool &debut, bo
             misPos.setX(mugX + 16);
             misPos.setY(mugY);
         }//Test si il y a colision avec la fenètre
-        if (misPos.getY() <= 0){
+        if (misPos.getY() <= 150){
             debut = true;
             return isPressed = false;
         }
         else{ //Test si il y a colision avec un enemi
             for (unsigned i = 0; i < vecSprite.vecSprite.size(); ++i) {
-                if(misPos.isColliding(vecSprite.vecSprite[i], vecSprite.vecSprite[i])){
+                Vec2D a = vecSprite.vecSprite[i].getPosition();
+                int bX = vecSprite.vecSprite[i].getPosition().getX()+64;
+                int bY = vecSprite.vecSprite[i].getPosition().getY()+64;
+                Vec2D b(bX,bY);
+                if(misPos.isColliding(150, 600) == true){
                     debut = true;
                     return isPressed = false;
                 }
@@ -103,7 +107,7 @@ void move(Sprite &position, const int &x, const int &y) {
 }
 
 void moveVecSprite(jeu &vecSprite){
-    // Si les sprites au extrémité ne touches pas les bords,bouger tout les sprites en même temps
+    // Si les sprites au extrémité ne touches pas les bords, bouger tout les sprites en même temps
     if (vecSprite.vecSprite[0].getPosition().getX() < (600-64+50) ||
         vecSprite.vecSprite[4].getPosition().getX() > 0+50){
         for(Sprite &sprite : vecSprite.vecSprite){
