@@ -58,6 +58,9 @@ void clavier(MinGL &window, Sprite &sprite)
     }
 }
 
+bool CATOUCHE (const Vec2D a, const Vec2D b, const Vec2D test){
+    if ((test.getX() <= b.getX() && test.getY() <= b.getY()) && (test.getX() >= a.getX() && test.getY() >= a.getY())) return true;
+}
 
 void dessiner(MinGL &window){
     // On dessine le rectangle
@@ -89,8 +92,12 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &vecSprite, bool &debut, bo
                 Vec2D a = vecSprite.vecSprite[i].getPosition();
                 int bX = vecSprite.vecSprite[i].getPosition().getX()+64;
                 int bY = vecSprite.vecSprite[i].getPosition().getY()+64;
-                Vec2D b(bX,bY);
-                if(misPos.isColliding(150, 600) == true){
+                Vec2D b {bX,bY};
+                cout << a << b << endl;
+                if(CATOUCHE(a,b,misPos)){
+                    cout << a << b << endl;
+                    cout << "ff" << CATOUCHE(a,b,misPos) << endl;
+                    cout << "mm" << misPos.getX() << misPos.getY() << endl;
                     debut = true;
                     return isPressed = false;
                 }
@@ -101,6 +108,8 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &vecSprite, bool &debut, bo
         return isPressed;
     }
 }
+
+
 
 void move(Sprite &position, const int &x, const int &y) {
     position.setPosition(Vec2D(position.getPosition().getX() + x, position.getPosition().getY() + y));
