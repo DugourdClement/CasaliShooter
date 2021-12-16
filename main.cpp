@@ -68,7 +68,7 @@ void deplacement(){
     misPos.setY(misPos.getY() - 16);
 }
 
-bool clavierM(MinGL &window, nsGui::Sprite &mug, vector<posEn> posEnemi, bool &debut, bool &isPressed){
+bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &vecSprite, bool &debut, bool &isPressed){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
@@ -85,8 +85,8 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, vector<posEn> posEnemi, bool &d
             return isPressed = false;
         }
         else{ //Test si il y a colision avec un enemi
-            for (unsigned i = 0; i < posEnemi.size(); ++i) {
-                if(misPos.isColliding(posEnemi[i].positionXY, posEnemi[i].positionXYbis)){
+            for (unsigned i = 0; i < vecSprite.vecSprite.size(); ++i) {
+                if(misPos.isColliding(vecSprite.vecSprite[i], vecSprite.vecSprite[i])){
                     debut = true;
                     return isPressed = false;
                 }
@@ -125,9 +125,9 @@ void moveVecSprite(jeu &vecSprite){
     if(vecSprite.vecSprite[0].getPosition().getY()>(600))exit(0);
 }
 
-void genereVecSprite(jeu &IPPs, const unsigned posY, const string pathSprite){
+void genereVecSprite(jeu &IPPs, const int posY, const string pathSprite){
     // liste de sprite
-    for (unsigned i = 0; i < 5; ++i) {
+    for (int i = 0; i < 5; ++i) {
         Vec2D ipp;
         ipp.setX(50+124+72*i);
         ipp.setY(138+posY);
@@ -167,7 +167,7 @@ int main()
 
     bool debut = true;
     bool isPressed = false;
-    vector<posEn> posEnemi;
+
 
     // On fait tourner la boucle tant que la fenêtre est ouverte
     while (window.isOpen()){
@@ -193,7 +193,7 @@ int main()
         moveVecSprite(JPPs);
 
 
-        isPressed = clavierM(window, mug, posEnemi, debut, isPressed);
+        isPressed = clavierM(window, mug, IPPs, debut, isPressed);
         if(isPressed == true) dessiner(window);
 
         // On finit la frame en cours
