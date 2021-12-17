@@ -5,12 +5,15 @@
 #include <chrono>
 #include<unistd.h>
 
-#include "mingl/mingl.h"
-
-#include "mingl/gui/sprite.h"
-
-#include "mingl/graphics/vec2d.h"
 #include "mingl/shape/rectangle.h"
+
+#include "MinGL/include/mingl/mingl.h"
+
+#include "MinGL/include/mingl/gui/sprite.h"
+
+#include <MinGL/include/mingl/graphics/vec2d.h>
+
+#include "MinGL/include/mingl/shape/rectangle.h"
 
 
 using namespace std;
@@ -20,17 +23,16 @@ using namespace chrono;
 
 Vec2D misPos;
 
+
+
 struct jeu {
     vector<Sprite> vecSprite;
     int droiteOuGauche;
     vector<bool> state;
-
-    void rendre(MinGL &window){
+    void update(MinGL &window){
         for (unsigned i = 0; i < vecSprite.size(); ++i) {
             if (state[i]){
                 window << vecSprite[i];
-            }else{
-                vecSprite[i].setPosition({0,0});
             }
         }
     }
@@ -54,8 +56,9 @@ void clavier(MinGL &window, Sprite &sprite)
         sprite.setPosition(positionF);
     }
 }
+
 bool CATOUCHE (const Vec2D a, const Vec2D b, const Vec2D test){
-    if ((test.getX() <= b.getX() && test.getY() <= b.getY()) && (test.getX() >= a.getX() && test.getY() >= a.getY())) return true;
+    return ((test.getX() <= b.getX() && test.getY() <= b.getY()) && (test.getX() >= a.getX() && test.getY() >= a.getY()));
 }
 
 bool colision(const Vec2D misPos, jeu &vecSprite){
@@ -64,17 +67,16 @@ bool colision(const Vec2D misPos, jeu &vecSprite){
         int bX = vecSprite.vecSprite[i].getPosition().getX()+55;
         int bY = vecSprite.vecSprite[i].getPosition().getY()+50;
         Vec2D b {bX,bY};
-        if(CATOUCHE(a,b,misPos)){
+        if(CATOUCHE(a,b,misPos) && (vecSprite.state[i] == true)) {
             vecSprite.state[i] = false;
             return true;
         }
     }
 }
 
-
 void dessiner(MinGL &window){
     // On dessine le rectangle
-        window << nsShape::Rectangle(misPos, misPos + nsGraphics::Vec2D(2, 10), nsGraphics::KCyan);
+        window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
 }
 
 void deplacement(){
@@ -103,46 +105,35 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs
     }
 }
 
+
+
 void move(Sprite &position, const int &x, const int &y) {
     position.setPosition(Vec2D(position.getPosition().getX() + x, position.getPosition().getY() + y));
 }
 
 void moveVecSprite(jeu &vecSprite){
     // Si les sprites au extrémité ne touches pas les bords, bouger tout les sprites en même temps
-
-    unsigned beginning = 7;
-    unsigned ending;
-
-    for(unsigned i = 0; i < vecSprite.state.size(); ++i){
-        if((vecSprite.state[i])&& (beginning == 7)){
-            beginning = i;
-        }
-        if(vecSprite.state[i]){
-            ending = i;
-        }
-    }
-    cout << beginning << endl << ending << endl << endl;
-
-    if (vecSprite.vecSprite[ending].getPosition().getX() < (600-64+50) ||
-        vecSprite.vecSprite[beginning].getPosition().getX() > 0+50){
+    if (vecSprite.vecSprite[0].getPosition().getX() < (600-64+50) ||
+        vecSprite.vecSprite[4].getPosition().getX() > 0+50){
         for(Sprite &sprite : vecSprite.vecSprite){
             move(sprite, vecSprite.droiteOuGauche *5, 0);
         }
     }
     // Si les sprites au extrémité touches les bords, changer de direction et dessendre les sprites de 10 pixels
-    if(vecSprite.vecSprite[ending].getPosition().getX() > (600-64+50) && vecSprite.droiteOuGauche == 1){
+    if(vecSprite.vecSprite[4].getPosition().getX() > (600-64+50) && vecSprite.droiteOuGauche == 1){
         vecSprite.droiteOuGauche = -1;
         for(Sprite &sprite : vecSprite.vecSprite){
             move(sprite, 0, 10);
         }
-    }else if(vecSprite.vecSprite[beginning].getPosition().getX() < 0+50 && vecSprite.droiteOuGauche == -1){
+    }else if(vecSprite.vecSprite[0].getPosition().getX() < 0+50 && vecSprite.droiteOuGauche == -1){
         vecSprite.droiteOuGauche = 1;
         for(Sprite &sprite : vecSprite.vecSprite){
             move(sprite, 0, 10);
         }
     }
-    if(vecSprite.vecSprite[beginning].getPosition().getY()>(600))exit(0);
+    if(vecSprite.vecSprite[0].getPosition().getY()>(600))exit(0);
 }
+
 
 void genereVecSprite(jeu &IPPs, const int posY, const string pathSprite){
     // liste de sprite
@@ -201,9 +192,9 @@ int main()
         window << back;
         window << mug;
 
-        IPPs.rendre(window);
-        JPPs.rendre(window);
-        KPPs.rendre(window);
+        IPPs.update(window);
+        JPPs.update(window);
+        KPPs.update(window);
 
 
         clavier(window, mug);
@@ -230,5 +221,3 @@ int main()
     }
     return 0;
 }
-
-
