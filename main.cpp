@@ -5,6 +5,10 @@
 #include <chrono>
 #include<unistd.h>
 
+#include "mingl/gui/text.h"
+
+#include "mingl/shape/line.h"
+
 #include "mingl/shape/rectangle.h"
 
 #include "MinGL/include/mingl/mingl.h"
@@ -83,7 +87,7 @@ void deplacement(){
     misPos.setY(misPos.getY() - 16);
 }
 
-bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs, bool &debut, bool &isPressed){
+bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs, unsigned &ptsJoueur, bool &debut, bool &isPressed){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
@@ -97,6 +101,7 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs
         }//Test si il y a colision avec la fenètre ou si il y a colision avec un enemi
         if ((misPos.getY() <= 150) || colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
             debut = true;
+            ++ptsJoueur;
             return isPressed = false;
         }
         debut = false;
@@ -176,6 +181,7 @@ int main()
     // Variable qui tient le temps de frame
     chrono::microseconds frameTime = chrono::microseconds::zero();
 
+    unsigned ptsJoueur = 0;
     bool debut = true;
     bool isPressed = false;
 
@@ -204,8 +210,11 @@ int main()
         moveVecSprite(JPPs);
 
 
-        isPressed = clavierM(window, mug, IPPs, KPPs, JPPs, debut, isPressed);
+        isPressed = clavierM(window, mug, IPPs, KPPs, JPPs,ptsJoueur, debut, isPressed);
         if(isPressed == true) dessiner(window);
+        string pts = to_string(ptsJoueur);
+        window << Text(nsGraphics::Vec2D(60, 160), "Pts:", nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
+        window << Text(nsGraphics::Vec2D(100, 160), pts, nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
 
         // On finit la frame en cours
         window.finishFrame();
