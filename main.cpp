@@ -25,13 +25,12 @@ struct jeu {
     int droiteOuGauche;
     vector<bool> state;
 
-    void update(MinGL &window){
+    void rendre(MinGL &window){
         for (unsigned i = 0; i < vecSprite.size(); ++i) {
             if (state[i]){
                 window << vecSprite[i];
             }else{
-                Vec2D position {0,0};
-                vecSprite[i].setPosition(position);
+                vecSprite[i].setPosition({0,0});
             }
         }
     }
@@ -65,7 +64,7 @@ bool colision(const Vec2D misPos, jeu &vecSprite){
         int bX = vecSprite.vecSprite[i].getPosition().getX()+55;
         int bY = vecSprite.vecSprite[i].getPosition().getY()+50;
         Vec2D b {bX,bY};
-        if(CATOUCHE(a,b,misPos)) {
+        if(CATOUCHE(a,b,misPos)){
             vecSprite.state[i] = false;
             return true;
         }
@@ -104,68 +103,45 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs
     }
 }
 
-bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &vecSprite, bool &debut, bool &isPressed){
-    if (window.isPressed({'x', false})){
-        isPressed = true;
-    }
-    if (isPressed == true){
-        if(debut == true){//Si première apparition/clique
-            Vec2D position = mug.getPosition();
-            int mugX = position.getX();
-            int mugY = position.getY();
-            misPos.setX(mugX + 16);
-            misPos.setY(mugY);
-        }//Test si il y a colision avec la fenètre
-        if (misPos.getY() <= 150){
-            debut = true;
-            return isPressed = false;
-        }
-        else{ //Test si il y a colision avec un enemi
-            for (unsigned i = 0; i < vecSprite.vecSprite.size(); ++i) {
-                Vec2D a = vecSprite.vecSprite[i].getPosition();
-                int bX = vecSprite.vecSprite[i].getPosition().getX()+64;
-                int bY = vecSprite.vecSprite[i].getPosition().getY()+64;
-                Vec2D b {bX,bY};
-                if(CATOUCHE(a,b,misPos)){
-                    debut = true;
-                    vecSprite.state[i] = false;
-                    return isPressed = false;
-                }
-            }
-        }
-        debut = false;
-        deplacement();
-        return isPressed;
-    }
-}
-
-
-
 void move(Sprite &position, const int &x, const int &y) {
     position.setPosition(Vec2D(position.getPosition().getX() + x, position.getPosition().getY() + y));
 }
 
 void moveVecSprite(jeu &vecSprite){
     // Si les sprites au extrémité ne touches pas les bords, bouger tout les sprites en même temps
-    if (vecSprite.vecSprite[0].getPosition().getX() < (600-64+50) ||
-        vecSprite.vecSprite[4].getPosition().getX() > 0+50){
+
+    unsigned beginning = 7;
+    unsigned ending;
+
+    for(unsigned i = 0; i < vecSprite.state.size(); ++i){
+        if((vecSprite.state[i])&& (beginning == 7)){
+            beginning = i;
+        }
+        if(vecSprite.state[i]){
+            ending = i;
+        }
+    }
+    cout << beginning << endl << ending << endl << endl;
+
+    if (vecSprite.vecSprite[ending].getPosition().getX() < (600-64+50) ||
+        vecSprite.vecSprite[beginning].getPosition().getX() > 0+50){
         for(Sprite &sprite : vecSprite.vecSprite){
             move(sprite, vecSprite.droiteOuGauche *5, 0);
         }
     }
     // Si les sprites au extrémité touches les bords, changer de direction et dessendre les sprites de 10 pixels
-    if(vecSprite.vecSprite[4].getPosition().getX() > (600-64+50) && vecSprite.droiteOuGauche == 1){
+    if(vecSprite.vecSprite[ending].getPosition().getX() > (600-64+50) && vecSprite.droiteOuGauche == 1){
         vecSprite.droiteOuGauche = -1;
         for(Sprite &sprite : vecSprite.vecSprite){
             move(sprite, 0, 10);
         }
-    }else if(vecSprite.vecSprite[0].getPosition().getX() < 0+50 && vecSprite.droiteOuGauche == -1){
+    }else if(vecSprite.vecSprite[beginning].getPosition().getX() < 0+50 && vecSprite.droiteOuGauche == -1){
         vecSprite.droiteOuGauche = 1;
         for(Sprite &sprite : vecSprite.vecSprite){
             move(sprite, 0, 10);
         }
     }
-    if(vecSprite.vecSprite[0].getPosition().getY()>(600))exit(0);
+    if(vecSprite.vecSprite[beginning].getPosition().getY()>(600))exit(0);
 }
 
 void genereVecSprite(jeu &IPPs, const int posY, const string pathSprite){
@@ -225,9 +201,9 @@ int main()
         window << back;
         window << mug;
 
-        IPPs.update(window);
-        JPPs.update(window);
-        KPPs.update(window);
+        IPPs.rendre(window);
+        JPPs.rendre(window);
+        KPPs.rendre(window);
 
 
         clavier(window, mug);
