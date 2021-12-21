@@ -180,7 +180,7 @@ void moveVecSprite(enemy &vecSprite){
 
 void generateVecSprite(enemy &IPPs, const int posY, const string pathSprite){
     // liste de sprite
-    for (int i = 0; i < 5; ++i) {
+    for (unsigned i = 0; i < 5; ++i) {
         Vec2D ipp;
         ipp.setX(50+124+72*i);
         ipp.setY(138+posY);
