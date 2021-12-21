@@ -4,20 +4,20 @@
 #include <thread>
 #include <chrono>
 #include<unistd.h>
+#include <ctime>
 
 #include "mingl/gui/text.h"
 
 #include "mingl/shape/line.h"
 
 #include "mingl/shape/rectangle.h"
+#include "mingl/mingl.h"
 
-#include "MinGL/include/mingl/mingl.h"
+#include "mingl/gui/sprite.h"
 
-#include "MinGL/include/mingl/gui/sprite.h"
+#include "mingl/graphics/vec2d.h"
+#include "mingl/shape/rectangle.h"
 
-#include <MinGL/include/mingl/graphics/vec2d.h>
-
-#include "MinGL/include/mingl/shape/rectangle.h"
 
 
 using namespace std;
@@ -26,8 +26,7 @@ using namespace nsGui;
 using namespace chrono;
 
 Vec2D misPos;
-
-
+Vec2D misPos2;
 
 struct jeu {
     vector<Sprite> vecSprite;
@@ -99,9 +98,12 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs
             misPos.setX(mugX + 16);
             misPos.setY(mugY);
         }//Test si il y a colision avec la fenètre ou si il y a colision avec un enemi
-        if ((misPos.getY() <= 150) || colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
+        if (colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
             debut = true;
             ++ptsJoueur;
+            return isPressed = false;
+        }else if(misPos.getY() <= 150){
+            debut = true;
             return isPressed = false;
         }
         debut = false;
@@ -111,6 +113,27 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs
 }
 
 
+bool shoot(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, bool &debut2){
+
+    srand (time(NULL));
+    int ale = rand() % 6;
+
+    if(debut2 == true){//Si première apparition/clique
+        Vec2D position = IPPs.vecSprite[ale].getPosition();
+        int IPPsX = position.getX();
+        int IPPsY = position.getY();
+        misPos2.setX(IPPsX + 16);
+        misPos2.setY(IPPsY);
+    }//Test si il y a colision avec la fenètre ou si il y a colision avec un enemi
+
+    if(misPos2.getY() >= 696){
+        debut2 = true;
+        return false;
+    }
+    debut2 = false;
+    misPos2.setY(misPos2.getY() + 16);
+    return true;
+}
 
 void move(Sprite &position, const int &x, const int &y) {
     position.setPosition(Vec2D(position.getPosition().getX() + x, position.getPosition().getY() + y));
@@ -152,11 +175,15 @@ void genereVecSprite(jeu &IPPs, const int posY, const string pathSprite){
     }
 }
 
+void win(MinGL &window){
+    window.clearScreen();
+    exit(0);
+}
 
 int main()
 {
 
-    Sprite back("spritesi2/back.si2", Vec2D(0, 0)); // 300 - taille sprite (32)/2 = 284
+    Sprite back("spritesi2/back.si2", Vec2D(0, 0));
 
     jeu IPPs;
     IPPs.droiteOuGauche = 1;
@@ -170,7 +197,7 @@ int main()
     JPPs.droiteOuGauche = 1;
     genereVecSprite(JPPs, 150, "spritesi2/j++.si2");
 
-    Sprite mug("spritesi2/mug-full-vie.si2", Vec2D(50+284, 138+500)); //
+    Sprite mug("spritesi2/mug-full-vie.si2", Vec2D(50+284, 138+500));
 
     // Initialise le système
     MinGL window("CasaliShooter", Vec2D(700, 1000), Vec2D(128, 128), KBlack);
@@ -183,11 +210,13 @@ int main()
 
     unsigned ptsJoueur = 0;
     bool debut = true;
+    bool debut2 = true;
     bool isPressed = false;
 
 
     // On fait tourner la boucle tant que la fenêtre est ouverte
     while (window.isOpen()){
+
         // Récupère l'heure actuelle
         chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
 
@@ -202,19 +231,26 @@ int main()
         JPPs.update(window);
         KPPs.update(window);
 
-
         clavier(window, mug);
 
         moveVecSprite(IPPs);
         moveVecSprite(KPPs);
         moveVecSprite(JPPs);
 
-
         isPressed = clavierM(window, mug, IPPs, KPPs, JPPs,ptsJoueur, debut, isPressed);
-        if(isPressed == true) dessiner(window);
+        if(isPressed == true)dessiner(window);
         string pts = to_string(ptsJoueur);
         window << Text(nsGraphics::Vec2D(60, 160), "Pts:", nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
         window << Text(nsGraphics::Vec2D(100, 160), pts, nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
+
+        bool in = shoot(window, mug, IPPs, debut2);
+        if (in == true) {
+            window << nsShape::Rectangle(misPos2, misPos2 + Vec2D(5, 10), KGreen);
+        }
+
+        if(ptsJoueur == 15){
+            win(window);
+        }
 
         // On finit la frame en cours
         window.finishFrame();
