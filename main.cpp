@@ -46,26 +46,26 @@ struct enemy {
 };
 
 // Si on appuie sur une touche, le mug bouge
-void keyboard(MinGL &window, Sprite &sprite)
+void keyboard(MinGL &window, Sprite &mug)
 {
-    if (window.isPressed({'q', false}) && sprite.getPosition().getX() > 50 ) {
-        Vec2D position = sprite.getPosition();
+    if (window.isPressed({'q', false}) && mug.getPosition().getX() > 50 ) {
+        Vec2D position = mug.getPosition();
         int mugX = position.getX();
         int mugY = position.getY();
         Vec2D positionF (mugX-5, mugY);
-        sprite.setPosition(positionF);
+        mug.setPosition(positionF);
     }
-    if (window.isPressed({'d', false}) && sprite.getPosition().getX() < (600-64+50)) {
-        Vec2D position = sprite.getPosition();
+    if (window.isPressed({'d', false}) && mug.getPosition().getX() < (600-64+50)) {
+        Vec2D position = mug.getPosition();
         int mugX = position.getX();
         int mugY = position.getY();
         Vec2D positionF (mugX+5, mugY);
-        sprite.setPosition(positionF);
+        mug.setPosition(positionF);
     }
 }
 
-bool touching (const Vec2D a, const Vec2D b, const Vec2D test){
-    return ((test.getX() <= b.getX() && test.getY() <= b.getY()) && (test.getX() >= a.getX() && test.getY() >= a.getY()));
+bool isTouching (const Vec2D firstCorner, const Vec2D secondCorner, const Vec2D test){
+    return ((test.getX() <= secondCorner.getX() && test.getY() <= secondCorner.getY()) && (test.getX() >= firstCorner.getX() && test.getY() >= firstCorner.getY()));
 }
 
 bool colision(const Vec2D misPos, enemy &vecSprite){
@@ -74,7 +74,7 @@ bool colision(const Vec2D misPos, enemy &vecSprite){
         int bX = vecSprite.vecSprite[i].getPosition().getX()+55;
         int bY = vecSprite.vecSprite[i].getPosition().getY()+50;
         Vec2D b {bX,bY};
-        if(touching(a,b,misPos) && (vecSprite.state[i] == true)) {
+        if(isTouching(a,b,misPos) && (vecSprite.state[i] == true)) {
             vecSprite.state[i] = false;
             return true;
         }
@@ -83,7 +83,7 @@ bool colision(const Vec2D misPos, enemy &vecSprite){
 }
 
 
-bool missile(MinGL &window, nsGui::Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, unsigned &ptsJoueur, bool &firstShootM, bool &isPressed){
+bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, unsigned &playerLifeUnsigned, bool &firstShootM, bool &isPressed){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
@@ -100,7 +100,7 @@ bool missile(MinGL &window, nsGui::Sprite &mug, enemy &IPPs, enemy &KPPs, enemy 
             return isPressed = false;
         }
             else if (colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
-                ++ptsJoueur;
+                ++playerLifeUnsigned;
                 firstShootM = true;
                 return isPressed = false;
             }
@@ -132,7 +132,7 @@ bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT){
     if(torPos.getY() >= 696){
         firstShootT = true;
         return false;
-    }else if(touching(pos,pos2,torPos)){
+    }else if(isTouching(pos,pos2,torPos)){
         firstShootT = true;
         if (mug.index < 4){
             int posX = mug.vecMug[mug.index].getPosition().getX();
@@ -178,7 +178,7 @@ void moveVecSprite(enemy &vecSprite){
     if(vecSprite.vecSprite[0].getPosition().getY()>(600))exit(0);
 }
 
-void genereVecSprite(enemy &IPPs, const int posY, const string pathSprite){
+void generateVecSprite(enemy &IPPs, const int posY, const string pathSprite){
     // liste de sprite
     for (int i = 0; i < 5; ++i) {
         Vec2D ipp;
@@ -190,7 +190,7 @@ void genereVecSprite(enemy &IPPs, const int posY, const string pathSprite){
     }
 }
 
-void genereVecMug(mugStruct &mug){
+void generateVecMug(mugStruct &mug){
     Sprite mug3("spritesi2/mug-full-vie.si2");
     Sprite mug2("spritesi2/mug-2-vies.si2");
     Sprite mug1("spritesi2/mug-1-vies.si2");
@@ -214,18 +214,18 @@ int main()
 
     enemy IPPs;
     IPPs.rightOrLeft = 1;
-    genereVecSprite(IPPs, 50, "spritesi2/i++.si2");
+    generateVecSprite(IPPs, 50, "spritesi2/i++.si2");
 
     enemy KPPs;
     KPPs.rightOrLeft = 1;
-    genereVecSprite(KPPs, 100, "spritesi2/k++.si2");
+    generateVecSprite(KPPs, 100, "spritesi2/k++.si2");
 
     enemy JPPs;
     JPPs.rightOrLeft = 1;
-    genereVecSprite(JPPs, 150, "spritesi2/j++.si2");
+    generateVecSprite(JPPs, 150, "spritesi2/j++.si2");
 
     mugStruct mug;
-    genereVecMug(mug);
+    generateVecMug(mug);
     mug.index = 0;
     mug.vecMug[mug.index].setPosition(Vec2D(50+284, 138+500));
 
@@ -238,7 +238,7 @@ int main()
     // Variable qui tient le temps de frame
     chrono::microseconds frameTime = chrono::microseconds::zero();
 
-    unsigned playerLifeInt = 0;
+    unsigned playerLifeUnsigned = 0;
     bool firstShootM = true;
     bool isPressed = false;
     bool firstShootT = true;
@@ -266,15 +266,15 @@ int main()
         moveVecSprite(KPPs);
         moveVecSprite(JPPs);
 
-        isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, playerLifeInt, firstShootM, isPressed);
+        isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, playerLifeUnsigned, firstShootM, isPressed);
         if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
-        string playerLifeString = to_string(playerLifeInt);
+        string playerLifeString = to_string(playerLifeUnsigned);
         window << Text(nsGraphics::Vec2D(60, 160), "Pts:", nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
         window << Text(nsGraphics::Vec2D(100, 160), playerLifeString, nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
 
         if (torpedo(mug, IPPs, firstShootT)) window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
 
-        if (playerLifeInt == 15) win(window);
+        if (playerLifeUnsigned == 15) win(window);
 
 
         // On finit la frame en cours
