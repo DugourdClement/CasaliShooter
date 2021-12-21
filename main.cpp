@@ -28,6 +28,12 @@ using namespace chrono;
 Vec2D misPos;
 Vec2D misPos2;
 
+struct mugStruct {
+    vector<Sprite> vecMug;
+    unsigned index;
+};
+
+
 struct jeu {
     vector<Sprite> vecSprite;
     int droiteOuGauche;
@@ -40,6 +46,8 @@ struct jeu {
         }
     }
 };
+
+
 
 // Si on appuie sur une touche, le mug bouge
 void clavier(MinGL &window, Sprite &sprite)
@@ -79,14 +87,14 @@ bool colision(const Vec2D misPos, jeu &vecSprite){
 
 void dessiner(MinGL &window){
     // On dessine le rectangle
-        window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
+    window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
 }
 
 void deplacement(){
     misPos.setY(misPos.getY() - 16);
 }
 
-bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs, unsigned &ptsJoueur, bool &debut, bool &isPressed){
+bool clavierM(MinGL &window, Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs, unsigned &ptsJoueur, bool &debut, bool &isPressed){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
@@ -112,8 +120,7 @@ bool clavierM(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, jeu &KPPs, jeu &JPPs
     }
 }
 
-
-bool shoot(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, bool &debut2){
+bool shoot(mugStruct &mug, jeu &IPPs, bool &debut2){
 
     srand (time(NULL));
     int ale = rand() % 6;
@@ -126,8 +133,25 @@ bool shoot(MinGL &window, nsGui::Sprite &mug, jeu &IPPs, bool &debut2){
         misPos2.setY(IPPsY);
     }//Test si il y a colision avec la fenètre ou si il y a colision avec un enemi
 
+    Vec2D pos = mug.vecMug[mug.index].getPosition();
+    int X = pos.getX() + 50;
+    int Y = pos.getY() + 55;
+    Vec2D pos2 = {X,Y};
+
     if(misPos2.getY() >= 696){
         debut2 = true;
+        return false;
+    }else if(CATOUCHE(pos,pos2,misPos2)){
+        debut2 = true;
+        if (mug.index < 4){
+            int posX = mug.vecMug[mug.index].getPosition().getX();
+            int posY = mug.vecMug[mug.index].getPosition().getY();
+            mug.index += 1;
+            mug.vecMug[mug.index].setPosition({posX,posY});
+        }else{
+            exit(0);
+        }
+
         return false;
     }
     debut2 = false;
@@ -174,7 +198,16 @@ void genereVecSprite(jeu &IPPs, const int posY, const string pathSprite){
         IPPs.state.push_back(true);
     }
 }
-
+void genereVecMug(mugStruct &mug){
+    Sprite mug3("spritesi2/mug-full-vie.si2");
+    Sprite mug2("spritesi2/mug-2-vies.si2");
+    Sprite mug1("spritesi2/mug-1-vies.si2");
+    Sprite mug0("spritesi2/mug-is-finito.si2");
+    mug.vecMug.push_back(mug3);
+    mug.vecMug.push_back(mug2);
+    mug.vecMug.push_back(mug1);
+    mug.vecMug.push_back(mug0);
+}
 void win(MinGL &window){
     window.clearScreen();
     exit(0);
@@ -197,7 +230,11 @@ int main()
     JPPs.droiteOuGauche = 1;
     genereVecSprite(JPPs, 150, "spritesi2/j++.si2");
 
-    Sprite mug("spritesi2/mug-full-vie.si2", Vec2D(50+284, 138+500));
+    mugStruct mug;
+    genereVecMug(mug);
+    mug.index = 0;
+    mug.vecMug[mug.index].setPosition(Vec2D(50+284, 138+500));
+
 
     // Initialise le système
     MinGL window("CasaliShooter", Vec2D(700, 1000), Vec2D(128, 128), KBlack);
@@ -225,25 +262,25 @@ int main()
 
         // On fait tourner les procédures
         window << back;
-        window << mug;
+        window << mug.vecMug[mug.index];
 
         IPPs.update(window);
         JPPs.update(window);
         KPPs.update(window);
 
-        clavier(window, mug);
+        clavier(window, mug.vecMug[mug.index]);
 
         moveVecSprite(IPPs);
         moveVecSprite(KPPs);
         moveVecSprite(JPPs);
 
-        isPressed = clavierM(window, mug, IPPs, KPPs, JPPs,ptsJoueur, debut, isPressed);
+        isPressed = clavierM(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs,ptsJoueur, debut, isPressed);
         if(isPressed == true)dessiner(window);
         string pts = to_string(ptsJoueur);
         window << Text(nsGraphics::Vec2D(60, 160), "Pts:", nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
         window << Text(nsGraphics::Vec2D(100, 160), pts, nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
 
-        bool in = shoot(window, mug, IPPs, debut2);
+        bool in = shoot(mug, IPPs, debut2);
         if (in == true) {
             window << nsShape::Rectangle(misPos2, misPos2 + Vec2D(5, 10), KGreen);
         }
