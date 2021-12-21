@@ -89,12 +89,12 @@ void dessiner(MinGL &window, const char c){
     if (c == 't') window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
 }
 
-bool missile(MinGL &window, nsGui::Sprite &mug, ennemi &IPPs, ennemi &KPPs, ennemi &JPPs, unsigned &ptsJoueur, bool &debut, bool &isPressed){
+bool missile(MinGL &window, nsGui::Sprite &mug, ennemi &IPPs, ennemi &KPPs, ennemi &JPPs, unsigned &ptsJoueur, bool &firstShootM, bool &isPressed){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
     if (isPressed == true){
-        if(debut == true){//Si première apparition/clique
+        if(firstShootM == true){//Si première apparition/clique
             Vec2D position = mug.getPosition();
             int mugX = position.getX();
             int mugY = position.getY();
@@ -102,15 +102,15 @@ bool missile(MinGL &window, nsGui::Sprite &mug, ennemi &IPPs, ennemi &KPPs, enne
             misPos.setY(mugY);
         }//Test si il y a colision avec la fenètre ou avec un enemi
         if (misPos.getY() <= 150){
-            debut = true;
+            firstShootM = true;
             return isPressed = false;
         }
             else if (colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
                 ++ptsJoueur;
-                debut = true;
+                firstShootM = true;
                 return isPressed = false;
             }
-        debut = false;
+        firstShootM = false;
         misPos.setY(misPos.getY() - 16);
         return isPressed;
     }
@@ -120,15 +120,15 @@ bool missile(MinGL &window, nsGui::Sprite &mug, ennemi &IPPs, ennemi &KPPs, enne
 bool torpedo(mugStruct &mug, ennemi &IPPs, bool &firstShootT){
 
     srand (time(NULL));
-    int ale = rand() % 6;
+    int n = rand() % IPPs.vecSprite.size();
 
-    if(firstShootT == true){//Si première apparition/clique
-        Vec2D position = IPPs.vecSprite[ale].getPosition();
+    if((firstShootT == true) && (IPPs.state[n] == true)){//Si première apparition et qu'il n'est pas détruit
+        Vec2D position = IPPs.vecSprite[n].getPosition();
         int IPPsX = position.getX();
         int IPPsY = position.getY();
         torPos.setX(IPPsX + 16);
         torPos.setY(IPPsY);
-    }//Test si il y a colision avec la fenètre ou si il y a colision avec un enemi
+    }//Test si il y a colision avec la fenètre ou le joueur
 
     Vec2D pos = mug.vecMug[mug.index].getPosition();
     int X = pos.getX() + 50;
@@ -145,7 +145,8 @@ bool torpedo(mugStruct &mug, ennemi &IPPs, bool &firstShootT){
             int posY = mug.vecMug[mug.index].getPosition().getY();
             mug.index += 1;
             mug.vecMug[mug.index].setPosition({posX,posY});
-        }else{
+        }
+        else{
             exit(0);
         }
 
@@ -244,7 +245,7 @@ int main()
     chrono::microseconds frameTime = chrono::microseconds::zero();
 
     unsigned ptsJoueur = 0;
-    bool debut = true;
+    bool firstShootM = true;
     bool isPressed = false;
     bool firstShootT = true;
 
@@ -273,7 +274,7 @@ int main()
         moveVecSprite(JPPs);
 
 
-        isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs,ptsJoueur, debut, isPressed);
+        isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, ptsJoueur, firstShootM, isPressed);
         if(isPressed == true) dessiner(window, 'm');
         string pts = to_string(ptsJoueur);
         window << Text(nsGraphics::Vec2D(60, 160), "Pts:", nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
