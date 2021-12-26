@@ -31,6 +31,8 @@ using namespace chrono;
 Vec2D misPos;
 Vec2D torPos;
 
+
+
 struct mugStruct {
     vector<Sprite> vecMug;
     unsigned index;
@@ -126,6 +128,7 @@ bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, 
     return false;
 }
 
+
 bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT){
 
     srand (time(NULL));
@@ -142,17 +145,17 @@ bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT){
     Vec2D pos = mug.vecMug[mug.index].getPosition();
     int X = pos.getX() + 50;
     int Y = pos.getY() + 55;
-    Vec2D pos2 = {X,Y};
+    Vec2D posTwo = {X,Y};
 
     if(torPos.getY() >= 696){
         firstShootT = true;
         return false;
-    }else if(isTouching(pos,pos2,torPos)){
+    }else if(isTouching(pos,posTwo,torPos)){
         firstShootT = true;
         if (mug.index < 4){
             int posX = mug.vecMug[mug.index].getPosition().getX();
             int posY = mug.vecMug[mug.index].getPosition().getY();
-            mug.index += 1;
+            ++mug.index;
             mug.vecMug[mug.index].setPosition({posX,posY});
         }
         else{
@@ -163,6 +166,44 @@ bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT){
     }
     firstShootT = false;
     torPos.setY(torPos.getY() + 16);
+    return true;
+}
+
+bool ovniShoot(mugStruct & mug, enemy & ovni, bool & ovniShootT, Vec2D & posTorOvni) {
+    if ((ovniShootT == true) && (ovni.state[0] == true)) {
+        Vec2D position = ovni.vecSprite[0].getPosition();
+        int ovniX = position.getX();
+        int ovniY = position.getY();
+        posTorOvni.setX(ovniX + 16);
+        posTorOvni.setY(ovniY);
+    }
+
+    Vec2D pos = mug.vecMug[mug.index].getPosition();
+    int X = pos.getX() + 50;
+    int Y = pos.getY() + 50;
+    Vec2D posTwo = {X, Y};
+
+    if (posTorOvni.getY() >= 696) {
+        ovniShootT = true;
+        return false;
+    }
+    else if (isTouching(pos, posTwo, posTorOvni)) {
+        ovniShootT = true;
+        if (mug.index < 4) {
+            int posX = mug.vecMug[mug.index].getPosition().getX();
+            int posY = mug.vecMug[mug.index].getPosition().getY();
+            ++mug.index;
+            mug.vecMug[mug.index].setPosition({posX, posY});
+        }
+        else {
+            exit(0);
+        }
+
+        return false;
+    }
+
+    ovniShootT = false;
+    posTorOvni.setY(posTorOvni.getY() + 16);
     return true;
 }
 
@@ -213,6 +254,24 @@ void moveVecSprite(enemy &vecSprite){
         }
     }
     if(vecSprite.vecSprite[0].getPosition().getY()>(600))exit(0);
+}
+
+void moveOVNI(enemy & ovni) {
+    // Si les sprites au extrémité ne touches pas les bords, bouger tout les sprites en même temps
+    if (ovni.vecSprite[0].getPosition().getX() < (600-64+50) ||
+        ovni.vecSprite[ovni.vecSprite.size() - 1].getPosition().getX() > 0+50){
+        for(Sprite &sprite : ovni.vecSprite){
+            move(sprite, ovni.rightOrLeft *10, 0);
+        }
+    }
+    // Si les sprites au extrémité touches les bords, changer de direction et dessendre les sprites de 10 pixels
+    if(ovni.vecSprite[ovni.vecSprite.size() - 1].getPosition().getX() > (600-64+50) && ovni.rightOrLeft == 1){
+        ovni.rightOrLeft = -1;
+    }
+    else if(ovni.vecSprite[0].getPosition().getX() < 0+50 && ovni.rightOrLeft == -1){
+        ovni.rightOrLeft = 1;
+    }
+    if(ovni.vecSprite[0].getPosition().getY()>(600))exit(0);
 }
 
 void generateVecSprite(enemy &IPPs, const int posY, const string pathSprite){
@@ -329,6 +388,15 @@ void generateCLASSROOM(enemy & classroom, const int posY) {
 
 }
 
+void generateOVNI(enemy & ovni, const string pathSprite) {
+    Vec2D vecOvni;
+    vecOvni.setX(rand() % 559 + 50);
+    vecOvni.setY(150);
+    Sprite sprite(pathSprite, vecOvni);
+    ovni.vecSprite.push_back(sprite);
+    ovni.state.push_back(true);
+}
+
 void generateVecMug(mugStruct &mug){
     Sprite mug3("spritesi2/mug-full-vie.si2");
     Sprite mug2("spritesi2/mug-2-vies.si2");
@@ -348,7 +416,7 @@ void win(MinGL &window){
 
 int main()
 {
-
+    srand(time(NULL));
     Sprite back("spritesi2/back.si2", Vec2D(0, 0));
 
     enemy open;
@@ -358,6 +426,14 @@ int main()
     enemy classroom;
     classroom.rightOrLeft = 1;
     generateCLASSROOM(classroom, 125);
+
+    vector<enemy> vecOvni;
+    for (size_t i = 0; i < 5; ++i) {
+        enemy ovni;
+        ovni.rightOrLeft = 1;
+        generateOVNI(ovni, "spritesi2/OVNI.si2");
+        vecOvni.push_back(ovni);
+    }
 
     enemy IPPs;
     IPPs.rightOrLeft = 1;
@@ -389,6 +465,18 @@ int main()
     bool firstShootM = true;
     bool isPressed = false;
     bool firstShootT = true;
+    //Vecteur pour savoir si un ovni tire
+    bool ovniTorOne = true;
+    bool ovniTorTwo = true;
+    bool ovniTorThree = true;
+    bool ovniTorFour = true;
+    bool ovniTorFive = true;
+    //Vecteur des Vec2D pour le tire des torpedos des ovnis
+    vector<Vec2D> vecOvniTorpedo;
+    for (size_t i = 0; i < vecOvni.size(); ++i) {
+        Vec2D ovniTor;
+        vecOvniTorpedo.push_back(ovniTor);
+    }
 
 
     // On fait tourner la boucle tant que la fenêtre est ouverte
@@ -439,7 +527,7 @@ int main()
 
         //Verify if enemies are still alive
         if (allDead(IPPs) && allDead(JPPs) && allDead(KPPs)) {
-            while (!allDead(open)) {
+            while (!allDead(open) || !allDead(classroom)) {
                 // Récupère l'heure actuelle
                 chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
 
@@ -453,22 +541,40 @@ int main()
                 keyboard(window, mug.vecMug[mug.index]);
 
 
+                for (size_t i = 0; i < vecOvni.size(); ++i) {
+                    vecOvni[i].update(window);
+                }
                 open.update(window);
                 classroom.update(window);
 
                 //OPEN and CLASSROOM movements
 
+                for (size_t i = 0; i <  vecOvni.size(); ++i) {
+                    moveOVNI(vecOvni[i]);
+                }
                 moveVecSprite(classroom);
                 moveOpen(open);
 
-                isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, playerLifeUnsigned, firstShootM, isPressed);
+                isPressed = missile(window, mug.vecMug[mug.index], open, classroom, JPPs, playerLifeUnsigned, firstShootM, isPressed);
                 if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
                 string playerLifeString = to_string(playerLifeUnsigned);
                 //Points generator
                 window << Text(nsGraphics::Vec2D(60, 160), "Pts:", nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
                 window << Text(nsGraphics::Vec2D(100, 160), playerLifeString, nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
 
+                //Open shooting
                 if (torpedo(mug, open, firstShootT)) window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
+
+                //Ovnis shooting
+                if (ovniShoot(mug, vecOvni[0], ovniTorOne, vecOvniTorpedo[0])) window << nsShape::Rectangle(vecOvniTorpedo[0], vecOvniTorpedo[0] + Vec2D(5, 10), KGreen);
+                if (ovniShoot(mug, vecOvni[1], ovniTorTwo, vecOvniTorpedo[1])) window << nsShape::Rectangle(vecOvniTorpedo[1], vecOvniTorpedo[1] + Vec2D(5, 10), KGreen);
+                if (ovniShoot(mug, vecOvni[2], ovniTorThree, vecOvniTorpedo[2])) window << nsShape::Rectangle(vecOvniTorpedo[2], vecOvniTorpedo[2] + Vec2D(5, 10), KGreen);
+                if (ovniShoot(mug, vecOvni[3], ovniTorFour, vecOvniTorpedo[3])) window << nsShape::Rectangle(vecOvniTorpedo[3], vecOvniTorpedo[3] + Vec2D(5, 10), KGreen);
+                if (ovniShoot(mug, vecOvni[4], ovniTorFive, vecOvniTorpedo[4])) window << nsShape::Rectangle(vecOvniTorpedo[4], vecOvniTorpedo[4] + Vec2D(5, 10), KGreen);
+
+
+
+
 
 
                 window.finishFrame();
