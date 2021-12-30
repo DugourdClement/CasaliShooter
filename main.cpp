@@ -21,12 +21,19 @@
 
 #include "MinGL/include/mingl/shape/rectangle.h"
 
+//Changer ce chemin surtout
+
+#include "MinGL/include/mingl/audio/audioengine.h"
+
+//Changer ce chemin surtout
+
 //CHANGER LES CHEMINS !!
 
 using namespace std;
 using namespace nsGraphics;
 using namespace nsGui;
 using namespace chrono;
+using namespace nsAudio;
 
 Vec2D misPos;
 Vec2D torPos;
@@ -478,7 +485,9 @@ int main()
         vecOvniTorpedo.push_back(ovniTor);
     }
 
-
+    AudioEngine PPsMusic;
+    PPsMusic.setMusic("music/I_Attack.wav", true);
+    PPsMusic.toggleMusicPlaying();
     // On fait tourner la boucle tant que la fenêtre est ouverte
     while (window.isOpen()){
         // Récupère l'heure actuelle
@@ -527,6 +536,10 @@ int main()
 
         //Verify if enemies are still alive
         if (allDead(IPPs) && allDead(JPPs) && allDead(KPPs)) {
+            PPsMusic.setMusicPlaying(false);
+            AudioEngine openclassroomMusic;
+            openclassroomMusic.setMusic("music/OCmusic.wav", true);
+            openclassroomMusic.toggleMusicPlaying();
             while (!allDead(open) || !allDead(classroom)) {
                 // Récupère l'heure actuelle
                 chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
@@ -588,6 +601,8 @@ int main()
                 frameTime = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start);
 
             }
+            openclassroomMusic.setMusicPlaying(false);
+            break;
         }
     }
     return 0;
