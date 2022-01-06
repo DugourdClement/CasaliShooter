@@ -117,11 +117,6 @@ unsigned entrerMenu(MinGL &window, Sprite &image)
     return 0;
 }
 
-void dessiner(MinGL &window, Sprite &image)
-{
-    window << image;
-}
-
 void dataSort(vector<string> &names, vector<unsigned> &scores){
 
     for(unsigned i=0;i<names.size();i++){
@@ -201,9 +196,9 @@ void scoreboard(MinGL &window) {
 //Applies the selected theme 
 void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Sprite &themedark){
     if (choixpsgom == 0) {
-        dessiner(window, themelight);
+        window << themelight;
     }
     else {
-        dessiner(window, themedark);
+        window << themedark;
     }
 }
