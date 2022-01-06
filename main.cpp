@@ -18,7 +18,6 @@
 #include "menu.h"
 #include "mystruct.h"
 #include "move.h"
-//#include "check.h"
 #include "generate.h"
 
 using namespace std;
@@ -26,146 +25,6 @@ using namespace nsGraphics;
 using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
-
-
-//Verify if an ennmy is still alive
-bool allDead(const enemy & PPs) {
-    for (size_t i = 0; i < PPs.state.size(); ++i) {
-        //If the ennemy is alive
-        if (PPs.state[i] == true) {
-            return false;
-        }
-    }
-    //There is no enemy alive anymore
-    return true;
-}
-
-bool isTouching (const Vec2D firstCorner, const Vec2D secondCorner, const Vec2D test){
-    return ((test.getX() <= secondCorner.getX() && test.getY() <= secondCorner.getY()) && (test.getX() >= firstCorner.getX() && test.getY() >= firstCorner.getY()));
-}
-
-bool colision(const Vec2D misPos, enemy &vecSprite){
-    for (size_t i = 0; i < vecSprite.vecSprite.size(); ++i) {
-        Vec2D a = vecSprite.vecSprite[i].getPosition();
-        int bX = vecSprite.vecSprite[i].getPosition().getX()+55;
-        int bY = vecSprite.vecSprite[i].getPosition().getY()+50;
-        Vec2D b {bX,bY};
-        if(isTouching(a,b,misPos) && (vecSprite.state[i] == true)) {
-            vecSprite.state[i] = false;
-            return true;
-        }
-    }
-    return false;
-}
-
-bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, unsigned &playerLifeUnsigned, bool &firstShootM, bool &isPressed, Vec2D &misPos){
-    if (window.isPressed({'x', false})){
-        isPressed = true;
-    }
-    if (isPressed == true){
-        if(firstShootM == true){//Si première apparition/clique
-            Vec2D position = mug.getPosition();
-            int mugX = position.getX();
-            int mugY = position.getY();
-            misPos.setX(mugX + 16);
-            misPos.setY(mugY);
-        }//Test si il y a colision avec la fenètre ou avec un enemi
-        if (misPos.getY() <= 150){
-            firstShootM = true;
-            return isPressed = false;
-        }
-            else if (colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
-                ++playerLifeUnsigned;
-                firstShootM = true;
-                return isPressed = false;
-            }
-        firstShootM = false;
-        misPos.setY(misPos.getY() - 16);
-        return isPressed;
-    }
-    return false;
-}
-
-bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT, Vec2D &torPos){
-
-    srand (time(NULL));
-    int n = rand() % IPPs.vecSprite.size();
-
-    if((firstShootT == true) && (IPPs.state[n] == true)){//Si première apparition et qu'il n'est pas détruit
-        Vec2D position = IPPs.vecSprite[n].getPosition();
-        int IPPsX = position.getX();
-        int IPPsY = position.getY();
-        torPos.setX(IPPsX + 16);
-        torPos.setY(IPPsY);
-    }//Test si il y a colision avec la fenètre ou le joueur
-
-    Vec2D pos = mug.vecMug[mug.index].getPosition();
-    int X = pos.getX() + 50;
-    int Y = pos.getY() + 55;
-    Vec2D posTwo = {X,Y};
-
-    if(torPos.getY() >= 696){
-        firstShootT = true;
-        return false;
-    }else if(isTouching(pos,posTwo,torPos)){
-        firstShootT = true;
-        if (mug.index < 4){
-            int posX = mug.vecMug[mug.index].getPosition().getX();
-            int posY = mug.vecMug[mug.index].getPosition().getY();
-            ++mug.index;
-            mug.vecMug[mug.index].setPosition({posX,posY});
-        }
-        else{
-            cout << "1111111111" << endl;
-            exit(0);
-        }
-
-        return false;
-    }
-    firstShootT = false;
-    torPos.setY(torPos.getY() + 16);
-    return true;
-}
-
-bool ovniShoot(mugStruct & mug, enemy & ovni, bool & ovniShootT, Vec2D & posTorOvni) {
-    if ((ovniShootT == true) && (ovni.state[0] == true)) {
-        Vec2D position = ovni.vecSprite[0].getPosition();
-        int ovniX = position.getX();
-        int ovniY = position.getY();
-        posTorOvni.setX(ovniX + 16);
-        posTorOvni.setY(ovniY);
-    }
-
-    Vec2D pos = mug.vecMug[mug.index].getPosition();
-    int X = pos.getX() + 50;
-    int Y = pos.getY() + 50;
-    Vec2D posTwo = {X, Y};
-
-    if (posTorOvni.getY() >= 696) {
-        ovniShootT = true;
-        return false;
-    }
-    else if (isTouching(pos, posTwo, posTorOvni)) {
-        ovniShootT = true;
-        if (mug.index < 4) {
-            int posX = mug.vecMug[mug.index].getPosition().getX();
-            int posY = mug.vecMug[mug.index].getPosition().getY();
-            ++mug.index;
-            mug.vecMug[mug.index].setPosition({posX, posY});
-        }
-        else {
-            cout << "22222222222";
-            exit(0);
-        }
-
-        return false;
-    }
-
-    ovniShootT = false;
-    posTorOvni.setY(posTorOvni.getY() + 16);
-    return true;
-}
-
 
 int main()
 {
@@ -209,11 +68,11 @@ int main()
     mug.vecMug[mug.index].setPosition(Vec2D(50+284, 138+500));
 
 
-    // Initialise le système
+    // Initializes the system
     MinGL window("CasaliShooter", Vec2D(700, 1000), Vec2D(50, 0), KBlack);
     window.initGlut();
     window.initGraphic();
-    // Initialise toutes les images
+    // Initializes all images
     Sprite background("img/fondarcade.si2", Vec2D(0, 0));
     Sprite backgroundpsg("img/fond_psg.si2", Vec2D(0, 0));
     Sprite scoreboardbg("img/scoreboard.si2", Vec2D(125, 250));
@@ -233,13 +92,13 @@ int main()
     nsTransition::TransitionEngine transitionEngine;
 
 
-    // On démarre les transitions sur notre objet custom
+    // Start the transitions on our custom object
     transitionEngine.startContract(nsTransition::TransitionContract(choosethemode, choosethemode.TRANSITION_TEXT_COLOR, chrono::seconds(1), {0, 0, 0},
                                                                     chrono::seconds::zero(), nsTransition::Transition::MODE_LOOP_SMOOTH));
     transitionEngine.startContract(nsTransition::TransitionContract(choosethemode, choosethemode.TRANSITION_BACKGROUND_COLOR, chrono::seconds(1), {255, 255, 0},
                                                                     chrono::seconds::zero(), nsTransition::Transition::MODE_LOOP_SMOOTH));
 
-    // Variable qui tient le temps de frame
+    // Variable that keeps the frame time
     chrono::microseconds frameTime = chrono::microseconds::zero();
     unsigned choixobjet=0;
     unsigned choixpsgom=0;
@@ -250,13 +109,13 @@ int main()
     bool firstShootM = true;
     bool isPressed = false;
     bool firstShootT = true;
-    //Vecteur pour savoir si un ovni tire
+    //Vector to determine if a UFO is firing
     bool ovniTorOne = true;
     bool ovniTorTwo = true;
     bool ovniTorThree = true;
     bool ovniTorFour = true;
     bool ovniTorFive = true;
-    //Vecteur des Vec2D pour le tire des torpedos des ovnis
+    //Vector of Vec2D for UFO torpedo fire
     vector<Vec2D> vecOvniTorpedo;
     for (size_t i = 0; i < vecOvni.size(); ++i) {
         Vec2D ovniTor;
@@ -267,15 +126,15 @@ int main()
     PPsMusic.setMusic("music/I_Attack.wav", true);
     PPsMusic.toggleMusicPlaying();
 
-    // On fait tourner la boucle tant que la fenêtre est ouverte
+    // Turn the loop as long as the window is open
     while (window.isOpen())
     {
-        // Récupère l'heure actuelle
+        //Get current time
         chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
 
         transitionEngine.update(frameTime);
 
-        if (choixobjet==0) { //ouverture de l'écran d'accueil de casali shooter
+        if (choixobjet==0) { //Casali shooter home screen opening
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
             dessiner(window, titreaccueil);
@@ -286,7 +145,7 @@ int main()
             dessiner(window, casali);
             menu(window, casali);
             choixobjet = entrerMenu(window, casali);
-        }else if (choixobjet == 2){ //ouverture du menu scoreboard
+        }else if (choixobjet == 2){ //Opening of the scoreboard menu
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
             dessiner(window, scoreboardbg);
@@ -296,7 +155,7 @@ int main()
                 choixobjet = 0;
             }
             scoreboard(window);
-        }else if (choixobjet == 3){ //ouverture du menu option
+        }else if (choixobjet == 3){ //Opening of the option menu
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
             window << choosethemode;
@@ -309,7 +168,7 @@ int main()
             if (window.isPressed({'b', false})) {
                 choixobjet = 0;
             }
-        }else if(choixobjet == 1){ // ouverture du jeu
+        }else if(choixobjet == 1){ // Opening of the game
             window.clearScreen();
 
             choixLightDark(window,choixpsgom, background, backgroundpsg);
@@ -342,9 +201,6 @@ int main()
                 openclassroomMusic.setMusic("music/OCmusic.wav", true);
                 openclassroomMusic.toggleMusicPlaying();
                 while (!allDead(open) || !allDead(classroom)) {
-
-                    // Récupère l'heure actuelle
-                    //chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
 
                     window.clearScreen();
 
@@ -385,16 +241,16 @@ int main()
                     if (ovniShoot(mug, vecOvni[3], ovniTorFour, vecOvniTorpedo[3])) window << nsShape::Rectangle(vecOvniTorpedo[3], vecOvniTorpedo[3] + Vec2D(5, 10), KGreen);
                     if (ovniShoot(mug, vecOvni[4], ovniTorFive, vecOvniTorpedo[4])) window << nsShape::Rectangle(vecOvniTorpedo[4], vecOvniTorpedo[4] + Vec2D(5, 10), KGreen);
 
-                    // On finit la frame en cours
+                    // We finish the current frame
                     window.finishFrame();
 
-                    // On vide la queue d'évènements
+                    // Empty the queue of events
                     window.getEventManager().clearEvents();
 
-                    // On attend un peu pour limiter le framerate et soulager le CPU
+                    // We wait a bit to limit the framerate and relieve the CPU
                     this_thread::sleep_for(chrono::milliseconds(2000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start));
 
-                    // On récupère le temps de frame
+                    // We keep the frame time
                     frameTime = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start);
 
                 }
@@ -403,16 +259,16 @@ int main()
             }
         }
 
-        // On finit la frame en cours
+        // We finish the current frame
         window.finishFrame();
 
-        // On vide la queue d'évènements
+        // Empty the queue of events
         window.getEventManager().clearEvents();
 
-        // On attend un peu pour limiter le framerate et soulager le CPU
+        // We wait a bit to limit the framerate and relieve the CPU
         this_thread::sleep_for(chrono::milliseconds(2000 / FPS_LIMIT) - chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start));
 
-        // On récupère le temps de frame
+        // We keep the frame time
         frameTime = chrono::duration_cast<chrono::microseconds>(chrono::steady_clock::now() - start);
     }
 
