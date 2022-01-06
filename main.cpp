@@ -138,20 +138,20 @@ int main()
         if (choixobjet==0) { //Casali shooter home screen opening
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
-            window << window, titreaccueil;
-            window << window, startb;
-            window << window, scoreb;
-            window << window, settingsb;
-            window << window, quitb;
-            window << window, casali;
+            window <<  titreaccueil;
+            window << startb;
+            window << scoreb;
+            window << settingsb;
+            window << quitb;
+            window << casali;
             menu(window, casali);
             choixobjet = entrerMenu(window, casali);
         }else if (choixobjet == 2){ //Opening of the scoreboard menu
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
-            window << window, scoreboardbg;
-            window << window, titrescoreboard;
-            window << window, backb;
+            window << scoreboardbg;
+            window << titrescoreboard;
+            window << backb;
             if (window.isPressed({'b', false})) {
                 choixobjet = 0;
             }
@@ -160,10 +160,10 @@ int main()
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
             window << choosethemode;
-            window << window, moon;
-            window << window, sun;
-            window << window, arrow;
-            window << window, backb;
+            window << moon;
+            window << sun;
+            window << arrow;
+            window << backb;
             selectTheme(window, arrow);
             choixpsgom = chooseTheme(window, arrow, choixpsgom);
             if (window.isPressed({'b', false})) {
