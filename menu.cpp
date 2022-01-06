@@ -24,7 +24,7 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
-
+//// Selects the theme and moves the cursor
 void selectTheme(MinGL &window, Sprite &image)
 {
         if (window.isPressed({'a', false})) {
@@ -43,6 +43,7 @@ void selectTheme(MinGL &window, Sprite &image)
         }
 }
 
+//Change theme to theme select
 unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 {
 
@@ -59,6 +60,7 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
     return baseTheme;
 }
 
+//Change the place of the cursor in the menu
 void menu(MinGL &window, Sprite &image)
 {
         if (window.isPressed({'a', false})) {
@@ -91,6 +93,7 @@ void menu(MinGL &window, Sprite &image)
         }
 }
 
+// Choice of menu
 unsigned entrerMenu(MinGL &window, Sprite &image)
 {
 
@@ -99,15 +102,15 @@ unsigned entrerMenu(MinGL &window, Sprite &image)
         Vec2D position = image.getPosition();
         int mugY = position.getY();
         if (mugY == 585) {
-            exit(0);
+            exit(0); // quitter 
         }
         else if (mugY == 490) {
-            return 3;
+            return 3; //menu 3
         }
         else if (mugY == 395) {
-            return 2;
+            return 2; // menu 2
         }else if(mugY == 305){
-            return 1;
+            return 1; // menu 1
         }
 
     }
@@ -146,7 +149,7 @@ void dataSort(vector<string> &names, vector<unsigned> &scores){
     }
 
 }
-
+//Displays the scores of the different players
 void scoreboard(MinGL &window) {
     ifstream score_name("name.txt");
 
@@ -195,7 +198,7 @@ void scoreboard(MinGL &window) {
                << Text(Vec2D(539, 293+(50*i)), sortedScore[i], KWhite, GlutFont::BITMAP_HELVETICA_18);
     }
 }
-
+//Applies the selected theme 
 void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Sprite &themedark){
     if (choixpsgom == 0) {
         dessiner(window, themelight);
