@@ -35,10 +35,12 @@ bool allDead(const enemy & PPs) {
     return true;
 }
 
+////Verifies colisions between 2 coordinates
 bool isTouching (const Vec2D firstCorner, const Vec2D secondCorner, const Vec2D test){
     return ((test.getX() <= secondCorner.getX() && test.getY() <= secondCorner.getY()) && (test.getX() >= firstCorner.getX() && test.getY() >= firstCorner.getY()));
 }
 
+////Verifies collisions between 2 sprites
 bool colision(const Vec2D misPos, enemy &vecSprite){
     for (size_t i = 0; i < vecSprite.vecSprite.size(); ++i) {
         Vec2D a = vecSprite.vecSprite[i].getPosition();
@@ -53,18 +55,20 @@ bool colision(const Vec2D misPos, enemy &vecSprite){
     return false;
 }
 
+//allows the mug to fire missiles and check for colision with enemy or window
 bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, unsigned &playerLifeUnsigned, bool &firstShootM, bool &isPressed, Vec2D &misPos){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
     if (isPressed == true){
-        if(firstShootM == true){//Si première apparition/clique
+        //If first appearance/click
+        if(firstShootM == true){
             Vec2D position = mug.getPosition();
             int mugX = position.getX();
             int mugY = position.getY();
             misPos.setX(mugX + 16);
             misPos.setY(mugY);
-        }//Test si il y a colision avec la fenètre ou avec un enemi
+        }//Test if colision with window or enemy
         if (misPos.getY() <= 150){
             firstShootM = true;
             return isPressed = false;
@@ -81,18 +85,19 @@ bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, 
     return false;
 }
 
+//allows the enemy to fire missiles and check for colision with the mug or window
 bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT, Vec2D &torPos){
 
     srand (time(NULL));
     int n = rand() % IPPs.vecSprite.size();
 
-    if((firstShootT == true) && (IPPs.state[n] == true)){//Si première apparition et qu'il n'est pas détruit
+    if((firstShootT == true) && (IPPs.state[n] == true)){//If first appearance and if it is not destroyed
         Vec2D position = IPPs.vecSprite[n].getPosition();
         int IPPsX = position.getX();
         int IPPsY = position.getY();
         torPos.setX(IPPsX + 16);
         torPos.setY(IPPsY);
-    }//Test si il y a colision avec la fenètre ou le joueur
+    }//if colision with window or player
 
     Vec2D pos = mug.vecMug[mug.index].getPosition();
     int X = pos.getX() + 50;
@@ -122,6 +127,7 @@ bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT, Vec2D &torPos){
     return true;
 }
 
+//allows the ovni to fire missiles and check for colision with the mug or window
 bool ovniShoot(mugStruct & mug, enemy & ovni, bool & ovniShootT, Vec2D & posTorOvni) {
     if ((ovniShootT == true) && (ovni.state[0] == true)) {
         Vec2D position = ovni.vecSprite[0].getPosition();
@@ -149,7 +155,6 @@ bool ovniShoot(mugStruct & mug, enemy & ovni, bool & ovniShootT, Vec2D & posTorO
             mug.vecMug[mug.index].setPosition({posX, posY});
         }
         else {
-            cout << "22222222222";
             exit(0);
         }
 
