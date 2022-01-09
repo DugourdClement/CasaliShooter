@@ -2,12 +2,12 @@
 #define BGTEXT_H
 
 // On inclut l'en-tête de IDrawable et de ITransitionable
-#include "MinGL/include/mingl/graphics/idrawable.h"
-#include "MinGL/include/mingl/transition/itransitionable.h"
+#include "MinGL2/include/mingl/graphics/idrawable.h"
+#include "MinGL2/include/mingl/transition/itransitionable.h"
 
 // Ici, les autres en-têtes utiles
-#include "MinGL/include/mingl/gui/text.h"
-#include "MinGL/include/mingl/shape/rectangle.h"
+#include "MinGL2/include/mingl/gui/text.h"
+#include "MinGL2/include/mingl/shape/rectangle.h"
 
 // La classe hérite de IDrawable et ITransitionable
 class BgText: public nsGraphics::IDrawable, public nsTransition::ITransitionable

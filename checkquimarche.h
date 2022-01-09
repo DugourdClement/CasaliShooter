@@ -1,5 +1,5 @@
-#ifndef MENU_H
-#define MENU_H
+#ifndef CHECK_H
+#define CHECK_H
 
 #include <iostream>
 #include <fstream>
@@ -15,16 +15,13 @@
 #include "MinGL2/include/mingl/gui/glut_font.h"
 #include "MinGL2/include/mingl/transition/transition_engine.h"
 
+#include "mystruct.h"
 
-void selectTheme(MinGL &, nsGui::Sprite &);
-unsigned chooseTheme(MinGL &, nsGui::Sprite &, unsigned &);
-void menu(MinGL &window, nsGui::Sprite &);
-unsigned entrerMenu(MinGL &, nsGui::Sprite &);
-void dessiner(MinGL &, nsGui::Sprite &);
-void dataSort(std::vector<std::string> &, std::vector<unsigned> &);
-void scoreboard(MinGL &);
-void choixLightDark (MinGL &, unsigned &,nsGui::Sprite &, nsGui::Sprite &);
+bool allDead(const enemy &);
+bool isTouching (const nsGraphics::Vec2D, const nsGraphics::Vec2D, const nsGraphics::Vec2D);
+bool colision(const nsGraphics::Vec2D, enemy &);
+bool missile(MinGL &, nsGui::Sprite &, enemy &, enemy &, enemy &, unsigned &, bool &, bool &, nsGraphics::Vec2D &);
+bool torpedo(mugStruct &, enemy &, bool &, nsGraphics::Vec2D &);
+bool ovniShoot(mugStruct &, enemy &, bool &, nsGraphics::Vec2D &);
 
-
-
-#endif // MENU_H
+#endif // CHECK_H

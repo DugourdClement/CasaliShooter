@@ -53,7 +53,7 @@ bool colision(const Vec2D misPos, enemy &vecSprite){
     return false;
 }
 
-bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, unsigned &playerPoints, bool &firstShootM, bool &isPressed, Vec2D &misPos){
+bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, unsigned &playerLifeUnsigned, bool &firstShootM, bool &isPressed, Vec2D &misPos){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
@@ -70,7 +70,7 @@ bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, 
             return isPressed = false;
         }
             else if (colision(misPos, IPPs) || colision(misPos, KPPs) || colision(misPos, JPPs)){
-                ++playerPoints;
+                ++playerLifeUnsigned;
                 firstShootM = true;
                 return isPressed = false;
             }
@@ -111,6 +111,7 @@ bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT, Vec2D &torPos){
             mug.vecMug[mug.index].setPosition({posX,posY});
         }
         else{
+            cout << "1111111111" << endl;
             exit(0);
         }
 
@@ -148,6 +149,7 @@ bool ovniShoot(mugStruct & mug, enemy & ovni, bool & ovniShootT, Vec2D & posTorO
             mug.vecMug[mug.index].setPosition({posX, posY});
         }
         else {
+            cout << "22222222222";
             exit(0);
         }
 

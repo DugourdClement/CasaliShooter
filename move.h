@@ -14,9 +14,9 @@
 #include "mystruct.h"
 
 void moveSprite(nsGui::Sprite &, const int &, const int &);
-void moveOpen(enemy &, std::string &, std::string &);
-void moveVecSprite(enemy &, std::string &, std::string &);
-void moveOVNI(enemy &, std::string &, std::string &);
+void moveOpen(enemy &);
+void moveVecSprite(enemy &);
+void moveOVNI(enemy &);
 void keyboard(MinGL &, nsGui::Sprite &);
 
 #endif // MOVE_H

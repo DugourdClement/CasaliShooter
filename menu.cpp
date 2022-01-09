@@ -16,7 +16,6 @@
 
 #include "bgtext.h"
 #include "menu.h"
-#include "mystruct.h"
 
 
 using namespace std;
@@ -25,21 +24,7 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
-struct players { //Structure for the scoreboard
-    string player;
-    unsigned point;
-};
 
-void addScore(string &playerLifeString, string &nameStr){
-    string line;
-    fstream ofs;
-    ofs.open("score.txt", ios_base::app);
-    if(ofs.is_open()){
-        ofs << nameStr << " " << playerLifeString << endl;
-    }
-}
-
-//// Selects the theme and moves the cursor
 void selectTheme(MinGL &window, Sprite &image)
 {
         if (window.isPressed({'a', false})) {
@@ -58,11 +43,10 @@ void selectTheme(MinGL &window, Sprite &image)
         }
 }
 
-//Change theme to theme select
 unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 {
 
-    if (window.isPressed({'"', false})) {
+    if (window.isPressed({'x', false})) {
         Vec2D position = image.getPosition();
         int arrowX = position.getX();
         if (arrowX == 188) {
@@ -75,7 +59,6 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
     return baseTheme;
 }
 
-//Change the place of the cursor in the menu
 void menu(MinGL &window, Sprite &image)
 {
         if (window.isPressed({'a', false})) {
@@ -108,60 +91,116 @@ void menu(MinGL &window, Sprite &image)
         }
 }
 
-// Choice of menu
 unsigned entrerMenu(MinGL &window, Sprite &image)
 {
 
-    if (window.isPressed({'"', false})) {
-        window.resetKey({'"', false});
+    if (window.isPressed({'x', false})) {
+        window.resetKey({'x', false});
         Vec2D position = image.getPosition();
         int mugY = position.getY();
         if (mugY == 585) {
-            exit(0); // quitter
+            exit(0);
         }
         else if (mugY == 490) {
-            return 3; //menu 3
+            return 3;
         }
         else if (mugY == 395) {
-            return 2; // menu 2
+            return 2;
         }else if(mugY == 305){
-            return 1; // menu 1
+            return 1;
         }
 
     }
     return 0;
 }
 
-bool isBetter (const players & joueur1, const players & joueur2){ // Bool used to sort player
-    return joueur1.point >= joueur2.point;
-}
-
-void showScore(MinGL & window) //Function which shows the scoreboard
+void dessiner(MinGL &window, Sprite &image)
 {
-    ifstream data_file("name.txt");
-    vector<players> playerScore;
-    players playerStruc;
-    while (data_file >> playerStruc.player >> playerStruc.point) { //Place every elements of the file in the structure
-        playerScore.emplace_back(playerStruc);
+    window << image;
+}
+
+void dataSort(vector<string> &names, vector<unsigned> &scores){
+
+    for(unsigned i=0;i<names.size();i++){
+
+        for(unsigned j=0;j<names.size();j++){
+
+            if(scores[i]>scores[j]){
+
+                unsigned tempscore=scores[i];
+
+                scores[i]=scores[j];
+
+                scores[j]=tempscore;
+
+                string tempname=names[i];
+
+                names[i]=names[j];
+
+                names[j]=tempname;
+
+            }
+
+        }
+
     }
-    sort (playerScore.begin (), playerScore.end(), isBetter); // Sort all players by their score
-    vector<string> stringScore;
-    if (playerScore.size()>10) { //Make that the structure only retains the 10 best players
-        playerScore.resize(10);
+
+}
+
+void scoreboard(MinGL &window) {
+    ifstream score_name("name.txt");
+
+    vector<string> player;
+    string name;
+    while(score_name >> name)
+        player.push_back(name);
+
+
+    ifstream score_point("point.txt");
+
+    vector<unsigned> score;
+    unsigned points;
+    while (score_point >> points)
+        score.push_back(points);
+
+    dataSort(player, score);
+
+    remove("point.txt");
+    ofstream outputFile;
+    outputFile.open("point.txt");
+    for (unsigned i = 0; i<score.size(); ++i) {
+        outputFile << score[i] << endl;
     }
-    for (size_t i = 0; i<playerScore.size(); ++i) { //Place every score and player on the screen
-        stringScore.push_back(to_string(playerScore[i].point)); //Transform the score of the players into String so i can use nsGui::Text to show them
-        window << nsGui::Text(nsGraphics::Vec2D(190, 294+(30*i)), playerScore[i].player, nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15)
-               << nsGui::Text(nsGraphics::Vec2D(525, 294+(30*i)), stringScore[i], nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
+    remove("name.txt");
+    ofstream outputFileName;
+    outputFileName.open("name.txt");
+    for (unsigned i = 0; i<player.size(); ++i) {
+        outputFileName << player[i] << endl;
+    }
+
+    ifstream name_sort("name.txt");
+    vector<string> sortedName;
+    string sorted2;
+    while(getline(name_sort,sorted2))
+        sortedName.push_back(sorted2);
+
+    ifstream score_sort("point.txt");
+    vector<string> sortedScore;
+    string sorted;
+    while(getline(score_sort,sorted))
+        sortedScore.push_back(sorted);
+
+    for (unsigned i = 0; i<player.size(); ++i) {
+        window << Text(Vec2D(200, 293+(50*i)), sortedName[i], KWhite, GlutFont::BITMAP_HELVETICA_18)
+               << Text(Vec2D(539, 293+(50*i)), sortedScore[i], KWhite, GlutFont::BITMAP_HELVETICA_18);
     }
 }
 
-//Applies the selected theme
 void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Sprite &themedark){
     if (choixpsgom == 0) {
-        window << themelight;
+        dessiner(window, themelight);
     }
     else {
-        window << themedark;
+        dessiner(window, themedark);
     }
 }
