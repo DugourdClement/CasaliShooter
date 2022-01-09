@@ -16,6 +16,7 @@
 
 #include "move.h"
 #include "mystruct.h"
+#include "menu.h"
 
 using namespace std;
 using namespace nsGraphics;
@@ -49,7 +50,7 @@ void moveSprite(Sprite &position, const int &x, const int &y) {
 }
 
 // Move the sprites of "open"
-void moveOpen(enemy & open){
+void moveOpen(enemy & open, string &playerLifeString, string &nameStr){
     //if the sprite vector does not exit the window, runs through all the letters and moves them by 5 px
     if (open.vecSprite[0].getPosition().getX() < (600 - 470) || open.vecSprite[open.vecSprite.size() - 1].getPosition().getX() > 50) {
         for(Sprite & letter : open.vecSprite) {
@@ -71,10 +72,13 @@ void moveOpen(enemy & open){
         }
     }
     // if the sprite vector reached the bottom, GAME OVER
-     if (open.vecSprite[0].getPosition().getY() > 600) exit(0);
+     if (open.vecSprite[0].getPosition().getY() > 600){
+         addScore(playerLifeString, nameStr);
+         exit(0);
+     }
 }
 
-void moveVecSprite(enemy &vecSprite){
+void moveVecSprite(enemy &vecSprite, string &playerLifeString, string &nameStr){
     // If the sprites at the end do not touch the edges, move all the sprites at the same time
     if (vecSprite.vecSprite[0].getPosition().getX() < (600-64+50) ||
         vecSprite.vecSprite[vecSprite.vecSprite.size() - 1].getPosition().getX() > 0+50){
@@ -96,11 +100,12 @@ void moveVecSprite(enemy &vecSprite){
     }
     // if the sprite vector reached the bottom, GAME OVER
     if(vecSprite.vecSprite[0].getPosition().getY()>(600)){
+        addScore(playerLifeString, nameStr);
         exit(0);
     }
 }
 
-void moveOVNI(enemy & ovni) {
+void moveOVNI(enemy & ovni, string &playerLifeString, string &nameStr) {
     // If the sprites at the end do not touch the edges, move all the sprites at the same time
     if (ovni.vecSprite[0].getPosition().getX() < (600-64+50) ||
         ovni.vecSprite[ovni.vecSprite.size() - 1].getPosition().getX() > 0+50){
@@ -116,5 +121,8 @@ void moveOVNI(enemy & ovni) {
         ovni.rightOrLeft = 1;
     }
      // if the sprite vector reached the bottom, GAME OVER
-    if(ovni.vecSprite[0].getPosition().getY()>(600))exit(0);
+    if(ovni.vecSprite[0].getPosition().getY()>(600)){
+        addScore(playerLifeString, nameStr);
+        exit(0);
+        }
 }

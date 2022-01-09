@@ -24,7 +24,7 @@ void dessiner(MinGL &, nsGui::Sprite &);
 void dataSort(std::vector<std::string> &, std::vector<unsigned> &);
 void scoreboard(MinGL &);
 void choixLightDark (MinGL &, unsigned &,nsGui::Sprite &, nsGui::Sprite &);
-
+void addScore(std::string &, std::string);
 
 
 #endif // MENU_H

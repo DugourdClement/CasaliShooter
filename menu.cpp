@@ -24,6 +24,15 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
+void addScore(string &playerLifeString, string &nameStr){
+    string line;
+    fstream ofs;
+    ofs.open("score.txt", ios_base::app);
+    if(ofs.is_open()){
+        ofs << nameStr << " " << playerLifeString << endl;
+    }
+}
+
 //// Selects the theme and moves the cursor
 void selectTheme(MinGL &window, Sprite &image)
 {

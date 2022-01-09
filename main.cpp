@@ -27,6 +27,8 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
+
+
 void keyboardWrite(MinGL &window, string &nameStr){
 
     if(window.isPressed({' ', false}) && nameStr.size() > 0) {
@@ -289,15 +291,17 @@ int main()
             JPPs.update(window);
             KPPs.update(window);
 
+            string playerLifeString = to_string(playerLifeUnsigned);
+
             keyboard(window, mug.vecMug[mug.index]);
 
-            moveVecSprite(IPPs);
-            moveVecSprite(KPPs);
-            moveVecSprite(JPPs);
+            moveVecSprite(IPPs, playerLifeString, nameStr);
+            moveVecSprite(KPPs, playerLifeString, nameStr);
+            moveVecSprite(JPPs, playerLifeString, nameStr);
 
             isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos);
             if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
-            string playerLifeString = to_string(playerLifeUnsigned);
+
             //Points generator
             window << Text(Vec2D(60, 160), "Pts:", KWhite, GlutFont::BITMAP_9_BY_15);
             window << Text(Vec2D(100, 160), playerLifeString, KWhite, GlutFont::BITMAP_9_BY_15);
@@ -331,10 +335,10 @@ int main()
                     //OPEN and CLASSROOM movements
 
                     for (size_t i = 0; i <  vecOvni.size(); ++i) {
-                        moveOVNI(vecOvni[i]);
+                        moveOVNI(vecOvni[i], playerLifeString, nameStr);
                     }
-                    moveVecSprite(classroom);
-                    moveOpen(open);
+                    moveVecSprite(classroom, playerLifeString, nameStr);
+                    moveOpen(open, playerLifeString, nameStr);
 
                     isPressed = missile(window, mug.vecMug[mug.index], open, classroom, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos);
                     if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
