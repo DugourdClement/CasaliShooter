@@ -21,8 +21,8 @@ unsigned chooseTheme(MinGL &, nsGui::Sprite &, unsigned &);
 void menu(MinGL &window, nsGui::Sprite &);
 unsigned entrerMenu(MinGL &, nsGui::Sprite &);
 void dessiner(MinGL &, nsGui::Sprite &);
-void dataSort(std::vector<std::string> &, std::vector<unsigned> &);
-void scoreboard(MinGL &);
+bool isBetter(const players &, const players &);
+void showScore(MinGL &);
 void choixLightDark (MinGL &, unsigned &,nsGui::Sprite &, nsGui::Sprite &);
 void addScore(std::string &, std::string);
 
