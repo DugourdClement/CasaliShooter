@@ -172,7 +172,7 @@ int main()
     // Initializes all images
     Sprite background("spritesi2/fondarcade.si2", Vec2D(0, 0));
     Sprite backgroundpsg("spritesi2/fond_psg.si2", Vec2D(0, 0));
-    Sprite scoreboardbg("spritesi2/scoreboard.si2", Vec2D(125, 250));
+    Sprite scoreboardbg("spritesi2/scoreboard.si2", Vec2D(145, 272));
     Sprite titrescoreboard("spritesi2/titrescore.si2", Vec2D(0, 0));
     Sprite titreaccueil("spritesi2/casaliheader.si2", Vec2D(155, 138));
     Sprite startb("spritesi2/start-button.si2", Vec2D(222, 283));
@@ -254,7 +254,7 @@ int main()
             if (window.isPressed({'&', false})) {
                 choixobjet = 0;
             }
-            scoreboard(window);
+            showScore(window);
         }else if (choixobjet == 3){ //Opening of the option menu
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
