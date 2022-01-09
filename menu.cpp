@@ -16,6 +16,7 @@
 
 #include "bgtext.h"
 #include "menu.h"
+#include "mystruct.h"
 
 
 using namespace std;
