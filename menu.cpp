@@ -24,6 +24,11 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
+struct players { //Structure for the scoreboard
+    string player;
+    unsigned point;
+};
+
 void addScore(string &playerLifeString, string &nameStr){
     string line;
     fstream ofs;
@@ -153,55 +158,31 @@ void dataSort(vector<string> &names, vector<unsigned> &scores){
     }
 
 }
-//Displays the scores of the different players
-void scoreboard(MinGL &window) {
-    ifstream score_name("name.txt");
 
-    vector<string> player;
-    string name;
-    while(score_name >> name)
-        player.push_back(name);
+bool isBetter (const players & joueur1, const players & joueur2){ // Bool used to sort player
+    return joueur1.point >= joueur2.point;
+}
 
-
-    ifstream score_point("point.txt");
-
-    vector<unsigned> score;
-    unsigned points;
-    while (score_point >> points)
-        score.push_back(points);
-
-    dataSort(player, score);
-
-    remove("point.txt");
-    ofstream outputFile;
-    outputFile.open("point.txt");
-    for (unsigned i = 0; i<score.size(); ++i) {
-        outputFile << score[i] << endl;
+void showScore(MinGL & window) //Function which shows the scoreboard
+{
+    ifstream data_file("name.txt");
+    vector<players> playerScore;
+    players playerStruc;
+    while (data_file >> playerStruc.player >> playerStruc.point) { //Place every elements of the file in the structure
+        playerScore.emplace_back(playerStruc);
     }
-    remove("name.txt");
-    ofstream outputFileName;
-    outputFileName.open("name.txt");
-    for (unsigned i = 0; i<player.size(); ++i) {
-        outputFileName << player[i] << endl;
+    sort (playerScore.begin (), playerScore.end(), isBetter); // Sort all players by their score
+    vector<string> stringScore;
+    if (playerScore.size()>10) { //Make that the structure only retains the 10 best players
+        playerScore.resize(10);
     }
-
-    ifstream name_sort("name.txt");
-    vector<string> sortedName;
-    string sorted2;
-    while(getline(name_sort,sorted2))
-        sortedName.push_back(sorted2);
-
-    ifstream score_sort("point.txt");
-    vector<string> sortedScore;
-    string sorted;
-    while(getline(score_sort,sorted))
-        sortedScore.push_back(sorted);
-
-    for (unsigned i = 0; i<player.size(); ++i) {
-        window << Text(Vec2D(200, 293+(50*i)), sortedName[i], KWhite, GlutFont::BITMAP_HELVETICA_18)
-               << Text(Vec2D(539, 293+(50*i)), sortedScore[i], KWhite, GlutFont::BITMAP_HELVETICA_18);
+    for (size_t i = 0; i<playerScore.size(); ++i) { //Place every score and player on the screen
+        stringScore.push_back(to_string(playerScore[i].point)); //Transform the score of the players into String so i can use nsGui::Text to show them
+        window << nsGui::Text(nsGraphics::Vec2D(190, 294+(30*i)), playerScore[i].player, nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15)
+               << nsGui::Text(nsGraphics::Vec2D(525, 294+(30*i)), stringScore[i], nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
     }
 }
+
 //Applies the selected theme
 void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Sprite &themedark){
     if (choixpsgom == 0) {
