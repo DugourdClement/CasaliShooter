@@ -27,11 +27,105 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
+void keyboardWrite(MinGL &window, string &nameStr){
+
+    if(window.isPressed({' ', false}) && nameStr.size() > 0) {
+            //window.resetKey({' ', false});
+            nameStr.pop_back();
+    }else if (window.isPressed({'a', false})) {
+        window.resetKey({'a', false});
+        nameStr += "A";
+    }else if(window.isPressed({'z', false})) {
+        window.resetKey({'z', false});
+        nameStr += "Z";
+    }else if(window.isPressed({'e', false})) {
+        window.resetKey({'e', false});
+        nameStr += "E";
+    }else if(window.isPressed({'r', false})) {
+        window.resetKey({'r', false});
+        nameStr += "R";
+    }else if(window.isPressed({'t', false})) {
+        window.resetKey({'t', false});
+        nameStr += "T";
+    }else if(window.isPressed({'y', false})) {
+        window.resetKey({'y', false});
+        nameStr += "Y";
+    }else if(window.isPressed({'u', false})) {
+        window.resetKey({'u', false});
+        nameStr += "U";
+    }else if(window.isPressed({'i', false})) {
+        window.resetKey({'i', false});
+        nameStr += "I";
+    }else if(window.isPressed({'o', false})) {
+        window.resetKey({'o', false});
+        nameStr += "O";
+    }else if(window.isPressed({'p', false})) {
+        window.resetKey({'p', false});
+        nameStr += "P";
+    }else if(window.isPressed({'q', false})) {
+        window.resetKey({'q', false});
+        nameStr += "Q";
+    }else if(window.isPressed({'s', false})) {
+        window.resetKey({'s', false});
+        nameStr += "S";
+    }else if(window.isPressed({'d', false})) {
+        window.resetKey({'d', false});
+        nameStr += "D";
+    }else if(window.isPressed({'f', false})) {
+        window.resetKey({'f', false});
+        nameStr += "F";
+    }else if(window.isPressed({'g', false})) {
+        window.resetKey({'g', false});
+        nameStr += "G";
+    }else if(window.isPressed({'h', false})) {
+        window.resetKey({'h', false});
+        nameStr += "H";
+    }else if(window.isPressed({'j', false})) {
+        window.resetKey({'j', false});
+        nameStr += "J";
+    }else if(window.isPressed({'k', false})) {
+        window.resetKey({'k', false});
+        nameStr += "K";
+    }else if(window.isPressed({'l', false})) {
+        window.resetKey({'l', false});
+        nameStr += "L";
+    }else if(window.isPressed({'m', false})) {
+        window.resetKey({'m', false});
+        nameStr += "M";
+    }else if(window.isPressed({'w', false})) {
+        window.resetKey({'w', false});
+        nameStr += "W";
+    }else if(window.isPressed({'c', false})) {
+        window.resetKey({'c', false});
+        nameStr += "C";
+    }else if(window.isPressed({'v', false})) {
+        window.resetKey({'v', false});
+        nameStr += "V";
+    }else if(window.isPressed({'b', false})) {
+        window.resetKey({'b', false});
+        nameStr += "B";
+    }else if(window.isPressed({'n', false})) {
+        window.resetKey({'n', false});
+        nameStr += "N";
+    }else if(window.isPressed({'x', false})) {
+        window.resetKey({'x', false});
+        nameStr += "X";
+    }
+}
+
+void askName(MinGL &window, string &nameStr){
+    window << Sprite ("spritesi2/name.si2", Vec2D(100, 250));
+    window << Sprite ("spritesi2/spacebar2.si2", Vec2D(100, 500));
+    keyboardWrite(window, nameStr);
+    window << Text(Vec2D(275, 400), nameStr , KBlue, GlutFont::BITMAP_HELVETICA_18);
+}
+
 int main()
 {
 
     Vec2D misPos;
     Vec2D torPos;
+    Vec2D torPos2;
 
     srand(time(NULL));
 
@@ -74,20 +168,20 @@ int main()
     window.initGlut();
     window.initGraphic();
     // Initializes all images
-    Sprite background("img/fondarcade.si2", Vec2D(0, 0));
-    Sprite backgroundpsg("img/fond_psg.si2", Vec2D(0, 0));
-    Sprite scoreboardbg("img/scoreboard.si2", Vec2D(125, 250));
-    Sprite titrescoreboard("img/titrescore.si2", Vec2D(0, 0));
-    Sprite titreaccueil("img/casaliheader.si2", Vec2D(155, 138));
-    Sprite startb("img/start-button.si2", Vec2D(222, 283));
-    Sprite scoreb("img/scoreboard-button.si2", Vec2D(222, 378));
-    Sprite settingsb("img/options-button.si2", Vec2D(222, 473));
-    Sprite quitb("img/quit-button.si2", Vec2D(222, 568));
-    Sprite casali("img/casali.si2", Vec2D(160, 305));
-    Sprite moon("img/moon.si2", Vec2D(160, 350));
-    Sprite sun("img/sun.si2", Vec2D(400, 338));
-    Sprite arrow("img/arrow.si2", Vec2D(188, 460));
-    Sprite backb("img/back-button.si2", Vec2D(66, 666));
+    Sprite background("spritesi2/fondarcade.si2", Vec2D(0, 0));
+    Sprite backgroundpsg("spritesi2/fond_psg.si2", Vec2D(0, 0));
+    Sprite scoreboardbg("spritesi2/scoreboard.si2", Vec2D(125, 250));
+    Sprite titrescoreboard("spritesi2/titrescore.si2", Vec2D(0, 0));
+    Sprite titreaccueil("spritesi2/casaliheader.si2", Vec2D(155, 138));
+    Sprite startb("spritesi2/start-button.si2", Vec2D(222, 283));
+    Sprite scoreb("spritesi2/scoreboard-button.si2", Vec2D(222, 378));
+    Sprite settingsb("spritesi2/options-button.si2", Vec2D(222, 473));
+    Sprite quitb("spritesi2/quit-button.si2", Vec2D(222, 568));
+    Sprite casali("spritesi2/casali.si2", Vec2D(160, 305));
+    Sprite moon("spritesi2/moon.si2", Vec2D(160, 350));
+    Sprite sun("spritesi2/sun.si2", Vec2D(400, 338));
+    Sprite arrow("spritesi2/arrow.si2", Vec2D(188, 460));
+    Sprite backb("spritesi2/back-button.si2", Vec2D(66, 666));
 
     BgText choosethemode(Vec2D(150, 240), "Choose between light and dark theme with a or z", KWhite, KBlack);
     nsTransition::TransitionEngine transitionEngine;
@@ -110,6 +204,7 @@ int main()
     bool firstShootM = true;
     bool isPressed = false;
     bool firstShootT = true;
+    bool firstShootT2 = true;
     //Vector to determine if a UFO is firing
     bool ovniTorOne = true;
     bool ovniTorTwo = true;
@@ -127,6 +222,8 @@ int main()
     PPsMusic.setMusic("music/I_Attack.wav", true);
     PPsMusic.toggleMusicPlaying();
 
+    string nameStr ="";
+
     // Turn the loop as long as the window is open
     while (window.isOpen())
     {
@@ -135,7 +232,7 @@ int main()
 
         transitionEngine.update(frameTime);
 
-        if (choixobjet==0) { //Casali shooter home screen opening
+        if (choixobjet == 0) { //Casali shooter home screen opening
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
             window <<  titreaccueil;
@@ -152,7 +249,7 @@ int main()
             window << scoreboardbg;
             window << titrescoreboard;
             window << backb;
-            if (window.isPressed({'b', false})) {
+            if (window.isPressed({'&', false})) {
                 choixobjet = 0;
             }
             scoreboard(window);
@@ -166,10 +263,23 @@ int main()
             window << backb;
             selectTheme(window, arrow);
             choixpsgom = chooseTheme(window, arrow, choixpsgom);
-            if (window.isPressed({'b', false})) {
+            if (window.isPressed({'&', false})) {
                 choixobjet = 0;
             }
-        }else if(choixobjet == 1){ // Opening of the game
+        }else if(choixobjet == 1){ // Opening of the name window
+            window.clearScreen();
+            choixLightDark(window,choixpsgom, background, backgroundpsg);
+            askName(window, nameStr);
+
+            if (window.isPressed({'"', false})) {
+                choixobjet = 4;
+            }else if (window.isPressed({'&', false})) {
+                window.resetKey({'&', false});
+                choixobjet = 0;
+                nameStr = "";
+            }
+
+        }else if(choixobjet == 4){ // Opening of the game
             window.clearScreen();
 
             choixLightDark(window,choixpsgom, background, backgroundpsg);
@@ -193,6 +303,7 @@ int main()
             window << Text(Vec2D(100, 160), playerLifeString, KWhite, GlutFont::BITMAP_9_BY_15);
 
             if (torpedo(mug, IPPs, firstShootT, torPos)) window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
+            if (torpedo(mug, IPPs, firstShootT2, torPos2)) window << nsShape::Rectangle(torPos2, torPos2 + Vec2D(5, 10), KGreen);
 
 
             //Verify if enemies are still alive

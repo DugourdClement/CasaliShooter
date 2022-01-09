@@ -47,7 +47,7 @@ void selectTheme(MinGL &window, Sprite &image)
 unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 {
 
-    if (window.isPressed({'x', false})) {
+    if (window.isPressed({'"', false})) {
         Vec2D position = image.getPosition();
         int arrowX = position.getX();
         if (arrowX == 188) {
@@ -97,12 +97,12 @@ void menu(MinGL &window, Sprite &image)
 unsigned entrerMenu(MinGL &window, Sprite &image)
 {
 
-    if (window.isPressed({'x', false})) {
-        window.resetKey({'x', false});
+    if (window.isPressed({'"', false})) {
+        window.resetKey({'"', false});
         Vec2D position = image.getPosition();
         int mugY = position.getY();
         if (mugY == 585) {
-            exit(0); // quitter 
+            exit(0); // quitter
         }
         else if (mugY == 490) {
             return 3; //menu 3
@@ -193,7 +193,7 @@ void scoreboard(MinGL &window) {
                << Text(Vec2D(539, 293+(50*i)), sortedScore[i], KWhite, GlutFont::BITMAP_HELVETICA_18);
     }
 }
-//Applies the selected theme 
+//Applies the selected theme
 void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Sprite &themedark){
     if (choixpsgom == 0) {
         window << themelight;
