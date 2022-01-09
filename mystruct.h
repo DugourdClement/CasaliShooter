@@ -33,4 +33,9 @@ struct enemy {
     }
 };
 
+struct players {
+    string player;
+    unsigned point;
+};
+
 #endif // MYSTRUCT_H
