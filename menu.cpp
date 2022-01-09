@@ -132,34 +132,6 @@ unsigned entrerMenu(MinGL &window, Sprite &image)
     return 0;
 }
 
-void dataSort(vector<string> &names, vector<unsigned> &scores){
-
-    for(unsigned i=0;i<names.size();i++){
-
-        for(unsigned j=0;j<names.size();j++){
-
-            if(scores[i]>scores[j]){
-
-                unsigned tempscore=scores[i];
-
-                scores[i]=scores[j];
-
-                scores[j]=tempscore;
-
-                string tempname=names[i];
-
-                names[i]=names[j];
-
-                names[j]=tempname;
-
-            }
-
-        }
-
-    }
-
-}
-
 bool isBetter (const players & joueur1, const players & joueur2){ // Bool used to sort player
     return joueur1.point >= joueur2.point;
 }
