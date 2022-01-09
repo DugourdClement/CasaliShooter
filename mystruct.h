@@ -33,4 +33,10 @@ struct enemy {
     }
 };
 
+
+struct players { //Structure for the scoreboard
+    std::string player;
+    unsigned point;
+};
+
 #endif // MYSTRUCT_H
