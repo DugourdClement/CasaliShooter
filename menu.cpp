@@ -49,7 +49,7 @@ void selectTheme(MinGL &window, Sprite &image)
 unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 {
 
-    if (window.isPressed({13, false})) {
+    if (window.isPressed({'"', false})) {
         Vec2D position = image.getPosition();
         int arrowX = position.getX();
         if (arrowX == 188) {
@@ -65,59 +65,53 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 //Change the place of the cursor in the menu
 void menu(MinGL &window, Sprite &image)
 {
-    if (window.isPressed({'s', false})) {
-        window.resetKey({'s', false});
-        nsGraphics::Vec2D position = image.getPosition();
-        if (position.getY()==575) {
-            int cursorX = position.getX();
-            int cursorY = 305;
-            nsGraphics::Vec2D positionF (cursorX, cursorY);
+        if (window.isPressed({'a', false})) {
+            Vec2D position = image.getPosition();
+            int mugX = position.getX();
+            int mugY = 305;
+            Vec2D positionF (mugX, mugY);
             image.setPosition(positionF);
         }
-        else {
-            int cursorX = position.getX();
-            int cursor = position.getY()+90;
-            nsGraphics::Vec2D positionF (cursorX, cursorY);
+        else if (window.isPressed({'z', false})) {
+            Vec2D position = image.getPosition();
+            int mugX = position.getX();
+            int mugY = 395;
+            Vec2D positionF (mugX, mugY);
             image.setPosition(positionF);
         }
-
-    }
-    if (window.isPressed({'z', false})) {
-        window.resetKey({'z', false});
-        nsGraphics::Vec2D position = image.getPosition();
-        if (position.getY()==305) {
-            int cursorX = position.getX();
-            int cursorY = 575;
-            nsGraphics::Vec2D positionF (cursorX, cursorY);
+        else if (window.isPressed({'e', false})) {
+            Vec2D position = image.getPosition();
+            int mugX = position.getX();
+            int mugY = 490;
+            Vec2D positionF (mugX, mugY);
             image.setPosition(positionF);
         }
-        else {
-            int cursorX = position.getX();
-            int cursorY = position.getY()-90;
-            nsGraphics::Vec2D positionF (cursorX, cursorY);
+        else if (window.isPressed({'r', false})) {
+            Vec2D position = image.getPosition();
+            int mugX = position.getX();
+            int mugY = 585;
+            Vec2D positionF (mugX, mugY);
             image.setPosition(positionF);
         }
-
-    }
 }
 
 // Choice of menu
 unsigned entrerMenu(MinGL &window, Sprite &image)
 {
 
-    if (window.isPressed({13, false})) {
-        window.resetKey({13, false});
+    if (window.isPressed({'"', false})) {
+        window.resetKey({'"', false});
         Vec2D position = image.getPosition();
-        int cursorY = position.getY();
-        if (cursorY == 585) {
+        int mugY = position.getY();
+        if (mugY == 585) {
             exit(0); // quitter
         }
-        else if (cursorY == 490) {
+        else if (mugY == 490) {
             return 3; //menu 3
         }
-        else if (cursorY == 395) {
+        else if (mugY == 395) {
             return 2; // menu 2
-        }else if(cursorY == 305){
+        }else if(mugY == 305){
             return 1; // menu 1
         }
 

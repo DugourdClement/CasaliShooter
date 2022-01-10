@@ -43,6 +43,46 @@ Sprite sun("spritesi2/sun.si2", Vec2D(400, 338));
 Sprite arrow("spritesi2/arrow.si2", Vec2D(188, 460));
 Sprite backb("spritesi2/back-button.si2", Vec2D(66, 666));
 
+vector<char> vecParamC (const string & fileName) {
+    const vector<string> vecValuesChar = {"KMovingLeft", "KMovingRight", "KShoot"};
+    const vector<string> vecValuesUns = {"KWidthMissile", "KLenghtMissile", "KWidthTorpedoPPs", "KLenghtTorpedoPPs", "KWidthTorpedoUFO", "KLenghtTorpedoUFO"};
+    ifstream ifs(fileName);
+    char valChar;
+    unsigned valUnsigned;
+    vector<char> vecValues;
+    for (string key; ifs >> key;) {
+        ifs >> valChar;
+        if (vecValuesChar.end() != find(vecValuesChar.begin(), vecValuesChar.end(), key)) {
+            ifs >> valChar;
+            vecValues.push_back(valChar);
+        }
+        else if (vecValuesUns.end() != find(vecValuesUns.begin(), vecValuesUns.end(), key)) {
+            ifs >> valUnsigned;
+        }
+    }
+    return vecValues;
+}
+
+vector<unsigned> vecParamU (const string & fileName) {
+    const vector<string> vecValuesChar = {"KMovingLeft", "KMovingRight", "KShoot"};
+    const vector<string> vecValuesUns = {"KWidthMissile", "KLenghtMissile", "KWidthTorpedoPPs", "KLenghtTorpedoPPs", "KWidthTorpedoUFO", "KLenghtTorpedoUFO"};
+    ifstream ifs(fileName);
+    char valChar;
+    unsigned valUnsigned;
+    vector<unsigned> vecValues;
+    for (string key; ifs >> key;) {
+        ifs >> valChar;
+        if (vecValuesChar.end() != find(vecValuesChar.begin(), vecValuesChar.end(), key)) {
+            ifs >> valChar;
+        }
+        else if (vecValuesUns.end() != find(vecValuesUns.begin(), vecValuesUns.end(), key)) {
+            ifs >> valUnsigned;
+            vecValues.push_back(valUnsigned);
+        }
+    }
+    return vecValues;
+}
+
 void keyboardWrite(MinGL &window, string &nameStr){
 
     if(window.isPressed({' ', false}) && nameStr.size() > 0) {
@@ -166,7 +206,7 @@ void menu (MinGL &window,microseconds frameTime, unsigned &choixobjet, unsigned 
         window << scoreboardbg;
         window << titrescoreboard;
         window << backb;
-        if (window.isPressed({27, false})) {
+        if (window.isPressed({'&', false})) {
             choixobjet = 0;
         }
         showScore(window);
@@ -180,7 +220,7 @@ void menu (MinGL &window,microseconds frameTime, unsigned &choixobjet, unsigned 
         window << backb;
         selectTheme(window, arrow);
         choixpsgom = chooseTheme(window, arrow, choixpsgom);
-        if (window.isPressed({27, false})) {
+        if (window.isPressed({'&', false})) {
             choixobjet = 0;
         }
     }else if(choixobjet == 1){ // Opening of the name window
@@ -188,10 +228,10 @@ void menu (MinGL &window,microseconds frameTime, unsigned &choixobjet, unsigned 
         choixLightDark(window,choixpsgom, background, backgroundpsg);
         askName(window, nameStr);
 
-        if (window.isPressed({13, false})) {
+        if (window.isPressed({'"', false})) {
             choixobjet = 4;
-        }else if (window.isPressed({27, false})) {
-            window.resetKey({27, false});
+        }else if (window.isPressed({'&', false})) {
+            window.resetKey({'&', false});
             choixobjet = 0;
             nameStr = "";
         }
