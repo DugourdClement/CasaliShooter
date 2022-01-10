@@ -11,12 +11,14 @@
 #include "MinGL2/include/mingl/gui/glut_font.h"
 #include "MinGL2/include/mingl/transition/transition_engine.h"
 
-#include "mystruct.h"
+#include "mugstruct.h"
+#include "playersStruct.h"
+#include "enemyStruct.h"
 
 void moveSprite(nsGui::Sprite &, const int &, const int &);
-void moveOpen(enemy &, std::string &, std::string &);
-void moveVecSprite(enemy &, std::string &, std::string &);
-void moveOVNI(enemy &, std::string &, std::string &);
+void moveOpen(enemyStruct &, std::string &, std::string &);
+void moveVecSprite(enemyStruct &, std::string &, std::string &);
+void moveOVNI(enemyStruct &, std::string &, std::string &);
 void keyboard(MinGL &, nsGui::Sprite &);
 
 #endif // MOVE_H

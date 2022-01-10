@@ -22,7 +22,7 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
-void generateVecSprite(enemy &IPPs, const int posY, const string pathSprite){
+void generateVecSprite(enemyStruct &IPPs, const int posY, const string pathSprite){
     // liste de sprite
     for (size_t i = 0; i < 5; ++i) {
         Vec2D ipp;
@@ -34,7 +34,7 @@ void generateVecSprite(enemy &IPPs, const int posY, const string pathSprite){
     }
 }
 
-void generateOPEN(enemy & open, const int posY) {
+void generateOPEN(enemyStruct & open, const int posY) {
     //Generate letters one by one
     Vec2D firstO;
     firstO.setX(280);
@@ -65,7 +65,7 @@ void generateOPEN(enemy & open, const int posY) {
     }
 }
 
-void generateCLASSROOM(enemy & classroom, const int posY) {
+void generateCLASSROOM(enemyStruct & classroom, const int posY) {
     //Generate all the letters one by one
 
     //Genretate C
@@ -136,7 +136,7 @@ void generateCLASSROOM(enemy & classroom, const int posY) {
 
 }
 
-void generateOVNI(enemy & ovni, const string pathSprite) {
+void generateOVNI(enemyStruct & ovni, const string pathSprite) {
     Vec2D vecOvni;
     vecOvni.setX(rand() % 559 + 50);
     vecOvni.setY(150);

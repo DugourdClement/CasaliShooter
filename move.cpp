@@ -15,7 +15,9 @@
 #include "MinGL2/include/mingl/transition/transition_engine.h"
 
 #include "move.h"
-#include "mystruct.h"
+#include "mugstruct.h"
+#include "playersStruct.h"
+#include "enemyStruct.h"
 #include "menu.h"
 
 using namespace std;
@@ -59,7 +61,7 @@ void moveSprite(Sprite &position, const int &x, const int &y) {
 }
 
 // Move the sprites of "open"
-void moveOpen(enemy & open, string &playerLifeString, string &nameStr){
+void moveOpen(enemyStruct & open, string &playerLifeString, string &nameStr){
     //if the sprite vector does not exit the window, runs through all the letters and moves them by 5 px
     if (open.vecSprite[0].getPosition().getX() < (600 - 470) || open.vecSprite[open.vecSprite.size() - 1].getPosition().getX() > 50) {
         for(Sprite & letter : open.vecSprite) {
@@ -87,7 +89,7 @@ void moveOpen(enemy & open, string &playerLifeString, string &nameStr){
      }
 }
 
-void moveVecSprite(enemy &vecSprite, string &playerLifeString, string &nameStr){
+void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nameStr){
     // If the sprites at the end do not touch the edges, move all the sprites at the same time
     if (vecSprite.vecSprite[0].getPosition().getX() < (600-64+50) ||
         vecSprite.vecSprite[vecSprite.vecSprite.size() - 1].getPosition().getX() > 0+50){
@@ -114,7 +116,7 @@ void moveVecSprite(enemy &vecSprite, string &playerLifeString, string &nameStr){
     }
 }
 
-void moveOVNI(enemy & ovni, string &playerLifeString, string &nameStr) {
+void moveOVNI(enemyStruct & ovni, string &playerLifeString, string &nameStr) {
     // If the sprites at the end do not touch the edges, move all the sprites at the same time
     if (ovni.vecSprite[0].getPosition().getX() < (600-64+50) ||
         ovni.vecSprite[ovni.vecSprite.size() - 1].getPosition().getX() > 0+50){

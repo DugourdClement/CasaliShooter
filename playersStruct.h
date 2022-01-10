@@ -1,5 +1,5 @@
-#ifndef GENERATE_H
-#define GENERATE_H
+#ifndef PLAYERSSTRUCT_H
+#define PLAYERSSTRUCT_H
 
 #include <iostream>
 #include <fstream>
@@ -15,14 +15,9 @@
 #include "MinGL2/include/mingl/gui/glut_font.h"
 #include "MinGL2/include/mingl/transition/transition_engine.h"
 
-#include "mugstruct.h"
-#include "playersStruct.h"
-#include "enemyStruct.h"
 
-void generateVecSprite(enemyStruct &, const int, const std::string);
-void generateOPEN(enemyStruct &, const int);
-void generateCLASSROOM(enemyStruct &, const int);
-void generateOVNI(enemyStruct &, const std::string);
-void generateVecMug(mugStruct &);
-
-#endif // GENERATE_H
+struct playersStruct { //Structure for the scoreboard
+    std::string player;
+    unsigned point;
+};
+#endif // PLAYERSSTRUCT_H

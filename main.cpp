@@ -16,10 +16,12 @@
 
 #include "bgtext.h"
 #include "menu.h"
-#include "mystruct.h"
 #include "move.h"
 #include "check.h"
 #include "generate.h"
+#include "mugstruct.h"
+#include "playersStruct.h"
+#include "enemyStruct.h"
 
 using namespace std;
 using namespace nsGraphics;
@@ -55,31 +57,31 @@ int main()
 
     srand(time(NULL));
 
-    enemy open;
+    enemyStruct open;
     open.rightOrLeft = 1;
     generateOPEN(open, 50);
 
-    enemy classroom;
+    enemyStruct classroom;
     classroom.rightOrLeft = 1;
     generateCLASSROOM(classroom, 125);
 
-    vector<enemy> vecOvni;
+    vector<enemyStruct> vecOvni;
     for (size_t i = 0; i < 5; ++i) {
-        enemy ovni;
+        enemyStruct ovni;
         ovni.rightOrLeft = 1;
         generateOVNI(ovni, "spritesi2/OVNI.si2");
         vecOvni.push_back(ovni);
     }
 
-    enemy IPPs;
+    enemyStruct IPPs;
     IPPs.rightOrLeft = 1;
     generateVecSprite(IPPs, 50, "spritesi2/i++.si2");
 
-    enemy JPPs;
+    enemyStruct JPPs;
     JPPs.rightOrLeft = 1;
     generateVecSprite(JPPs, 100, "spritesi2/j++.si2");
 
-    enemy KPPs;
+    enemyStruct KPPs;
     KPPs.rightOrLeft = 1;
     generateVecSprite(KPPs, 150, "spritesi2/k++.si2");
 

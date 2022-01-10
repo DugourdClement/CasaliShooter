@@ -133,15 +133,15 @@ void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Spr
     }
 }
 
-bool isBetter (const players & joueur1, const players & joueur2){ // Bool used to sort player
+bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){ // Bool used to sort player
     return joueur1.point >= joueur2.point;
 }
 
 void showScore(MinGL & window) //Function which shows the scoreboard
 {
     ifstream data_file("score.txt");
-    vector<players> playerScore;
-    players playerStruc;
+    vector<playersStruct> playerScore;
+    playersStruct playerStruc;
     while (data_file >> playerStruc.player >> playerStruc.point) { //Place every elements of the file in the structure
         playerScore.emplace_back(playerStruc);
     }

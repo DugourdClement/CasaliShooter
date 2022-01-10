@@ -15,13 +15,15 @@
 #include "MinGL2/include/mingl/gui/glut_font.h"
 #include "MinGL2/include/mingl/transition/transition_engine.h"
 
-#include "mystruct.h"
+#include "mugstruct.h"
+#include "playersStruct.h"
+#include "enemyStruct.h"
 
-bool allDead(const enemy &);
+bool allDead(const enemyStruct &);
 bool isTouching (const nsGraphics::Vec2D, const nsGraphics::Vec2D, const nsGraphics::Vec2D);
-bool colision(const nsGraphics::Vec2D, enemy &);
-bool missile(MinGL &, nsGui::Sprite &, enemy &, enemy &, enemy &, unsigned &, bool &, bool &, nsGraphics::Vec2D &);
-bool torpedo(mugStruct &, enemy &, bool &, nsGraphics::Vec2D &);
-bool ovniShoot(mugStruct &, enemy &, bool &, nsGraphics::Vec2D &);
+bool colision(const nsGraphics::Vec2D, enemyStruct &);
+bool missile(MinGL &, nsGui::Sprite &, enemyStruct &, enemyStruct &, enemyStruct &, unsigned &, bool &, bool &, nsGraphics::Vec2D &);
+bool torpedo(mugStruct &, enemyStruct &, bool &, nsGraphics::Vec2D &);
+bool ovniShoot(mugStruct &, enemyStruct &, bool &, nsGraphics::Vec2D &);
 
 #endif // CHECK_H

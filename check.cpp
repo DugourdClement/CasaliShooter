@@ -14,7 +14,9 @@
 #include "MinGL2/include/mingl/gui/glut_font.h"
 #include "MinGL2/include/mingl/transition/transition_engine.h"
 
-#include "mystruct.h"
+#include "mugstruct.h"
+#include "playersStruct.h"
+#include "enemyStruct.h"
 #include "check.h"
 
 using namespace std;
@@ -24,7 +26,7 @@ using namespace chrono;
 using namespace nsAudio;
 
 //Verify if an ennmy is still alive
-bool allDead(const enemy & PPs) {
+bool allDead(const enemyStruct & PPs) {
     for (size_t i = 0; i < PPs.state.size(); ++i) {
         //If the ennemy is alive
         if (PPs.state[i] == true) {
@@ -41,7 +43,7 @@ bool isTouching (const Vec2D firstCorner, const Vec2D secondCorner, const Vec2D 
 }
 
 ////Verifies collisions between 2 sprites
-bool colision(const Vec2D misPos, enemy &vecSprite){
+bool colision(const Vec2D misPos, enemyStruct &vecSprite){
     for (size_t i = 0; i < vecSprite.vecSprite.size(); ++i) {
         Vec2D a = vecSprite.vecSprite[i].getPosition();
         int bX = vecSprite.vecSprite[i].getPosition().getX()+55;
@@ -56,7 +58,7 @@ bool colision(const Vec2D misPos, enemy &vecSprite){
 }
 
 //allows the mug to fire missiles and check for colision with enemy or window
-bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, unsigned &playerLifeUnsigned, bool &firstShootM, bool &isPressed, Vec2D &misPos){
+bool missile(MinGL &window, Sprite &mug, enemyStruct &IPPs, enemyStruct &KPPs, enemyStruct &JPPs, unsigned &playerLifeUnsigned, bool &firstShootM, bool &isPressed, Vec2D &misPos){
     if (window.isPressed({'x', false})){
         isPressed = true;
     }
@@ -86,7 +88,7 @@ bool missile(MinGL &window, Sprite &mug, enemy &IPPs, enemy &KPPs, enemy &JPPs, 
 }
 
 //allows the enemy to fire missiles and check for colision with the mug or window
-bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT, Vec2D &torPos){
+bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos){
 
     srand (time(NULL));
     int n = rand() % IPPs.vecSprite.size();
@@ -128,7 +130,7 @@ bool torpedo(mugStruct &mug, enemy &IPPs, bool &firstShootT, Vec2D &torPos){
 }
 
 //allows the ovni to fire missiles and check for colision with the mug or window
-bool ovniShoot(mugStruct & mug, enemy & ovni, bool & ovniShootT, Vec2D & posTorOvni) {
+bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & posTorOvni) {
     if ((ovniShootT == true) && (ovni.state[0] == true)) {
         Vec2D position = ovni.vecSprite[0].getPosition();
         int ovniX = position.getX();

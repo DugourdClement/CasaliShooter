@@ -1,5 +1,5 @@
-#ifndef GENERATE_H
-#define GENERATE_H
+#ifndef MUGSTRUCT_H
+#define MUGSTRUCT_H
 
 #include <iostream>
 #include <fstream>
@@ -15,14 +15,10 @@
 #include "MinGL2/include/mingl/gui/glut_font.h"
 #include "MinGL2/include/mingl/transition/transition_engine.h"
 
-#include "mugstruct.h"
-#include "playersStruct.h"
-#include "enemyStruct.h"
+struct mugStruct {
+    std::vector<nsGui::Sprite> vecMug;
+    unsigned index;
+};
 
-void generateVecSprite(enemyStruct &, const int, const std::string);
-void generateOPEN(enemyStruct &, const int);
-void generateCLASSROOM(enemyStruct &, const int);
-void generateOVNI(enemyStruct &, const std::string);
-void generateVecMug(mugStruct &);
 
-#endif // GENERATE_H
+#endif // MUGSTRUCT_H
