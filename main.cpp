@@ -27,91 +27,15 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
-
-
 void keyboardWrite(MinGL &window, string &nameStr){
-
-    if(window.isPressed({' ', false}) && nameStr.size() > 0) {
-            //window.resetKey({' ', false});
+    for(unsigned i = 97; i < 123; ++i){
+        if (window.isPressed({i, false})) {
+            window.resetKey({i, false});
+            nameStr += i-32;
+        }
+    }
+    if(window.isPressed({8, false}) && nameStr.size() > 0) {
             nameStr.pop_back();
-    }else if (window.isPressed({'a', false})) {
-        window.resetKey({'a', false});
-        nameStr += "A";
-    }else if(window.isPressed({'z', false})) {
-        window.resetKey({'z', false});
-        nameStr += "Z";
-    }else if(window.isPressed({'e', false})) {
-        window.resetKey({'e', false});
-        nameStr += "E";
-    }else if(window.isPressed({'r', false})) {
-        window.resetKey({'r', false});
-        nameStr += "R";
-    }else if(window.isPressed({'t', false})) {
-        window.resetKey({'t', false});
-        nameStr += "T";
-    }else if(window.isPressed({'y', false})) {
-        window.resetKey({'y', false});
-        nameStr += "Y";
-    }else if(window.isPressed({'u', false})) {
-        window.resetKey({'u', false});
-        nameStr += "U";
-    }else if(window.isPressed({'i', false})) {
-        window.resetKey({'i', false});
-        nameStr += "I";
-    }else if(window.isPressed({'o', false})) {
-        window.resetKey({'o', false});
-        nameStr += "O";
-    }else if(window.isPressed({'p', false})) {
-        window.resetKey({'p', false});
-        nameStr += "P";
-    }else if(window.isPressed({'q', false})) {
-        window.resetKey({'q', false});
-        nameStr += "Q";
-    }else if(window.isPressed({'s', false})) {
-        window.resetKey({'s', false});
-        nameStr += "S";
-    }else if(window.isPressed({'d', false})) {
-        window.resetKey({'d', false});
-        nameStr += "D";
-    }else if(window.isPressed({'f', false})) {
-        window.resetKey({'f', false});
-        nameStr += "F";
-    }else if(window.isPressed({'g', false})) {
-        window.resetKey({'g', false});
-        nameStr += "G";
-    }else if(window.isPressed({'h', false})) {
-        window.resetKey({'h', false});
-        nameStr += "H";
-    }else if(window.isPressed({'j', false})) {
-        window.resetKey({'j', false});
-        nameStr += "J";
-    }else if(window.isPressed({'k', false})) {
-        window.resetKey({'k', false});
-        nameStr += "K";
-    }else if(window.isPressed({'l', false})) {
-        window.resetKey({'l', false});
-        nameStr += "L";
-    }else if(window.isPressed({'m', false})) {
-        window.resetKey({'m', false});
-        nameStr += "M";
-    }else if(window.isPressed({'w', false})) {
-        window.resetKey({'w', false});
-        nameStr += "W";
-    }else if(window.isPressed({'c', false})) {
-        window.resetKey({'c', false});
-        nameStr += "C";
-    }else if(window.isPressed({'v', false})) {
-        window.resetKey({'v', false});
-        nameStr += "V";
-    }else if(window.isPressed({'b', false})) {
-        window.resetKey({'b', false});
-        nameStr += "B";
-    }else if(window.isPressed({'n', false})) {
-        window.resetKey({'n', false});
-        nameStr += "N";
-    }else if(window.isPressed({'x', false})) {
-        window.resetKey({'x', false});
-        nameStr += "X";
     }
 }
 
