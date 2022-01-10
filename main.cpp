@@ -27,61 +27,7 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
-// Initializes all images
-Sprite background("spritesi2/fondarcade.si2", Vec2D(0, 0));
-Sprite backgroundpsg("spritesi2/fond_psg.si2", Vec2D(0, 0));
-Sprite scoreboardbg("spritesi2/scoreboard.si2", Vec2D(145, 272));
-Sprite titrescoreboard("spritesi2/titrescore.si2", Vec2D(0, 0));
-Sprite titreaccueil("spritesi2/casaliheader.si2", Vec2D(155, 138));
-Sprite startb("spritesi2/start-button.si2", Vec2D(222, 283));
-Sprite scoreb("spritesi2/scoreboard-button.si2", Vec2D(222, 378));
-Sprite settingsb("spritesi2/options-button.si2", Vec2D(222, 473));
-Sprite quitb("spritesi2/quit-button.si2", Vec2D(222, 568));
-Sprite casali("spritesi2/casali.si2", Vec2D(160, 305));
-Sprite moon("spritesi2/moon.si2", Vec2D(160, 350));
-Sprite sun("spritesi2/sun.si2", Vec2D(400, 338));
-Sprite arrow("spritesi2/arrow.si2", Vec2D(188, 460));
-Sprite backb("spritesi2/back-button.si2", Vec2D(66, 666));
 
-vector<char> vecParamC (const string & fileName) {
-    const vector<string> vecValuesChar = {"KMovingLeft", "KMovingRight", "KShoot"};
-    const vector<string> vecValuesUns = {"KWidthMissile", "KLenghtMissile", "KWidthTorpedoPPs", "KLenghtTorpedoPPs", "KWidthTorpedoUFO", "KLenghtTorpedoUFO"};
-    ifstream ifs(fileName);
-    char valChar;
-    unsigned valUnsigned;
-    vector<char> vecValues;
-    for (string key; ifs >> key;) {
-        ifs >> valChar;
-        if (vecValuesChar.end() != find(vecValuesChar.begin(), vecValuesChar.end(), key)) {
-            ifs >> valChar;
-            vecValues.push_back(valChar);
-        }
-        else if (vecValuesUns.end() != find(vecValuesUns.begin(), vecValuesUns.end(), key)) {
-            ifs >> valUnsigned;
-        }
-    }
-    return vecValues;
-}
-
-vector<unsigned> vecParamU (const string & fileName) {
-    const vector<string> vecValuesChar = {"KMovingLeft", "KMovingRight", "KShoot"};
-    const vector<string> vecValuesUns = {"KWidthMissile", "KLenghtMissile", "KWidthTorpedoPPs", "KLenghtTorpedoPPs", "KWidthTorpedoUFO", "KLenghtTorpedoUFO"};
-    ifstream ifs(fileName);
-    char valChar;
-    unsigned valUnsigned;
-    vector<unsigned> vecValues;
-    for (string key; ifs >> key;) {
-        ifs >> valChar;
-        if (vecValuesChar.end() != find(vecValuesChar.begin(), vecValuesChar.end(), key)) {
-            ifs >> valChar;
-        }
-        else if (vecValuesUns.end() != find(vecValuesUns.begin(), vecValuesUns.end(), key)) {
-            ifs >> valUnsigned;
-            vecValues.push_back(valUnsigned);
-        }
-    }
-    return vecValues;
-}
 
 void keyboardWrite(MinGL &window, string &nameStr){
 
@@ -176,98 +122,12 @@ void askName(MinGL &window, string &nameStr){
     window << Text(Vec2D(275, 400), nameStr , KBlue, GlutFont::BITMAP_HELVETICA_18);
 }
 
-void menu (MinGL &window,microseconds frameTime, unsigned &choixobjet, unsigned &choixpsgom, string &nameStr) {
+int main()
+{
 
-    BgText choosethemode(Vec2D(150, 240), "Choose between light and dark theme with a or z", KWhite, KBlack);
-    nsTransition::TransitionEngine transitionEngine;
-
-
-    // Start the transitions on our custom object
-    transitionEngine.startContract(nsTransition::TransitionContract(choosethemode, choosethemode.TRANSITION_TEXT_COLOR, chrono::seconds(1), {0, 0, 0},
-                                                                    chrono::seconds::zero(), nsTransition::Transition::MODE_LOOP_SMOOTH));
-    transitionEngine.startContract(nsTransition::TransitionContract(choosethemode, choosethemode.TRANSITION_BACKGROUND_COLOR, chrono::seconds(1), {255, 255, 0},
-                                                                    chrono::seconds::zero(), nsTransition::Transition::MODE_LOOP_SMOOTH));
-    transitionEngine.update(frameTime);///////////////////
-
-    if (choixobjet == 0) { //Casali shooter home screen opening
-        window.clearScreen();
-        choixLightDark(window,choixpsgom, background, backgroundpsg);
-        window <<  titreaccueil;
-        window << startb;
-        window << scoreb;
-        window << settingsb;
-        window << quitb;
-        window << casali;
-        menu(window, casali);
-        choixobjet = entrerMenu(window, casali);
-    }else if (choixobjet == 2){ //Opening of the scoreboard menu
-        window.clearScreen();
-        choixLightDark(window,choixpsgom, background, backgroundpsg);
-        window << scoreboardbg;
-        window << titrescoreboard;
-        window << backb;
-        if (window.isPressed({'&', false})) {
-            choixobjet = 0;
-        }
-        showScore(window);
-    }else if (choixobjet == 3){ //Opening of the option menu
-        window.clearScreen();
-        choixLightDark(window,choixpsgom, background, backgroundpsg);
-        window << choosethemode;
-        window << moon;
-        window << sun;
-        window << arrow;
-        window << backb;
-        selectTheme(window, arrow);
-        choixpsgom = chooseTheme(window, arrow, choixpsgom);
-        if (window.isPressed({'&', false})) {
-            choixobjet = 0;
-        }
-    }else if(choixobjet == 1){ // Opening of the name window
-        window.clearScreen();
-        choixLightDark(window,choixpsgom, background, backgroundpsg);
-        askName(window, nameStr);
-
-        if (window.isPressed({'"', false})) {
-            choixobjet = 4;
-        }else if (window.isPressed({'&', false})) {
-            window.resetKey({'&', false});
-            choixobjet = 0;
-            nameStr = "";
-        }
-
-    }
-}
-
-void ouvertureJeu (MinGL &window, enemy &IPPs, enemy &KPPs, enemy &JPPs, unsigned choixpsgom, mugStruct &mug, string &nameStr, string &playerLifeString){
-    window.clearScreen();
-
-    choixLightDark(window,choixpsgom, background, backgroundpsg);
-    window << mug.vecMug[mug.index];
-
-    IPPs.update(window);
-    JPPs.update(window);
-    KPPs.update(window);
-
-    keyboard(window, mug.vecMug[mug.index]);
-
-    moveVecSprite(IPPs, playerLifeString, nameStr);
-    moveVecSprite(KPPs, playerLifeString, nameStr);
-    moveVecSprite(JPPs, playerLifeString, nameStr);
-}
-
-void affichagePoints(MinGL &window, string &playerLifeString){
-
-    //Points generator
-    window << Text(Vec2D(60, 160), "Pts:", KWhite, GlutFont::BITMAP_9_BY_15);
-    window << Text(Vec2D(100, 160), playerLifeString, KWhite, GlutFont::BITMAP_9_BY_15);
-}
-
-int main(){
     Vec2D misPos;
     Vec2D torPos;
-    Vec2D torPos2;////////////
-
+    Vec2D torPos2;
 
     srand(time(NULL));
 
@@ -309,11 +169,34 @@ int main(){
     MinGL window("CasaliShooter", Vec2D(700, 1000), Vec2D(50, 0), KBlack);
     window.initGlut();
     window.initGraphic();
+    // Initializes all images
+    Sprite background("spritesi2/fondarcade.si2", Vec2D(0, 0));
+    Sprite backgroundpsg("spritesi2/fond_psg.si2", Vec2D(0, 0));
+    Sprite scoreboardbg("spritesi2/scoreboard.si2", Vec2D(145, 272));
+    Sprite titrescoreboard("spritesi2/titrescore.si2", Vec2D(0, 0));
+    Sprite titreaccueil("spritesi2/casaliheader.si2", Vec2D(155, 138));
+    Sprite startb("spritesi2/start-button.si2", Vec2D(222, 283));
+    Sprite scoreb("spritesi2/scoreboard-button.si2", Vec2D(222, 378));
+    Sprite settingsb("spritesi2/options-button.si2", Vec2D(222, 473));
+    Sprite quitb("spritesi2/quit-button.si2", Vec2D(222, 568));
+    Sprite casali("spritesi2/casali.si2", Vec2D(160, 305));
+    Sprite moon("spritesi2/moon.si2", Vec2D(160, 350));
+    Sprite sun("spritesi2/sun.si2", Vec2D(400, 338));
+    Sprite arrow("spritesi2/arrow.si2", Vec2D(188, 460));
+    Sprite backb("spritesi2/back-button.si2", Vec2D(66, 666));
 
+    BgText choosethemode(Vec2D(150, 240), "Choose between light and dark theme with a or z", KWhite, KBlack);
+    nsTransition::TransitionEngine transitionEngine;
+
+
+    // Start the transitions on our custom object
+    transitionEngine.startContract(nsTransition::TransitionContract(choosethemode, choosethemode.TRANSITION_TEXT_COLOR, chrono::seconds(1), {0, 0, 0},
+                                                                    chrono::seconds::zero(), nsTransition::Transition::MODE_LOOP_SMOOTH));
+    transitionEngine.startContract(nsTransition::TransitionContract(choosethemode, choosethemode.TRANSITION_BACKGROUND_COLOR, chrono::seconds(1), {255, 255, 0},
+                                                                    chrono::seconds::zero(), nsTransition::Transition::MODE_LOOP_SMOOTH));
 
     // Variable that keeps the frame time
     chrono::microseconds frameTime = chrono::microseconds::zero();
-    bool startBool = true;
     unsigned choixobjet=0;
     unsigned choixpsgom=0;
 
@@ -323,6 +206,7 @@ int main(){
     bool firstShootM = true;
     bool isPressed = false;
     bool firstShootT = true;
+    bool firstShootT2 = true;
     //Vector to determine if a UFO is firing
     bool ovniTorOne = true;
     bool ovniTorTwo = true;
@@ -346,29 +230,84 @@ int main(){
     while (window.isOpen())
     {
         //Get current time
-        time_point<chrono::steady_clock> start = chrono::steady_clock::now();
+        chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
 
-        if(startBool == true) menu(window, frameTime, choixobjet, choixpsgom, nameStr);
-        else if(window.isPressed({'&',false})){
-            startBool = true;
-            choixobjet = 0;
-            menu(window, frameTime, choixobjet, choixpsgom, nameStr);
-        }
+        transitionEngine.update(frameTime);
 
+        if (choixobjet == 0) { //Casali shooter home screen opening
+            window.clearScreen();
+            choixLightDark(window,choixpsgom, background, backgroundpsg);
+            window <<  titreaccueil;
+            window << startb;
+            window << scoreb;
+            window << settingsb;
+            window << quitb;
+            window << casali;
+            menu(window, casali);
+            choixobjet = entrerMenu(window, casali);
+        }else if (choixobjet == 2){ //Opening of the scoreboard menu
+            window.clearScreen();
+            choixLightDark(window,choixpsgom, background, backgroundpsg);
+            window << scoreboardbg;
+            window << titrescoreboard;
+            window << backb;
+            if (window.isPressed({27, false})) {
+                choixobjet = 0;
+            }
+            showScore(window);
+        }else if (choixobjet == 3){ //Opening of the option menu
+            window.clearScreen();
+            choixLightDark(window,choixpsgom, background, backgroundpsg);
+            window << choosethemode;
+            window << moon;
+            window << sun;
+            window << arrow;
+            window << backb;
+            selectTheme(window, arrow);
+            choixpsgom = chooseTheme(window, arrow, choixpsgom);
+            if (window.isPressed({27, false})) {
+                choixobjet = 0;
+            }
+        }else if(choixobjet == 1){ // Opening of the name window
+            window.clearScreen();
+            choixLightDark(window,choixpsgom, background, backgroundpsg);
+            askName(window, nameStr);
 
-        if(choixobjet == 4){ // Opening of the game
+            if (window.isPressed({13, false})) {
+                choixobjet = 4;
+            }else if (window.isPressed({27, false})) {
+                window.resetKey({27, false});
+                choixobjet = 0;
+                nameStr = "";
+            }
 
+        }else if(choixobjet == 4){ // Opening of the game
+            window.clearScreen();
+
+            choixLightDark(window,choixpsgom, background, backgroundpsg);
+            window << mug.vecMug[mug.index];
+
+            IPPs.update(window);
+            JPPs.update(window);
+            KPPs.update(window);
 
             string playerLifeString = to_string(playerLifeUnsigned);
 
-            ouvertureJeu(window, IPPs, JPPs, KPPs, choixpsgom, mug, nameStr, playerLifeString);
+            keyboard(window, mug.vecMug[mug.index]);
+
+            moveVecSprite(IPPs, playerLifeString, nameStr);
+            moveVecSprite(KPPs, playerLifeString, nameStr);
+            moveVecSprite(JPPs, playerLifeString, nameStr);
 
             isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos);
             if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
 
-            affichagePoints(window, playerLifeString);
+            //Points generator
+            window << Text(Vec2D(60, 160), "Pts:", KWhite, GlutFont::BITMAP_9_BY_15);
+            window << Text(Vec2D(100, 160), playerLifeString, KWhite, GlutFont::BITMAP_9_BY_15);
 
             if (torpedo(mug, IPPs, firstShootT, torPos)) window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
+            if (torpedo(mug, IPPs, firstShootT2, torPos2)) window << nsShape::Rectangle(torPos2, torPos2 + Vec2D(5, 10), KGreen);
 
 
             //Verify if enemies are still alive
@@ -434,9 +373,8 @@ int main(){
                 openclassroomMusic.setMusicPlaying(false);
                 break;
             }
-
-
         }
+
         // We finish the current frame
         window.finishFrame();
 
@@ -453,4 +391,3 @@ int main(){
 
     return 0;
 }
-

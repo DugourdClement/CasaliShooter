@@ -49,7 +49,7 @@ void selectTheme(MinGL &window, Sprite &image)
 unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 {
 
-    if (window.isPressed({'"', false})) {
+    if (window.isPressed({13, false})) {
         Vec2D position = image.getPosition();
         int arrowX = position.getX();
         if (arrowX == 188) {
@@ -63,58 +63,62 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 }
 
 //Change the place of the cursor in the menu
-void menu(MinGL &window, Sprite &image)
-{
-        if (window.isPressed({'a', false})) {
-            Vec2D position = image.getPosition();
+
+void menu(MinGL &window, nsGui::Sprite &image) {
+    if (window.isPressed({'s', false})) {
+        window.resetKey({'s', false});
+        Vec2D position = image.getPosition();
+        if (position.getY()==575) {
             int mugX = position.getX();
             int mugY = 305;
             Vec2D positionF (mugX, mugY);
             image.setPosition(positionF);
         }
-        else if (window.isPressed({'z', false})) {
-            Vec2D position = image.getPosition();
+        else {
             int mugX = position.getX();
-            int mugY = 395;
+            int mugY = position.getY()+90;
             Vec2D positionF (mugX, mugY);
             image.setPosition(positionF);
         }
-        else if (window.isPressed({'e', false})) {
-            Vec2D position = image.getPosition();
+
+    }
+    if (window.isPressed({'z', false})) {
+        window.resetKey({'z', false});
+        Vec2D position = image.getPosition();
+        if (position.getY()==305) {
             int mugX = position.getX();
-            int mugY = 490;
+            int mugY = 575;
             Vec2D positionF (mugX, mugY);
             image.setPosition(positionF);
         }
-        else if (window.isPressed({'r', false})) {
-            Vec2D position = image.getPosition();
+        else {
             int mugX = position.getX();
-            int mugY = 585;
+            int mugY = position.getY()-90;
             Vec2D positionF (mugX, mugY);
             image.setPosition(positionF);
         }
+
+    }
 }
 
 // Choice of menu
-unsigned entrerMenu(MinGL &window, Sprite &image)
+unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
 {
-
-    if (window.isPressed({'"', false})) {
-        window.resetKey({'"', false});
-        Vec2D position = image.getPosition();
-        int mugY = position.getY();
-        if (mugY == 585) {
-            exit(0); // quitter
-        }
-        else if (mugY == 490) {
-            return 3; //menu 3
-        }
-        else if (mugY == 395) {
-            return 2; // menu 2
-        }else if(mugY == 305){
-            return 1; // menu 1
-        }
-
+    if (window.isPressed({13, false})) {
+        window.resetKey({13, false});
+            Vec2D position = image.getPosition();
+            int mugY = position.getY();
+            if (mugY == 575) {
+                exit(0); // exit
+            }
+            else if (mugY == 485) {
+                return 3; // menu 3
+            }
+            else if (mugY == 395) {
+                return 2; // menu 2
+            }else if(mugY == 305){
+                return 1; // menu 1
+            }
     }
     return 0;
 }
@@ -148,7 +152,7 @@ void showScore(MinGL & window) //Function which shows the scoreboard
     }
     for (size_t i = 0; i<playerScore.size(); ++i) { //Place every score and player on the screen
         stringScore.push_back(to_string(playerScore[i].point)); //Transform the score of the players into String so i can use nsGui::Text to show them
-        window << nsGui::Text(nsGraphics::Vec2D(190, 294+(30*i)), playerScore[i].player, nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15)
-               << nsGui::Text(nsGraphics::Vec2D(525, 294+(30*i)), stringScore[i], nsGraphics::KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
+        window << nsGui::Text(Vec2D(190, 294+(30*i)), playerScore[i].player, KWhite, nsGui::GlutFont::BITMAP_9_BY_15)
+               << nsGui::Text(Vec2D(525, 294+(30*i)), stringScore[i], KWhite, nsGui::GlutFont::BITMAP_9_BY_15);
     }
 }
