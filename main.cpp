@@ -166,7 +166,7 @@ void menu (MinGL &window,microseconds frameTime, unsigned &choixobjet, unsigned 
         window << scoreboardbg;
         window << titrescoreboard;
         window << backb;
-        if (window.isPressed({'&', false})) {
+        if (window.isPressed({27, false})) {
             choixobjet = 0;
         }
         showScore(window);
@@ -180,7 +180,7 @@ void menu (MinGL &window,microseconds frameTime, unsigned &choixobjet, unsigned 
         window << backb;
         selectTheme(window, arrow);
         choixpsgom = chooseTheme(window, arrow, choixpsgom);
-        if (window.isPressed({'&', false})) {
+        if (window.isPressed({27, false})) {
             choixobjet = 0;
         }
     }else if(choixobjet == 1){ // Opening of the name window
@@ -188,10 +188,10 @@ void menu (MinGL &window,microseconds frameTime, unsigned &choixobjet, unsigned 
         choixLightDark(window,choixpsgom, background, backgroundpsg);
         askName(window, nameStr);
 
-        if (window.isPressed({'"', false})) {
+        if (window.isPressed({13, false})) {
             choixobjet = 4;
-        }else if (window.isPressed({'&', false})) {
-            window.resetKey({'&', false});
+        }else if (window.isPressed({27, false})) {
+            window.resetKey({27, false});
             choixobjet = 0;
             nameStr = "";
         }
