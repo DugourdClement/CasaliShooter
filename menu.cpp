@@ -35,9 +35,9 @@ using namespace nsAudio;
 
 /** @brief Selects the theme and moves the **cursor**
 *
-*@param[in] window 
-*@param[in] image Cursor that moves according to the selection
-*@return void
+*@param[in] window : the key **A** or **Z** 
+*@param[in] image : Cursor that moves according to the selection
+*@returns void
 *
 */
 void selectTheme(MinGL &window, Sprite &image)
@@ -61,10 +61,10 @@ void selectTheme(MinGL &window, Sprite &image)
 
 /** @brief Change theme to **theme select**
 *
-*@param[in] window 
-*@param[in] image 
-*@param[in] baseTheme
-*@return void
+*@param[in] window : the key **'enter'** 
+*@param[in] image : Cursor 
+*@param[in] baseTheme : Unsigned representing the chosen theme
+*@returns unsigned
 *
 */
 unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
@@ -86,9 +86,9 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 
 /** @brief Change the place of the cursor in the menu
 *
-*@param[in] window 
-*@param[in] image 
-*@return void
+*@param[in] window : the key **s** or **z** 
+*@param[in] image : Cursor that moves according to the selection 
+*@returns void
 *
 */
 void menu(MinGL &window, nsGui::Sprite &image) {
@@ -130,9 +130,9 @@ void menu(MinGL &window, nsGui::Sprite &image) {
 
 /** @brief Choice of **menu**
 *
-*@param[in] window 
-*@param[in] image 
-*@return unsigned
+*@param[in] window : The key **'enter'**
+*@param[in] image : Cursor
+*@returns unsigned
 *
 */
 unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
@@ -158,11 +158,11 @@ unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
 
 /** @brief Applies the **selected theme**
 *
-*@param[in] window 
-*@param[in] choixpsgom 
-*@param[in] themelight OM choice Background
-*@param[in] themedark PSG choice Background
-*@return void
+*@param[in] window : Changing window theme
+*@param[in] choixpsgom : 
+*@param[in] themelight : OM choice Background
+*@param[in] themedark : PSG choice Background
+*@returns void
 *
 */
 void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Sprite &themedark){
@@ -186,7 +186,7 @@ bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){
 
 /** @brief Function which shows the **scoreboard**
 *
-*@param[in] window MinGL
+*@param[in] window : window that displays the scores
 *@return void
 *
 */
