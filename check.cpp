@@ -35,7 +35,7 @@ using namespace nsAudio;
 
 /** @brief Verify if an ennmy is still alive
 *
-*@param PPs : 
+*@param[in] PPs : 
 *@returns bool
 *
 */
@@ -52,9 +52,9 @@ bool allDead(const enemyStruct & PPs) {
 
 /** @brief Verifies colisions between 2 coordinates
 *
-*@param firstCorner : 
-*@param secondCorner : 
-*@param test : 
+*@param[in] firstCorner : 
+*@param[in] secondCorner : 
+*@param[in] test : 
 *@returns bool
 *
 */
@@ -64,8 +64,8 @@ bool isTouching (const Vec2D firstCorner, const Vec2D secondCorner, const Vec2D 
 
 /** @brief Verifies collisions between 2 sprites
 *
-*@param misPos : 
-*@param vecSprite : 
+*@param[in] misPos : 
+*@param[in] vecSprite : 
 *@returns bool
 *
 */
@@ -85,15 +85,15 @@ bool colision(const Vec2D misPos, enemyStruct &vecSprite){
 
 /** @brief allows the mug to fire missiles and check for colision with enemy or window
 *
-*@param window : 
-*@param mug : 
-*@param IPPs : 
-*@param KPPs : 
-*@param JPPs : 
-*@param playerLifeUnsigned : 
-*@param firstShootM : 
-*@param isPressed : 
-*@param misPos : 
+*@param[in] window : 
+*@param[in] mug : 
+*@param[in] IPPs : 
+*@param[in] KPPs : 
+*@param[in] JPPs : 
+*@param[in] playerLifeUnsigned : 
+*@param[in]firstShootM : 
+*@param[in] isPressed : 
+*@param[in] misPos : 
 *@returns bool
 *
 */
@@ -128,10 +128,10 @@ bool missile(MinGL &window, Sprite &mug, enemyStruct &IPPs, enemyStruct &KPPs, e
 
 /** @brief allows the enemy to fire missiles and check for colision with the mug or window
 *
-*@param mug : 
-*@param IPPs : 
-*@param firstShootT : 
-*@param torPos : 
+*@param[in] mug : 
+*@param[in] IPPs : 
+*@param[in] firstShootT : 
+*@param[in] torPos : 
 *@returns bool: 
 *
 */
@@ -178,10 +178,10 @@ bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos
 
 /** @brief allows the ovni to fire missiles and check for colision with the mug or window
 *
-*@param mug : 
-*@param ovni : 
-*@param ovniShootT : 
-*@param posTorOvni :
+*@param[in] mug : 
+*@param[in] ovni : 
+*@param[in] ovniShootT : 
+*@param[in] posTorOvni :
 *@returns bool : 
 *
 */
