@@ -34,10 +34,10 @@ using namespace nsAudio;
 
 
 
-/** @brief Selects the theme and moves the cursor
+/** @brief Selects the theme and moves the **cursor**
 *
-*@param window MinGl
-*@param image Sprite
+*@param[in] window 
+*@param[in] image 
 *@return void
 *
 */
@@ -58,10 +58,10 @@ void selectTheme(MinGL &window, Sprite &image)
             image.setPosition(positionF);
         }
 }
-/** @brief Change theme to theme select
+/** @brief Change theme to **theme select**
 *
-*@param window MinGl
-*@param image Sprite
+*@param[in] window 
+*@param[in] image 
 *@return void
 *
 */
@@ -82,8 +82,8 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 }
 /** @brief Change the place of the cursor in the menu
 *
-*@param window MinGl
-*@param image nsGui::Sprite
+*@param[in] window 
+*@param[in] image 
 *@return void
 *
 */
@@ -123,10 +123,10 @@ void menu(MinGL &window, nsGui::Sprite &image) {
 
     }
 }
-/** @brief Choice of menu
+/** @brief Choice of **menu**
 *
-*@param window MinGl
-*@param image nsGui::Sprite
+*@param[in] window 
+*@param[in] image 
 *@return unsigned
 *
 */
@@ -150,12 +150,12 @@ unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
     }
     return 0;
 }
-/** @brief Applies the selected theme
+/** @brief Applies the **selected theme**
 *
-*@param window MinGl
-*@param choixpsgom unsigned
-*@param themelight Sprite
-*@param themedark Sprite
+*@param[in] window 
+*@param[in] choixpsgom 
+*@param[in] themelight 
+*@param[in] themedark 
 *@return void
 *
 */
@@ -167,23 +167,23 @@ void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Spr
         window << themedark;
     }
 }
-/** @brief Bool used to sort player
+/** @brief Bool used to **sort player**
 *
-*@param joueur1 playersStruct
-*@param joueur2 playersStruct
+*@param joueur1 
+*@param joueur2 
 *@return bool
 *
 */
 bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){ 
     return joueur1.point >= joueur2.point;
 }
-/** @brief Function which shows the scoreboard
+/** @brief Function which shows the **scoreboard**
 *
-*@param window MinGL
+*@param[in] window MinGL
 *@return void
 *
 */
-void showScore(MinGL & window) //Function which shows the scoreboard
+void showScore(MinGL & window) 
 {
     ifstream data_file("score.txt");
     vector<playersStruct> playerScore;
