@@ -61,7 +61,7 @@ void selectTheme(MinGL &window, Sprite &image)
 
 /** @brief Change theme to **theme select**
 *
-*@param[in] window : the key **'enter'** 
+*@param[in] window : window in which we inject the element
 *@param[in] image : Cursor 
 *@param[in] baseTheme : Unsigned representing the chosen theme
 *@returns unsigned
@@ -86,8 +86,8 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 
 /** @brief Change the place of the cursor in the menu
 *
-*@param[in] window : the key **s** or **z** 
-*@param[in] image : Cursor that moves according to the selection 
+*@param[in] window : window in which we inject the element
+*@param[in] image : Cursor that moves according to the selection **s** or **z**
 *@returns void
 *
 */
@@ -130,8 +130,8 @@ void menu(MinGL &window, nsGui::Sprite &image) {
 
 /** @brief Choice of **menu**
 *
-*@param[in] window : The key **'enter'**
-*@param[in] image : Cursor
+*@param[in] window : window in which we inject the element
+*@param[in] image : Cursor on menu 1,2,3 or 4
 *@returns unsigned
 *
 */
@@ -158,10 +158,10 @@ unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
 
 /** @brief Applies the **selected theme**
 *
-*@param[in] window : Changing window theme
-*@param[in] choixpsgom : 
-*@param[in] themelight : OM choice Background
-*@param[in] themedark : PSG choice Background
+*@param[in] window : window in which we inject the element
+*@param[in] choixpsgom : detect which theme to apply
+*@param[in] themelight : OM background to inject in the window
+*@param[in] themedark : PSG background to inject in the window
 *@returns void
 *
 */
