@@ -21,6 +21,12 @@ The following part contains all the informations needeed for a proper use of the
 ### __Game__
 The following part contains all the informations needeed for good game experience.
 
+`q` <-- Allows you to move your sprite to the left.
+
+`d` <-- Allows you to move your sprite to the right.
+
+`x` <-- Allows you to shoot a missile.
+
 ============================================================================================
 
 
