@@ -21,7 +21,7 @@ Other option can be change in the `config.yaml` file, like the size of the missi
 
 The basic file looks like this : 
 
-```
+```yaml
 KMovingLeft : q
 KMovingRight : d
 KShoot : x
