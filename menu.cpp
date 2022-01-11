@@ -33,14 +33,7 @@ using namespace chrono;
 using namespace nsAudio;
 
 
-
-/** @brief Selects the theme and moves the **cursor**
-*
-*@param[in] window 
-*@param[in] image Cursor that moves according to the selection
-*@return void
-*
-*/
+//Selects the theme and moves the **cursor**
 void selectTheme(MinGL &window, Sprite &image)
 {
         if (window.isPressed({'a', false})) {
@@ -58,14 +51,8 @@ void selectTheme(MinGL &window, Sprite &image)
             image.setPosition(positionF);
         }
 }
-/** @brief Change theme to **theme select**
-*
-*@param[in] window 
-*@param[in] image 
-*@param[in] baseTheme
-*@return void
-*
-*/
+
+//Change theme to **theme select**
 unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 {
 
@@ -81,13 +68,8 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
     }
     return baseTheme;
 }
-/** @brief Change the place of the cursor in the menu
-*
-*@param[in] window 
-*@param[in] image 
-*@return void
-*
-*/
+
+// Change the place of the cursor in the menu
 void menu(MinGL &window, nsGui::Sprite &image) {
     if (window.isPressed({'s', false})) {
         window.resetKey({'s', false});
@@ -124,13 +106,8 @@ void menu(MinGL &window, nsGui::Sprite &image) {
 
     }
 }
-/** @brief Choice of **menu**
-*
-*@param[in] window 
-*@param[in] image 
-*@return unsigned
-*
-*/
+
+//brief Choice of **menu**
 unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
 {
     if (window.isPressed({13, false})) {
@@ -151,15 +128,8 @@ unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
     }
     return 0;
 }
-/** @brief Applies the **selected theme**
-*
-*@param[in] window 
-*@param[in] choixpsgom 
-*@param[in] themelight Background
-*@param[in] themedark Background
-*@return void
-*
-*/
+
+//Applies the **selected theme**
 void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Sprite &themedark){
     if (choixpsgom == 0) {
         window << themelight;
@@ -168,22 +138,13 @@ void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Spr
         window << themedark;
     }
 }
-/** @brief Bool used to **sort player**
-*
-*@param joueur1 
-*@param joueur2 
-*@return bool
-*
-*/
+
+//Bool used to **sort player**
 bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){ 
     return joueur1.point >= joueur2.point;
 }
-/** @brief Function which shows the **scoreboard**
-*
-*@param[in] window MinGL
-*@return void
-*
-*/
+
+//Function which shows the **scoreboard**
 void showScore(MinGL & window) 
 {
     ifstream data_file("score.txt");
