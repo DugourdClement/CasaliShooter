@@ -7,3 +7,4 @@
 ============================================================================================
 
 ### __Menu__
+The following part contains all the informations needeed for a proper use of the menu.
