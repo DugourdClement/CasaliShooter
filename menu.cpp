@@ -1,3 +1,11 @@
+/**
+* @file menu.cpp
+* @brief Gestion du menu
+* @author Gonzales, Djerian
+* @version 1.0
+* @date 11/01/2022
+*/
+
 #define FPS_LIMIT 60
 
 #include <iostream>
@@ -26,7 +34,13 @@ using namespace nsAudio;
 
 
 
-//// Selects the theme and moves the cursor
+/** @brief Selects the theme and moves the cursor
+*
+*@param window MinGl
+*@param image Sprite
+*@return void
+*
+*/
 void selectTheme(MinGL &window, Sprite &image)
 {
         if (window.isPressed({'a', false})) {
@@ -44,8 +58,13 @@ void selectTheme(MinGL &window, Sprite &image)
             image.setPosition(positionF);
         }
 }
-
-//Change theme to theme select
+/** @brief Change theme to theme select
+*
+*@param window MinGl
+*@param image Sprite
+*@return void
+*
+*/
 unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 {
 
@@ -61,9 +80,13 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
     }
     return baseTheme;
 }
-
-//Change the place of the cursor in the menu
-
+/** @brief Change the place of the cursor in the menu
+*
+*@param window MinGl
+*@param image nsGui::Sprite
+*@return void
+*
+*/
 void menu(MinGL &window, nsGui::Sprite &image) {
     if (window.isPressed({'s', false})) {
         window.resetKey({'s', false});
@@ -100,8 +123,13 @@ void menu(MinGL &window, nsGui::Sprite &image) {
 
     }
 }
-
-// Choice of menu
+/** @brief Choice of menu
+*
+*@param window MinGl
+*@param image nsGui::Sprite
+*@return unsigned
+*
+*/
 unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
 {
     if (window.isPressed({13, false})) {
@@ -122,8 +150,15 @@ unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
     }
     return 0;
 }
-
-//Applies the selected theme
+/** @brief Applies the selected theme
+*
+*@param window MinGl
+*@param choixpsgom unsigned
+*@param themelight Sprite
+*@param themedark Sprite
+*@return void
+*
+*/
 void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Sprite &themedark){
     if (choixpsgom == 0) {
         window << themelight;
@@ -132,11 +167,22 @@ void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Spr
         window << themedark;
     }
 }
-
-bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){ // Bool used to sort player
+/** @brief Bool used to sort player
+*
+*@param joueur1 playersStruct
+*@param joueur2 playersStruct
+*@return bool
+*
+*/
+bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){ 
     return joueur1.point >= joueur2.point;
 }
-
+/** @brief Function which shows the scoreboard
+*
+*@param window MinGL
+*@return void
+*
+*/
 void showScore(MinGL & window) //Function which shows the scoreboard
 {
     ifstream data_file("score.txt");
