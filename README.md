@@ -15,7 +15,7 @@ The following part contains all the informations needeed for a proper use of the
 
 `ENTER` <-- Allows you to select the button at your current position in the menu.
 
-`b` <-- Allows you to comeback to the preview window once you cliked on a button.
+`ECHAP` <-- Allows you to comeback to the preview window once you cliked on a button.
 
 ============================================================================================
 
@@ -29,7 +29,7 @@ The following part contains all the informations needeed for good game experienc
 
 `x` <-- Allows you to shoot a missile.
 
-`b` <-- Allows you to comeback to the menu.
+`ECHAP` <-- Allows you to comeback to the menu.
 
 ============================================================================================
 
@@ -42,6 +42,8 @@ Other option can be change in the `config.yaml` file, like the size of the missi
 The basic file looks like this : 
 
 ```yaml
+KBack : 27
+KConfirm : 13
 KMovingDownMenu : 115
 KMovingUpMenu : 122
 KMovingLeftGame : 113
