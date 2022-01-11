@@ -1,3 +1,11 @@
+/**
+* @file menu.h
+* @brief Gestion du menu
+* @author Gonzales, Djerian, Leydier, Volpei, Dugourd
+* @version 1.0
+* @date 11/01/2022
+*/
+
 #ifndef MENU_H
 #define MENU_H
 
