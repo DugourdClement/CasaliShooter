@@ -131,7 +131,8 @@ bool missile(MinGL &window, Sprite &mug, enemyStruct &IPPs, enemyStruct &KPPs, e
 *@param mug : 
 *@param IPPs : 
 *@param firstShootT : 
-*@returns torPos : 
+*@param torPos : 
+*@returns bool: 
 *
 */
 bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos){
@@ -180,7 +181,8 @@ bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos
 *@param mug : 
 *@param ovni : 
 *@param ovniShootT : 
-*@returns posTorOvni : 
+*@param posTorOvni :
+*@returns bool : 
 *
 */
 bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & posTorOvni) {
@@ -216,7 +218,7 @@ bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & p
         return false;
     }
 
-    ovniShootT = false;
+    ovniShootT= false;
     posTorOvni.setY(posTorOvni.getY() + 16);
     return true;
 }
