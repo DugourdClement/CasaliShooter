@@ -154,8 +154,8 @@ unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
 *
 *@param[in] window 
 *@param[in] choixpsgom 
-*@param[in] themelight 
-*@param[in] themedark 
+*@param[in] themelight Background
+*@param[in] themedark Background
 *@return void
 *
 */
