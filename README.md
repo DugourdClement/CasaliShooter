@@ -18,3 +18,17 @@ The following part contains all the informations needeed for good game experienc
 All the previous cases are variable and can be change in the `config.yaml` file.
 
 Other option can be change in the `config.yaml` file, like the size of the missile.
+
+The basic file looks like this : 
+
+```
+KMovingLeft : q
+KMovingRight : d
+KShoot : x
+KWidthMissile : 2
+KLenghtMissile : 10
+KWidthTorpedoPPs : 5
+KLenghtTorpedoPPs : 10
+KWidthTorpedoUFO : 5
+KLenghtTorpedoUFO : 10
+```
