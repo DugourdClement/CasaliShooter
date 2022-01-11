@@ -132,7 +132,7 @@ void menu(MinGL &window, nsGui::Sprite &image) {
 *
 *@param[in] window : window in which we inject the element and detect key presses
 *@param[in] image : Image that will determine the menu selected
-*@returns unsigned
+*@returns unsigned according to the selected menu between 0 and 3
 *
 */
 unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
@@ -177,7 +177,7 @@ void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Spr
 *
 *@param[in] joueur1 player1
 *@param[in] joueur2 player2
-*@return bool
+*@return **true** if the player1 is better than the player2 and **false** if the player2 is better than the player1
 *
 */
 bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){ 
