@@ -1,7 +1,7 @@
 /**
 * @file menu.cpp
 * @brief Gestion du menu
-* @author Gonzales, Djerian
+* @author Gonzales, Djerian, Leydier, Volpei, Dugourd
 * @version 1.0
 * @date 11/01/2022
 */
