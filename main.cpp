@@ -1,3 +1,11 @@
+/**
+* @file main.cpp
+* @brief CasaliShooter game 
+* @author Gonzales, Djerian, Leydier, Volpei, Dugourd
+* @version 1.0
+* @date 11/01/2022
+*/
+
 #define FPS_LIMIT 60
 
 #include <iostream>
@@ -29,6 +37,13 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
+/** @brief Write a nickname
+*
+*@param[in] window : 
+*@param[in] nameStr : 
+*@returns void
+*
+*/
 void keyboardWrite(MinGL &window, string &nameStr){
     for(unsigned i = 97; i < 123; ++i){
         if (window.isPressed({i, false})) {
@@ -41,6 +56,13 @@ void keyboardWrite(MinGL &window, string &nameStr){
     }
 }
 
+/** @brief Asks for the nickname
+*
+*@param[in] window : 
+*@param[in] nameStr : 
+*@returns void
+*
+*/
 void askName(MinGL &window, string &nameStr){
     window << Sprite ("spritesi2/name.si2", Vec2D(100, 250));
     window << Sprite ("spritesi2/spacebar2.si2", Vec2D(100, 500));
@@ -48,6 +70,11 @@ void askName(MinGL &window, string &nameStr){
     window << Text(Vec2D(275, 400), nameStr , KBlue, GlutFont::BITMAP_HELVETICA_18);
 }
 
+/** @brief Main application function: The game CasaliShooter
+*
+*@returns 0 if no mistakes
+*
+*/
 int main()
 {
 
