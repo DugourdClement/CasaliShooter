@@ -35,7 +35,7 @@ using namespace nsAudio;
 
 /** @brief Selects the theme and moves the **cursor**
 *
-*@param[in] window : window in which we inject the element
+*@param[in] window : window in which we inject the element and detect key presses
 *@param[in] image : get position and change cursor position
 *@returns void
 *
@@ -61,8 +61,8 @@ void selectTheme(MinGL &window, Sprite &image)
 
 /** @brief Change theme to **theme select**
 *
-*@param[in] window : window in which we inject the element
-*@param[in] image : Cursor 
+*@param[in] window : window in which we inject the element and detect key presses
+*@param[in] image : get the position of the cursor 
 *@param[in] baseTheme : Unsigned representing the chosen theme
 *@returns unsigned
 *
@@ -86,8 +86,8 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 
 /** @brief Change the place of the cursor in the menu
 *
-*@param[in] window : window in which we inject the element
-*@param[in] image : Cursor that moves according to the selection **s** or **z**
+*@param[in] window : window in which we inject the element and detect key presses
+*@param[in] image : image that moves according to the key press **s** or **z**
 *@returns void
 *
 */
@@ -130,8 +130,8 @@ void menu(MinGL &window, nsGui::Sprite &image) {
 
 /** @brief Choice of **menu**
 *
-*@param[in] window : window in which we inject the element
-*@param[in] image : Cursor on menu 1,2,3 or 4
+*@param[in] window : window in which we inject the element and detect key presses
+*@param[in] image : Image that will determine the menu selected
 *@returns unsigned
 *
 */
@@ -173,10 +173,10 @@ void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Spr
         window << themedark;
     }
 }
-/** @brief Bool used to **sort player**
+/** @brief Determines if the player1 is better than the player 2 **sort player**
 *
-*@param joueur1 
-*@param joueur2 
+*@param[in] joueur1 player1
+*@param[in] joueur2 player2
 *@return bool
 *
 */
@@ -184,7 +184,7 @@ bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){
     return joueur1.point >= joueur2.point;
 }
 
-/** @brief Function which shows the **scoreboard**
+/** @brief Function which sort the **scoreboard** and shows it by using a txt file 
 *
 *@param[in] window : window that displays the scores
 *@returns void
