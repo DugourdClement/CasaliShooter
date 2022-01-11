@@ -12,3 +12,7 @@ The following part contains all the informations needeed for a proper use of the
 
 ### __Game__
 The following part contains all the informations needeed for good game experience.
+
+
+### __YAML__
+All the previous cases are variable and can be change in the *config.yaml* file.
