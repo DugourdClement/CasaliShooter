@@ -9,6 +9,8 @@
 ### __Menu__
 The following part contains all the informations needeed for a proper use of the menu.
 
+`z` <-- Allows you to move in the menu. Pressing this key will direct you to the button above
+
 ============================================================================================
 
 
