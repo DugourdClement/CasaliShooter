@@ -35,4 +35,4 @@ KWidthTorpedoUFO : 5
 KLenghtTorpedoUFO : 10
 ```
 
-/!\ The first four numbers are ASCII references and ***must*** be changed by ASCII reference /!\
+/!\ The first four numbers are ASCII references and __must__ be changed by ASCII reference /!\
