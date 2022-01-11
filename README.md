@@ -22,9 +22,11 @@ Other option can be change in the `config.yaml` file, like the size of the missi
 The basic file looks like this : 
 
 ```yaml
-KMovingLeft : 71
-KMovingRight : 64
-KShoot : 78
+KMovingDownMenu : 115
+KMovingUpMenu : 122
+KMovingLeftGame : 113
+KMovingRightGame : 100
+KShootGame : 120
 KWidthMissile : 2
 KLenghtMissile : 10
 KWidthTorpedoPPs : 5
