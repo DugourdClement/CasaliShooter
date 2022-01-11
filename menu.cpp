@@ -187,7 +187,7 @@ bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){
 /** @brief Function which shows the **scoreboard**
 *
 *@param[in] window : window that displays the scores
-*@return void
+*@returns void
 *
 */
 void showScore(MinGL & window) 
