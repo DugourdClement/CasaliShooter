@@ -1,6 +1,6 @@
 /**
 * @file menu.cpp
-* @brief Menu management
+* @brief Menu manager
 * @author Gonzales, Djerian, Leydier, Volpei, Dugourd
 * @version 1.0
 * @date 11/01/2022
