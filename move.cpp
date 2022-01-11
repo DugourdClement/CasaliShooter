@@ -1,3 +1,11 @@
+/**
+* @file move.cpp
+* @brief Movement manager
+* @author Gonzales, Djerian, Leydier, Volpei, Dugourd
+* @version 1.0
+* @date 11/01/2022
+*/
+
 #define FPS_LIMIT 60
 
 #include <iostream>
