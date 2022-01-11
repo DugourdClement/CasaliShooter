@@ -35,8 +35,8 @@ using namespace nsAudio;
 
 /** @brief Selects the theme and moves the **cursor**
 *
-*@param[in] window : the key **A** or **Z** 
-*@param[in] image : Cursor that moves according to the selection
+*@param[in] window : window in which we inject the element
+*@param[in] image : get position and change cursor position
 *@returns void
 *
 */
