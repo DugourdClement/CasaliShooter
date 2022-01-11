@@ -37,7 +37,7 @@ using namespace nsAudio;
 /** @brief Selects the theme and moves the **cursor**
 *
 *@param[in] window 
-*@param[in] image 
+*@param[in] image Cursor that moves according to the selection
 *@return void
 *
 */
@@ -62,6 +62,7 @@ void selectTheme(MinGL &window, Sprite &image)
 *
 *@param[in] window 
 *@param[in] image 
+*@param[in] baseTheme
 *@return void
 *
 */
