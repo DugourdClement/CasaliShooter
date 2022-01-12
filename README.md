@@ -4,7 +4,7 @@
 *It's splited in two parts : the first one is about the menu and the last one is concerning the game itself.*
 
 
-===========================================================================
+============================================================================================
 
 ### __Menu__
 The following part contains all the informations needeed for a proper use of the menu.
@@ -17,7 +17,7 @@ The following part contains all the informations needeed for a proper use of the
 
 `ECHAP` <-- Allows you to comeback to the preview window once you cliked on a button.
 
-===========================================================================
+============================================================================================
 
 
 ### __Game__
