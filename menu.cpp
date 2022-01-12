@@ -11,6 +11,7 @@
 #include <fstream>
 #include <thread>
 #include <unistd.h>
+#include <vector>
 
 #include "MinGL2/include/mingl/mingl.h"
 #include "MinGL2/include/mingl/gui/sprite.h"
@@ -24,6 +25,7 @@
 
 #include "bgtext.h"
 #include "menu.h"
+#include "yaml.h"
 
 
 using namespace std;
@@ -32,17 +34,25 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
-void generique(MinGL &window, Sprite &backgroundNoScreen, Sprite &generiqueSprite){
+/** @brief Run the credit
+*
+*@param[in] window : window in which we inject the element and detect key presses
+*@param[in] backgroundNoScreen : background sprite to inject in the window
+*@param[in] creditSprite : credit
+*@returns void
+*
+*/
+void credit(MinGL &window, Sprite &backgroundNoScreen, Sprite &creditSprite){
 
-    while(generiqueSprite.getPosition().getY() > -1200){
+    while(creditSprite.getPosition().getY() > -1250){
         window.clearScreen();
-        window << generiqueSprite;
+        window << creditSprite;
         window << backgroundNoScreen;
-        Vec2D positionGenerique = generiqueSprite.getPosition();
+        Vec2D positionGenerique = creditSprite.getPosition();
         int posGenX = positionGenerique.getX();
         int posGenY = positionGenerique.getY()-5;
         Vec2D positionF (posGenX, posGenY);
-        generiqueSprite.setPosition(positionF);
+        creditSprite.setPosition(positionF);
 
         // We finish the current frame
         window.finishFrame();
@@ -60,16 +70,16 @@ void generique(MinGL &window, Sprite &backgroundNoScreen, Sprite &generiqueSprit
 *@returns void
 *
 */
-void selectTheme(MinGL &window, Sprite &image)
+void selectTheme(MinGL &window, Sprite &image, vector<unsigned> vecKey)
 {
-        if (window.isPressed({'a', false})) {
+        if (window.isPressed({char(vecKey[2]), false})) {
             Vec2D position = image.getPosition();
             int arrowX = 188;
             int arrowY = position.getY();
             Vec2D positionF (arrowX, arrowY);
             image.setPosition(positionF);
         }
-        else if (window.isPressed({'z', false})) {
+        else if (window.isPressed({char(vecKey[3]), false})) {
             Vec2D position = image.getPosition();
             int arrowX = 435;
             int arrowY = position.getY();
@@ -86,10 +96,10 @@ void selectTheme(MinGL &window, Sprite &image)
 *@returns unsigned
 *
 */
-unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
+unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme, vector<unsigned> vecKey)
 {
 
-    if (window.isPressed({13, false})) {
+    if (window.isPressed({char(vecKey[1]), false})) {
         Vec2D position = image.getPosition();
         int arrowX = position.getX();
         if (arrowX == 188) {
@@ -109,9 +119,9 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
 *@returns void
 *
 */
-void menu(MinGL &window, nsGui::Sprite &image) {
-    if (window.isPressed({'s', false})) {
-        window.resetKey({'s', false});
+void menu(MinGL &window, nsGui::Sprite &image, vector<unsigned> vecKey) {
+    if (window.isPressed({char(vecKey[4]), false})) {
+        window.resetKey({char(vecKey[4]), false});
         Vec2D position = image.getPosition();
         if (position.getY()==575) {
             int mugX = position.getX();
@@ -127,8 +137,8 @@ void menu(MinGL &window, nsGui::Sprite &image) {
         }
 
     }
-    if (window.isPressed({'z', false})) {
-        window.resetKey({'z', false});
+    if (window.isPressed({char(vecKey[5]), false})) {
+        window.resetKey({char(vecKey[5]), false});
         Vec2D position = image.getPosition();
         if (position.getY()==305) {
             int mugX = position.getX();
@@ -153,10 +163,10 @@ void menu(MinGL &window, nsGui::Sprite &image) {
 *@returns unsigned according to the selected menu between 0 and 3
 *
 */
-unsigned entrerMenu(MinGL &window, nsGui::Sprite &image)
+unsigned entrerMenu(MinGL &window, nsGui::Sprite &image, vector<unsigned> vecKey)
 {
-    if (window.isPressed({13, false})) {
-        window.resetKey({13, false});
+    if (window.isPressed({char(vecKey[1]), false})) {
+        window.resetKey({char(vecKey[1]), false});
             Vec2D position = image.getPosition();
             int mugY = position.getY();
             if (mugY == 575) {

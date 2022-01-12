@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <thread>
+#include <vector>
 
 #include "MinGL2/include/mingl/mingl.h"
 #include "MinGL2/include/mingl/gui/sprite.h"
@@ -22,6 +23,7 @@
 #include "MinGL2/include/mingl/transition/transition_engine.h"
 
 #include "move.h"
+#include "yaml.h"
 #include "mugstruct.h"
 #include "playersStruct.h"
 #include "enemyStruct.h"
@@ -56,16 +58,16 @@ void addScore(string &playerLifeString, string &nameStr){
 *@returns void
 *
 */
-void keyboard(MinGL &window, Sprite &mug)
+void keyboard(MinGL &window, Sprite &mug, vector<unsigned> vecKey)
 {
-    if (window.isPressed({'q', false}) && mug.getPosition().getX() > 50 ) {
+    if (window.isPressed({char(vecKey[6]), false}) && mug.getPosition().getX() > 50 ) {
         Vec2D position = mug.getPosition();
         int mugX = position.getX();
         int mugY = position.getY();
         Vec2D positionF (mugX-5, mugY);
         mug.setPosition(positionF);
     }
-    if (window.isPressed({'d', false}) && mug.getPosition().getX() < (600-64+50)) {
+    if (window.isPressed({char(vecKey[7]), false}) && mug.getPosition().getX() < (600-64+50)) {
         Vec2D position = mug.getPosition();
         int mugX = position.getX();
         int mugY = position.getY();
@@ -97,7 +99,7 @@ void moveSprite(Sprite &position, const int &x, const int &y) {
 *@returns void
 *
 */
-void moveOpen(enemyStruct & open, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &generiqueSprite,MinGL &window){
+void moveOpen(enemyStruct & open, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &creditSprite,MinGL &window){
     //if the sprite vector does not exit the window, runs through all the letters and moves them by 5 px
     if (open.vecSprite[0].getPosition().getX() < (600 - 470) || open.vecSprite[open.vecSprite.size() - 1].getPosition().getX() > 50) {
         for(Sprite & letter : open.vecSprite) {
@@ -121,7 +123,7 @@ void moveOpen(enemyStruct & open, string &playerLifeString, string &nameStr, Spr
     // if the sprite vector reached the bottom, GAME OVER
      if (open.vecSprite[0].getPosition().getY() > 600){
          addScore(playerLifeString, nameStr);
-         generique(window,backgroundNoScreen,generiqueSprite);
+         credit(window,backgroundNoScreen,creditSprite);
          exit(0);
      }
 }
@@ -137,7 +139,7 @@ void moveOpen(enemyStruct & open, string &playerLifeString, string &nameStr, Spr
 *@returns void
 *
 */
-void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &generiqueSprite, MinGL &window){
+void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &creditSprite, MinGL &window){
     // If the sprites at the end do not touch the edges, move all the sprites at the same time
     if (vecSprite.vecSprite[0].getPosition().getX() < (600-64+50) ||
         vecSprite.vecSprite[vecSprite.vecSprite.size() - 1].getPosition().getX() > 0+50){
@@ -160,7 +162,7 @@ void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nam
     // if the sprite vector reached the bottom, GAME OVER
     if(vecSprite.vecSprite[0].getPosition().getY()>(600)){
         addScore(playerLifeString, nameStr);
-        generique(window,backgroundNoScreen,generiqueSprite);
+        credit(window,backgroundNoScreen,creditSprite);
         exit(0);
     }
 }
@@ -176,7 +178,7 @@ void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nam
 *@returns void
 *
 */
-void moveOVNI(enemyStruct & ovni, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &generiqueSprite, MinGL &window) {
+void moveOVNI(enemyStruct & ovni, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &creditSprite, MinGL &window) {
     // If the sprites at the end do not touch the edges, move all the sprites at the same time
     if (ovni.vecSprite[0].getPosition().getX() < (600-64+50) ||
         ovni.vecSprite[ovni.vecSprite.size() - 1].getPosition().getX() > 0+50){
@@ -194,7 +196,7 @@ void moveOVNI(enemyStruct & ovni, string &playerLifeString, string &nameStr, Spr
      // if the sprite vector reached the bottom, GAME OVER
     if(ovni.vecSprite[0].getPosition().getY()>(600)){
         addScore(playerLifeString, nameStr);
-        generique(window,backgroundNoScreen,generiqueSprite);
+        credit(window,backgroundNoScreen,creditSprite);
         exit(0);
         }
 }

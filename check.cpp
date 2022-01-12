@@ -98,8 +98,9 @@ bool colision(const Vec2D misPos, enemyStruct &vecSprite){
 *@returns bool
 *
 */
-bool missile(MinGL &window, Sprite &mug, enemyStruct &IPPs, enemyStruct &KPPs, enemyStruct &JPPs, unsigned &playerLifeUnsigned, bool &firstShootM, bool &isPressed, Vec2D &misPos){
-    if (window.isPressed({'x', false})){
+bool missile(MinGL &window, Sprite &mug, enemyStruct &IPPs, enemyStruct &KPPs, enemyStruct &JPPs,
+             unsigned &playerLifeUnsigned, bool &firstShootM, bool &isPressed, Vec2D &misPos, vector<unsigned> &vecKey){
+    if (window.isPressed({char(vecKey[8]), false})){
         isPressed = true;
     }
     if (isPressed == true){
@@ -139,7 +140,7 @@ bool missile(MinGL &window, Sprite &mug, enemyStruct &IPPs, enemyStruct &KPPs, e
 *@returns bool:
 *
 */
-bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos, Sprite &backgroundNoScreen, Sprite &generiqueSprite, MinGL &window){
+bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos, Sprite &backgroundNoScreen, Sprite &creditSprite, MinGL &window){
 
     srand (time(NULL));
     int n = rand() % IPPs.vecSprite.size();
@@ -169,7 +170,7 @@ bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos
             mug.vecMug[mug.index].setPosition({posX,posY});
         }
         else{
-            generique(window,backgroundNoScreen,generiqueSprite);
+            credit(window,backgroundNoScreen,creditSprite);
             exit(0);
         }
 
@@ -192,7 +193,7 @@ bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos
 *@returns bool : The UFO is shooting
 *
 */
-bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & posTorOvni, Sprite &backgroundNoScreen, Sprite &generiqueSprite, MinGL &window) {
+bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & posTorOvni, Sprite &backgroundNoScreen, Sprite &creditSprite, MinGL &window) {
     if ((ovniShootT == true) && (ovni.state[0] == true)) {
         Vec2D position = ovni.vecSprite[0].getPosition();
         int ovniX = position.getX();
@@ -219,7 +220,7 @@ bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & p
             mug.vecMug[mug.index].setPosition({posX, posY});
         }
         else {
-            generique(window,backgroundNoScreen,generiqueSprite);
+            credit(window,backgroundNoScreen,creditSprite);
             exit(0);
         }
 

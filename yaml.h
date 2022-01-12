@@ -1,11 +1,8 @@
 #ifndef YAML_H
 #define YAML_H
 
+#include <vector>
 
-class yaml
-{
-public:
-    yaml();
-};
+std::vector<unsigned> vecParam (const std::string &);
 
 #endif // YAML_H

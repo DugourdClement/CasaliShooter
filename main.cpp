@@ -4,6 +4,7 @@
 #include <fstream>
 #include <thread>
 #include <unistd.h>
+#include <vector>
 
 #include "MinGL2/include/mingl/mingl.h"
 #include "MinGL2/include/mingl/gui/sprite.h"
@@ -20,6 +21,7 @@
 #include "move.h"
 #include "check.h"
 #include "generate.h"
+#include "yaml.h"
 #include "mugstruct.h"
 #include "playersStruct.h"
 #include "enemyStruct.h"
@@ -52,6 +54,7 @@ void askName(MinGL &window, string &nameStr){
 int main()
 {
 
+    vector<unsigned> vecKey = vecParam("config.yaml");
 
     Vec2D misPos;
     Vec2D torPos;
@@ -136,7 +139,6 @@ int main()
     bool firstShootM = true;
     bool isPressed = false;
     bool firstShootT = true;
-    bool firstShootT2 = true;
     //Vector to determine if a UFO is firing
     bool ovniTorOne = true;
     bool ovniTorTwo = true;
@@ -176,8 +178,8 @@ int main()
             window << settingsb;
             window << quitb;
             window << casali;
-            menu(window, casali);
-            choixobjet = entrerMenu(window, casali);
+            menu(window, casali, vecKey);
+            choixobjet = entrerMenu(window, casali, vecKey);
         }else if (choixobjet == 2){ //Opening of the scoreboard menu
             window.clearScreen();
             choixLightDark(window,choixpsgom, background, backgroundpsg);
@@ -197,8 +199,8 @@ int main()
             window << sun;
             window << arrow;
             window << backb;
-            selectTheme(window, arrow);
-            choixpsgom = chooseTheme(window, arrow, choixpsgom);
+            selectTheme(window, arrow, vecKey);
+            choixpsgom = chooseTheme(window, arrow, choixpsgom, vecKey);
             if (window.isPressed({27, false})) {
                 choixobjet = 0;
             }
@@ -227,13 +229,13 @@ int main()
 
             string playerLifeString = to_string(playerLifeUnsigned);
 
-            keyboard(window, mug.vecMug[mug.index]);
+            keyboard(window, mug.vecMug[mug.index], vecKey);
 
             moveVecSprite(IPPs, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
             moveVecSprite(KPPs, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
             moveVecSprite(JPPs, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
 
-            isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos);
+            isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos, vecKey);
             if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
 
             //Points generator
@@ -256,7 +258,7 @@ int main()
                     choixLightDark(window,choixpsgom, background, backgroundpsg);
                     window << mug.vecMug[mug.index];
 
-                    keyboard(window, mug.vecMug[mug.index]);
+                    keyboard(window, mug.vecMug[mug.index], vecKey);
 
 
                     for (size_t i = 0; i < vecOvni.size(); ++i) {
@@ -273,7 +275,7 @@ int main()
                     moveVecSprite(classroom, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
                     moveOpen(open, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
 
-                    isPressed = missile(window, mug.vecMug[mug.index], open, classroom, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos);
+                    isPressed = missile(window, mug.vecMug[mug.index], open, classroom, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos, vecKey);
                     if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
                     string playerLifeString = to_string(playerLifeUnsigned);
                     //Points generator

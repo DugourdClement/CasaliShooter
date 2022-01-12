@@ -1,12 +1,12 @@
 #include <vector>
-/*#include "ifstream"
+#include "fstream"
 
 #include "yaml.h"
 
 using namespace std;
 
 vector<unsigned> vecParam (const string & fileName) {
-    const vector<string> vecValuesUns = {"KBack","KMovingDownMenu","KMovingUpMenu", "KMovingLeftGame", "KMovingRightGame", "KShootGame", "KWidthMissile", "KLenghtMissile", "KWidthTorpedoPPs", "KLenghtTorpedoPPs", "KWidthTorpedoUFO", "KLenghtTorpedoUFO"};
+    const vector<string> vecValuesUns = {"KBack", "KConfirm","KLeftMenu", "KRightMenu", "KMovingDownMenu","KMovingUpMenu", "KMovingLeftGame", "KMovingRightGame", "KShootGame", "KWidthMissile", "KLenghtMissile", "KWidthTorpedoPPs", "KLenghtTorpedoPPs", "KWidthTorpedoUFO", "KLenghtTorpedoUFO"};
     ifstream ifs(fileName);
     char valChar;
     unsigned valUnsigned;
@@ -21,4 +21,3 @@ vector<unsigned> vecParam (const string & fileName) {
     return vecValues;
 
 }
-*/
