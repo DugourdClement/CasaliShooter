@@ -1,0 +1,18 @@
+ELISEE 6
+A 1
+Z 2
+E 3
+R 4
+T 5
+Y 6
+U 7
+I 8
+O 9
+P 10E 0
+D 0
+ 0
+D 5
+ 0
+DD 2
+ 0
+QD 0
