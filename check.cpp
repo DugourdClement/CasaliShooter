@@ -35,7 +35,7 @@ using namespace nsAudio;
 
 /** @brief Verify if an ennmy is still alive
 *
-*@param[in] PPs : 
+*@param[in] PPs : Correspond to the ennemy (IPPs / JPPs / KPPs / Open / Classroom)
 *@returns bool
 *
 */
