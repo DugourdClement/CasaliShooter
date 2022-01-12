@@ -44,6 +44,8 @@ The basic file looks like this :
 ```yaml
 KBack : 27
 KConfirm : 13
+KLeftMenu : 97
+KRightMenu : 122
 KMovingDownMenu : 115
 KMovingUpMenu : 122
 KMovingLeftGame : 113
