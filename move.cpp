@@ -46,7 +46,6 @@ void addScore(string &playerLifeString, string &nameStr){
     fstream ofs;
     ofs.open("score.txt", ios_base::app);
     if(ofs.is_open()){
-        cout << nameStr << " " << playerLifeString << endl;
         ofs << nameStr << " " << playerLifeString << endl;
     }
 }
