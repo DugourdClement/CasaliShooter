@@ -5,7 +5,6 @@
 * @version 1.0
 * @date 11/01/2022
 */
-#define FPS_LIMIT 60
 
 #include <iostream>
 #include <fstream>
