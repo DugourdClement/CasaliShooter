@@ -178,11 +178,11 @@ bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos
 
 /** @brief allows the ovni to fire missiles and check for colision with the mug or window
 *
-*@param[in] mug : 
-*@param[in] ovni : 
-*@param[in] ovniShootT : 
-*@param[in] posTorOvni :
-*@returns bool : 
+*@param[in] mug : Correspond to the mug and his sprite
+*@param[in] ovni : Correspond to the UFO informations
+*@param[in] ovniShootT : If the UFO is shooting or not
+*@param[in] posTorOvni : Correspond to the current sprite of the torpedo with his coordinates
+*@returns bool : The UFO is shooting
 *
 */
 bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & posTorOvni) {
