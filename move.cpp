@@ -5,7 +5,6 @@
 * @version 1.0
 * @date 11/01/2022
 */
-
 #define FPS_LIMIT 60
 
 #include <iostream>
@@ -36,8 +35,8 @@ using namespace nsAudio;
 
 /** @brief Adding scores + names into score.txt
 *
-*@param[in] playerLifeString : 
-*@param[in] nameStr : 
+*@param[in] playerLifeString :
+*@param[in] nameStr :
 *@returns void
 *
 */
@@ -49,10 +48,11 @@ void addScore(string &playerLifeString, string &nameStr){
         ofs << nameStr << " " << playerLifeString << endl;
     }
 }
-/** @brief If a key is pressed, the position of the mug is retrieved.  Add or remove 5 to the X position with Q and D ( move the mug ) 
+
+/** @brief If a key is pressed, the position of the mug is retrieved.  Add or remove 5 to the X position with Q and D ( move the mug )
 *
-*@param[in] window : 
-*@param[in] mug : 
+*@param[in] window :
+*@param[in] mug :
 *@returns void
 *
 */
@@ -76,9 +76,9 @@ void keyboard(MinGL &window, Sprite &mug)
 
 /** @brief Adds x and y to the coordinates of the sprite passed as parameters
 *
-*@param[in] position : 
-*@param x : 
-*@param y : 
+*@param[in] position :
+*@param x :
+*@param y :
 *@returns void
 *
 */
@@ -91,10 +91,13 @@ void moveSprite(Sprite &position, const int &x, const int &y) {
 *@param[in] open: Correspond to open and his informations
 *@param[in] playerLifeString : Correspond to how many life the player has
 *@param[in] nameStr : Correspond to the name of the current player
+*@param[in] backgroundNoScreen :
+*@param[in] generiqueSprite :
+*@param[in] window :
 *@returns void
 *
 */
-void moveOpen(enemyStruct & open, string &playerLifeString, string &nameStr){
+void moveOpen(enemyStruct & open, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &generiqueSprite,MinGL &window){
     //if the sprite vector does not exit the window, runs through all the letters and moves them by 5 px
     if (open.vecSprite[0].getPosition().getX() < (600 - 470) || open.vecSprite[open.vecSprite.size() - 1].getPosition().getX() > 50) {
         for(Sprite & letter : open.vecSprite) {
@@ -118,20 +121,23 @@ void moveOpen(enemyStruct & open, string &playerLifeString, string &nameStr){
     // if the sprite vector reached the bottom, GAME OVER
      if (open.vecSprite[0].getPosition().getY() > 600){
          addScore(playerLifeString, nameStr);
+         generique(window,backgroundNoScreen,generiqueSprite);
          exit(0);
      }
 }
 
-
 /** @brief Move JPPS,IPPS,KPPS
 *
-*@param[in] vecSprite: 
-*@param[in] playerLifeString : 
-*@param[in] nameStr : 
+*@param[in] vecSprite:
+*@param[in] playerLifeString :
+*@param[in] nameStr :
+*@param[in] backgroundNoScreen :
+*@param[in] generiqueSprite :
+*@param[in] window :
 *@returns void
 *
 */
-void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nameStr){
+void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &generiqueSprite, MinGL &window){
     // If the sprites at the end do not touch the edges, move all the sprites at the same time
     if (vecSprite.vecSprite[0].getPosition().getX() < (600-64+50) ||
         vecSprite.vecSprite[vecSprite.vecSprite.size() - 1].getPosition().getX() > 0+50){
@@ -154,6 +160,7 @@ void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nam
     // if the sprite vector reached the bottom, GAME OVER
     if(vecSprite.vecSprite[0].getPosition().getY()>(600)){
         addScore(playerLifeString, nameStr);
+        generique(window,backgroundNoScreen,generiqueSprite);
         exit(0);
     }
 }
@@ -163,10 +170,13 @@ void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nam
 *@param[in] ovni: Correspond to the UFO and their informations
 *@param[in] playerLifeString : Correspond to how many lifes the player has
 *@param[in] nameStr : Correspond to the current name of the player
+*@param[in] backgroundNoScreen :
+*@param[in] generiqueSprite :
+*@param[in] window :
 *@returns void
 *
 */
-void moveOVNI(enemyStruct & ovni, string &playerLifeString, string &nameStr) {
+void moveOVNI(enemyStruct & ovni, string &playerLifeString, string &nameStr, Sprite &backgroundNoScreen, Sprite &generiqueSprite, MinGL &window) {
     // If the sprites at the end do not touch the edges, move all the sprites at the same time
     if (ovni.vecSprite[0].getPosition().getX() < (600-64+50) ||
         ovni.vecSprite[ovni.vecSprite.size() - 1].getPosition().getX() > 0+50){
@@ -184,6 +194,7 @@ void moveOVNI(enemyStruct & ovni, string &playerLifeString, string &nameStr) {
      // if the sprite vector reached the bottom, GAME OVER
     if(ovni.vecSprite[0].getPosition().getY()>(600)){
         addScore(playerLifeString, nameStr);
+        generique(window,backgroundNoScreen,generiqueSprite);
         exit(0);
         }
 }

@@ -16,9 +16,9 @@
 #include "enemyStruct.h"
 
 void moveSprite(nsGui::Sprite &, const int &, const int &);
-void moveOpen(enemyStruct &, std::string &, std::string &);
-void moveVecSprite(enemyStruct &, std::string &, std::string &);
-void moveOVNI(enemyStruct &, std::string &, std::string &);
+void moveOpen(enemyStruct &, std::string &, std::string &, nsGui::Sprite &, nsGui::Sprite &, MinGL &);
+void moveVecSprite(enemyStruct &, std::string &, std::string &, nsGui::Sprite &, nsGui::Sprite &, MinGL &);
+void moveOVNI(enemyStruct &, std::string &, std::string &, nsGui::Sprite &, nsGui::Sprite &, MinGL &);
 void keyboard(MinGL &, nsGui::Sprite &);
 
 #endif // MOVE_H

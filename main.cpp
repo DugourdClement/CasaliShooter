@@ -1,16 +1,9 @@
-/**
-* @file main.cpp
-* @brief CasaliShooter game 
-* @author Gonzales, Djerian, Leydier, Volpei, Dugourd
-* @version 1.0
-* @date 11/01/2022
-*/
-
 #define FPS_LIMIT 60
 
 #include <iostream>
 #include <fstream>
 #include <thread>
+#include <unistd.h>
 
 #include "MinGL2/include/mingl/mingl.h"
 #include "MinGL2/include/mingl/gui/sprite.h"
@@ -37,13 +30,6 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
-/** @brief Write a nickname
-*
-*@param[in] window : 
-*@param[in] nameStr : 
-*@returns void
-*
-*/
 void keyboardWrite(MinGL &window, string &nameStr){
     for(unsigned i = 97; i < 123; ++i){
         if (window.isPressed({i, false})) {
@@ -52,17 +38,10 @@ void keyboardWrite(MinGL &window, string &nameStr){
         }
     }
     if(window.isPressed({8, false}) && nameStr.size() > 0) {
-            nameStr.pop_back();
+        nameStr.pop_back();
     }
 }
 
-/** @brief Asks for the nickname
-*
-*@param[in] window : 
-*@param[in] nameStr : 
-*@returns void
-*
-*/
 void askName(MinGL &window, string &nameStr){
     window << Sprite ("spritesi2/name.si2", Vec2D(100, 250));
     window << Sprite ("spritesi2/spacebar2.si2", Vec2D(100, 500));
@@ -70,13 +49,9 @@ void askName(MinGL &window, string &nameStr){
     window << Text(Vec2D(275, 400), nameStr , KBlue, GlutFont::BITMAP_HELVETICA_18);
 }
 
-/** @brief Main application function: The game CasaliShooter
-*
-*@returns 0 if no mistakes
-*
-*/
 int main()
 {
+
 
     Vec2D misPos;
     Vec2D torPos;
@@ -137,6 +112,8 @@ int main()
     Sprite sun("spritesi2/sun.si2", Vec2D(400, 338));
     Sprite arrow("spritesi2/arrow.si2", Vec2D(188, 460));
     Sprite backb("spritesi2/back-button.si2", Vec2D(66, 666));
+    Sprite backgroundNoScreen("spritesi2/fondnoscreen.si2", Vec2D(0, 0));
+    Sprite generiqueSprite ("spritesi2/generique.si2", Vec2D(0, -100));
 
     BgText choosethemode(Vec2D(150, 240), "Choose between light and dark theme with a or z", KWhite, KBlack);
     nsTransition::TransitionEngine transitionEngine;
@@ -179,9 +156,12 @@ int main()
 
     string nameStr ="";
 
+
     // Turn the loop as long as the window is open
     while (window.isOpen())
     {
+
+
         //Get current time
         chrono::time_point<chrono::steady_clock> start = chrono::steady_clock::now();
 
@@ -210,6 +190,7 @@ int main()
             showScore(window);
         }else if (choixobjet == 3){ //Opening of the option menu
             window.clearScreen();
+
             choixLightDark(window,choixpsgom, background, backgroundpsg);
             window << choosethemode;
             window << moon;
@@ -248,9 +229,9 @@ int main()
 
             keyboard(window, mug.vecMug[mug.index]);
 
-            moveVecSprite(IPPs, playerLifeString, nameStr);
-            moveVecSprite(KPPs, playerLifeString, nameStr);
-            moveVecSprite(JPPs, playerLifeString, nameStr);
+            moveVecSprite(IPPs, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
+            moveVecSprite(KPPs, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
+            moveVecSprite(JPPs, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
 
             isPressed = missile(window, mug.vecMug[mug.index], IPPs, KPPs, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos);
             if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
@@ -259,8 +240,7 @@ int main()
             window << Text(Vec2D(60, 160), "Pts:", KWhite, GlutFont::BITMAP_9_BY_15);
             window << Text(Vec2D(100, 160), playerLifeString, KWhite, GlutFont::BITMAP_9_BY_15);
 
-            if (torpedo(mug, IPPs, firstShootT, torPos)) window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
-            if (torpedo(mug, IPPs, firstShootT2, torPos2)) window << nsShape::Rectangle(torPos2, torPos2 + Vec2D(5, 10), KGreen);
+            if (torpedo(mug, IPPs, firstShootT, torPos, backgroundNoScreen, generiqueSprite, window)) window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
 
 
             //Verify if enemies are still alive
@@ -288,10 +268,10 @@ int main()
                     //OPEN and CLASSROOM movements
 
                     for (size_t i = 0; i <  vecOvni.size(); ++i) {
-                        moveOVNI(vecOvni[i], playerLifeString, nameStr);
+                        moveOVNI(vecOvni[i], playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
                     }
-                    moveVecSprite(classroom, playerLifeString, nameStr);
-                    moveOpen(open, playerLifeString, nameStr);
+                    moveVecSprite(classroom, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
+                    moveOpen(open, playerLifeString, nameStr, backgroundNoScreen, generiqueSprite, window);
 
                     isPressed = missile(window, mug.vecMug[mug.index], open, classroom, JPPs, playerLifeUnsigned, firstShootM, isPressed, misPos);
                     if(isPressed == true) window << nsShape::Rectangle(misPos, misPos + Vec2D(2, 10), KCyan);
@@ -301,14 +281,14 @@ int main()
                     window << Text(Vec2D(100, 160), playerLifeString, KWhite, GlutFont::BITMAP_9_BY_15);
 
                     //Open shooting
-                    if (torpedo(mug, open, firstShootT, torPos)) window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
+                    if (torpedo(mug, open, firstShootT, torPos, backgroundNoScreen, generiqueSprite, window)) window << nsShape::Rectangle(torPos, torPos + Vec2D(5, 10), KGreen);
 
                     //Ovnis shooting
-                    if (ovniShoot(mug, vecOvni[0], ovniTorOne, vecOvniTorpedo[0])) window << nsShape::Rectangle(vecOvniTorpedo[0], vecOvniTorpedo[0] + Vec2D(5, 10), KGreen);
-                    if (ovniShoot(mug, vecOvni[1], ovniTorTwo, vecOvniTorpedo[1])) window << nsShape::Rectangle(vecOvniTorpedo[1], vecOvniTorpedo[1] + Vec2D(5, 10), KGreen);
-                    if (ovniShoot(mug, vecOvni[2], ovniTorThree, vecOvniTorpedo[2])) window << nsShape::Rectangle(vecOvniTorpedo[2], vecOvniTorpedo[2] + Vec2D(5, 10), KGreen);
-                    if (ovniShoot(mug, vecOvni[3], ovniTorFour, vecOvniTorpedo[3])) window << nsShape::Rectangle(vecOvniTorpedo[3], vecOvniTorpedo[3] + Vec2D(5, 10), KGreen);
-                    if (ovniShoot(mug, vecOvni[4], ovniTorFive, vecOvniTorpedo[4])) window << nsShape::Rectangle(vecOvniTorpedo[4], vecOvniTorpedo[4] + Vec2D(5, 10), KGreen);
+                    if (ovniShoot(mug, vecOvni[0], ovniTorOne, vecOvniTorpedo[0], backgroundNoScreen, generiqueSprite, window)) window << nsShape::Rectangle(vecOvniTorpedo[0], vecOvniTorpedo[0] + Vec2D(5, 10), KGreen);
+                    if (ovniShoot(mug, vecOvni[1], ovniTorTwo, vecOvniTorpedo[1], backgroundNoScreen, generiqueSprite, window)) window << nsShape::Rectangle(vecOvniTorpedo[1], vecOvniTorpedo[1] + Vec2D(5, 10), KGreen);
+                    if (ovniShoot(mug, vecOvni[2], ovniTorThree, vecOvniTorpedo[2], backgroundNoScreen, generiqueSprite, window)) window << nsShape::Rectangle(vecOvniTorpedo[2], vecOvniTorpedo[2] + Vec2D(5, 10), KGreen);
+                    if (ovniShoot(mug, vecOvni[3], ovniTorFour, vecOvniTorpedo[3], backgroundNoScreen, generiqueSprite, window)) window << nsShape::Rectangle(vecOvniTorpedo[3], vecOvniTorpedo[3] + Vec2D(5, 10), KGreen);
+                    if (ovniShoot(mug, vecOvni[4], ovniTorFive, vecOvniTorpedo[4], backgroundNoScreen, generiqueSprite, window)) window << nsShape::Rectangle(vecOvniTorpedo[4], vecOvniTorpedo[4] + Vec2D(5, 10), KGreen);
 
                     // We finish the current frame
                     window.finishFrame();

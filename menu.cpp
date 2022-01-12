@@ -5,12 +5,12 @@
 * @version 1.0
 * @date 11/01/2022
 */
-
 #define FPS_LIMIT 60
 
 #include <iostream>
 #include <fstream>
 #include <thread>
+#include <unistd.h>
 
 #include "MinGL2/include/mingl/mingl.h"
 #include "MinGL2/include/mingl/gui/sprite.h"
@@ -32,6 +32,26 @@ using namespace nsGui;
 using namespace chrono;
 using namespace nsAudio;
 
+void generique(MinGL &window, Sprite &backgroundNoScreen, Sprite &generiqueSprite){
+
+    while(generiqueSprite.getPosition().getY() > -1200){
+        window.clearScreen();
+        window << generiqueSprite;
+        window << backgroundNoScreen;
+        Vec2D positionGenerique = generiqueSprite.getPosition();
+        int posGenX = positionGenerique.getX();
+        int posGenY = positionGenerique.getY()-5;
+        Vec2D positionF (posGenX, posGenY);
+        generiqueSprite.setPosition(positionF);
+
+        // We finish the current frame
+        window.finishFrame();
+        // Empty the queue of events
+        window.getEventManager().clearEvents();
+    }
+    sleep(5);
+}
+
 
 /** @brief Selects the theme and moves the **cursor**
 *
@@ -42,14 +62,14 @@ using namespace nsAudio;
 */
 void selectTheme(MinGL &window, Sprite &image)
 {
-        if (window.isPressed({'z', false})) {
+        if (window.isPressed({'a', false})) {
             Vec2D position = image.getPosition();
             int arrowX = 188;
             int arrowY = position.getY();
             Vec2D positionF (arrowX, arrowY);
             image.setPosition(positionF);
         }
-        else if (window.isPressed({'s', false})) {
+        else if (window.isPressed({'z', false})) {
             Vec2D position = image.getPosition();
             int arrowX = 435;
             int arrowY = position.getY();
@@ -58,11 +78,10 @@ void selectTheme(MinGL &window, Sprite &image)
         }
 }
 
-
 /** @brief Change theme to **theme select**
 *
 *@param[in] window : window in which we inject the element and detect key presses
-*@param[in] image : get the position of the cursor 
+*@param[in] image : get the position of the cursor
 *@param[in] baseTheme : Unsigned representing the chosen theme
 *@returns unsigned
 *
@@ -82,7 +101,6 @@ unsigned chooseTheme(MinGL &window, Sprite &image, unsigned &baseTheme)
     }
     return baseTheme;
 }
-
 
 /** @brief Change the place of the cursor in the menu
 *
@@ -173,6 +191,7 @@ void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Spr
         window << themedark;
     }
 }
+
 /** @brief Determines if the player1 is better than the player 2 **sort player**
 *
 *@param[in] joueur1 player1
@@ -180,17 +199,17 @@ void choixLightDark (MinGL &window, unsigned &choixpsgom,Sprite &themelight, Spr
 *@return **true** if the player1 is better than the player2 and **false** if the player2 is better than the player1
 *
 */
-bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){ 
+bool isBetter (const playersStruct & joueur1, const playersStruct & joueur2){ // Bool used to sort player
     return joueur1.point >= joueur2.point;
 }
 
-/** @brief Function which sort the **scoreboard** and shows it by using a txt file 
+/** @brief Function which sort the **scoreboard** and shows it by using a txt file
 *
 *@param[in] window : window that displays the scores
 *@returns void
 *
 */
-void showScore(MinGL & window) 
+void showScore(MinGL & window) //Function which shows the scoreboard
 {
     ifstream data_file("score.txt");
     vector<playersStruct> playerScore;

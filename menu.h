@@ -1,11 +1,3 @@
-/**
-* @file menu.h
-* @brief Gestion du menu
-* @author Gonzales, Djerian, Leydier, Volpei, Dugourd
-* @version 1.0
-* @date 11/01/2022
-*/
-
 #ifndef MENU_H
 #define MENU_H
 
@@ -27,7 +19,7 @@
 #include "playersStruct.h"
 #include "enemyStruct.h"
 
-
+void generique(MinGL &, nsGui::Sprite &, nsGui::Sprite &);
 void selectTheme(MinGL &, nsGui::Sprite &);
 unsigned chooseTheme(MinGL &, nsGui::Sprite &, unsigned &);
 void menu(MinGL &window, nsGui::Sprite &);

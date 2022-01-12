@@ -5,7 +5,6 @@
 * @version 1.0
 * @date 11/01/2022
 */
-
 #define FPS_LIMIT 60
 
 #include <iostream>
@@ -32,9 +31,9 @@ using namespace nsAudio;
 
 /** @brief Generate in the window IPPS,JPPS,KPPS
 *
-*@param[in] IPPs : 
-*@param[in] posY : 
-*@param[in] pathSprite : 
+*@param[in] IPPs :
+*@param[in] posY :
+*@param[in] pathSprite :
 *@returns void
 *
 */
@@ -166,7 +165,6 @@ void generateCLASSROOM(enemyStruct & classroom, const int posY) {
 
 }
 
-
 /** @brief Generate in the window 'OVNI'
 *
 *@param[in] ovni : Correspond to the UFO and their informations
@@ -185,7 +183,7 @@ void generateOVNI(enemyStruct & ovni, const string pathSprite) {
 
 /** @brief Generate in the window the mug
 *
-*@param[in] mug : 
+*@param[in] mug :
 *@returns void
 *
 */

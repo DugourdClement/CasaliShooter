@@ -23,7 +23,7 @@ bool allDead(const enemyStruct &);
 bool isTouching (const nsGraphics::Vec2D, const nsGraphics::Vec2D, const nsGraphics::Vec2D);
 bool colision(const nsGraphics::Vec2D, enemyStruct &);
 bool missile(MinGL &, nsGui::Sprite &, enemyStruct &, enemyStruct &, enemyStruct &, unsigned &, bool &, bool &, nsGraphics::Vec2D &);
-bool torpedo(mugStruct &, enemyStruct &, bool &, nsGraphics::Vec2D &);
-bool ovniShoot(mugStruct &, enemyStruct &, bool &, nsGraphics::Vec2D &);
+bool torpedo(mugStruct &, enemyStruct &, bool &, nsGraphics::Vec2D &, nsGui::Sprite &, nsGui::Sprite &, MinGL &);
+bool ovniShoot(mugStruct &, enemyStruct &, bool &, nsGraphics::Vec2D &, nsGui::Sprite &, nsGui::Sprite &, MinGL &);
 
 #endif // CHECK_H

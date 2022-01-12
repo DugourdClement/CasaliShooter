@@ -26,6 +26,7 @@
 #include "playersStruct.h"
 #include "enemyStruct.h"
 #include "check.h"
+#include "menu.h"
 
 using namespace std;
 using namespace nsGraphics;
@@ -52,9 +53,9 @@ bool allDead(const enemyStruct & PPs) {
 
 /** @brief Verifies colisions between 2 coordinates
 *
-*@param[in] firstCorner : 
-*@param[in] secondCorner : 
-*@param[in] test : 
+*@param[in] firstCorner :
+*@param[in] secondCorner :
+*@param[in] test :
 *@returns bool
 *
 */
@@ -64,8 +65,8 @@ bool isTouching (const Vec2D firstCorner, const Vec2D secondCorner, const Vec2D 
 
 /** @brief Verifies collisions between 2 sprites
 *
-*@param[in] misPos : 
-*@param[in] vecSprite : 
+*@param[in] misPos :
+*@param[in] vecSprite :
 *@returns bool
 *
 */
@@ -85,15 +86,15 @@ bool colision(const Vec2D misPos, enemyStruct &vecSprite){
 
 /** @brief allows the mug to fire missiles and check for colision with enemy or window
 *
-*@param[in] window : 
-*@param[in] mug : 
-*@param[in] IPPs : 
-*@param[in] KPPs : 
-*@param[in] JPPs : 
-*@param[in] playerLifeUnsigned : 
-*@param[in]firstShootM : 
-*@param[in] isPressed : 
-*@param[in] misPos : 
+*@param[in] window :
+*@param[in] mug :
+*@param[in] IPPs :
+*@param[in] KPPs :
+*@param[in] JPPs :
+*@param[in] playerLifeUnsigned :
+*@param[in]firstShootM :
+*@param[in] isPressed :
+*@param[in] misPos :
 *@returns bool
 *
 */
@@ -128,14 +129,17 @@ bool missile(MinGL &window, Sprite &mug, enemyStruct &IPPs, enemyStruct &KPPs, e
 
 /** @brief allows the enemy to fire missiles and check for colision with the mug or window
 *
-*@param[in] mug : 
-*@param[in] IPPs : 
-*@param[in] firstShootT : 
-*@param[in] torPos : 
-*@returns bool: 
+*@param[in] mug :
+*@param[in] IPPs :
+*@param[in] firstShootT :
+*@param[in] torPos :
+*@param[in] backgroundNoScreen :
+*@param[in] generiqueSprite :
+*@param[in] window :
+*@returns bool:
 *
 */
-bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos){
+bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos, Sprite &backgroundNoScreen, Sprite &generiqueSprite, MinGL &window){
 
     srand (time(NULL));
     int n = rand() % IPPs.vecSprite.size();
@@ -165,7 +169,7 @@ bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos
             mug.vecMug[mug.index].setPosition({posX,posY});
         }
         else{
-            cout << "1111111111" << endl;
+            generique(window,backgroundNoScreen,generiqueSprite);
             exit(0);
         }
 
@@ -182,10 +186,13 @@ bool torpedo(mugStruct &mug, enemyStruct &IPPs, bool &firstShootT, Vec2D &torPos
 *@param[in] ovni : Correspond to the UFO informations
 *@param[in] ovniShootT : If the UFO is shooting or not
 *@param[in] posTorOvni : Correspond to the current sprite of the torpedo with his coordinates
+*@param[in] backgroundNoScreen :
+*@param[in] generiqueSprite :
+*@param[in] window :
 *@returns bool : The UFO is shooting
 *
 */
-bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & posTorOvni) {
+bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & posTorOvni, Sprite &backgroundNoScreen, Sprite &generiqueSprite, MinGL &window) {
     if ((ovniShootT == true) && (ovni.state[0] == true)) {
         Vec2D position = ovni.vecSprite[0].getPosition();
         int ovniX = position.getX();
@@ -212,13 +219,14 @@ bool ovniShoot(mugStruct & mug, enemyStruct & ovni, bool & ovniShootT, Vec2D & p
             mug.vecMug[mug.index].setPosition({posX, posY});
         }
         else {
+            generique(window,backgroundNoScreen,generiqueSprite);
             exit(0);
         }
 
         return false;
     }
 
-    ovniShootT= false;
+    ovniShootT = false;
     posTorOvni.setY(posTorOvni.getY() + 16);
     return true;
 }
