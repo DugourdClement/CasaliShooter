@@ -42,14 +42,14 @@ using namespace nsAudio;
 */
 void selectTheme(MinGL &window, Sprite &image)
 {
-        if (window.isPressed({'a', false})) {
+        if (window.isPressed({'z', false})) {
             Vec2D position = image.getPosition();
             int arrowX = 188;
             int arrowY = position.getY();
             Vec2D positionF (arrowX, arrowY);
             image.setPosition(positionF);
         }
-        else if (window.isPressed({'z', false})) {
+        else if (window.isPressed({'s', false})) {
             Vec2D position = image.getPosition();
             int arrowX = 435;
             int arrowY = position.getY();
