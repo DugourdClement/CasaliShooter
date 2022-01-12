@@ -27,7 +27,7 @@ The following part contains all the informations needeed for good game experienc
 
 `d` <-- Allows you to move your sprite to the right.
 
-`x` <-- Allows you to shoot a missile.
+`SPACE` <-- Allows you to shoot a missile.
 
 `ECHAP` <-- Allows you to comeback to the menu.
 
@@ -48,7 +48,7 @@ KMovingDownMenu : 115
 KMovingUpMenu : 122
 KMovingLeftGame : 113
 KMovingRightGame : 100
-KShootGame : 120
+KShootGame : 32
 KWidthMissile : 2
 KLenghtMissile : 10
 KWidthTorpedoPPs : 5
