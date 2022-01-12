@@ -52,8 +52,8 @@ void generateVecSprite(enemyStruct &IPPs, const int posY, const string pathSprit
 
 /** @brief Generate in the window 'OPEN'
 *
-*@param[in] open : 
-*@param[in] posY : 
+*@param[in] open : Correspond to open and his informations
+*@param[in] posY : Correspond to a defined position
 *@returns void
 *
 */
@@ -90,8 +90,8 @@ void generateOPEN(enemyStruct & open, const int posY) {
 
 /** @brief Generate in the window 'CLASSROOM'
 *
-*@param[in] classroom : 
-*@param[in] posY : 
+*@param[in] classroom : Correspond to classroom and his informations
+*@param[in] posY : Correspond to a defined position
 *@returns void
 *
 */
@@ -169,8 +169,8 @@ void generateCLASSROOM(enemyStruct & classroom, const int posY) {
 
 /** @brief Generate in the window 'OVNI'
 *
-*@param[in] ovni : 
-*@param[in] posY : 
+*@param[in] ovni : Correspond to the UFO and their informations
+*@param[in] posY : Correpsond to a defined position
 *@returns void
 *
 */
@@ -185,8 +185,7 @@ void generateOVNI(enemyStruct & ovni, const string pathSprite) {
 
 /** @brief Generate in the window the mug
 *
-*@param[in] classroom : 
-*@param[in] posY : 
+*@param[in] mug : 
 *@returns void
 *
 */
