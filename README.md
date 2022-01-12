@@ -51,12 +51,6 @@ KMovingUpMenu : 122
 KMovingLeftGame : 113
 KMovingRightGame : 100
 KShootGame : 32
-KWidthMissile : 2
-KLenghtMissile : 10
-KWidthTorpedoPPs : 5
-KLenghtTorpedoPPs : 10
-KWidthTorpedoUFO : 5
-KLenghtTorpedoUFO : 10
 ```
 
-**/!\\** The first seven numbers are ASCII references and **must** be changed by ASCII reference **/!\\**
+**/!\\** All the numbers are ASCII references and **must** be changed by ASCII reference **/!\\**
