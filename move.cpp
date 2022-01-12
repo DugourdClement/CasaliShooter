@@ -88,9 +88,9 @@ void moveSprite(Sprite &position, const int &x, const int &y) {
 
 /** @brief Move the sprites of "open"
 *
-*@param[in] open: 
-*@param[in] playerLifeString : 
-*@param[in] nameStr : 
+*@param[in] open: Correspond to open and his informations
+*@param[in] playerLifeString : Correspond to how many life the player has
+*@param[in] nameStr : Correspond to the name of the current player
 *@returns void
 *
 */
@@ -160,9 +160,9 @@ void moveVecSprite(enemyStruct &vecSprite, string &playerLifeString, string &nam
 
 /** @brief Move the sprite "OVNI"
 *
-*@param[in] ovni: 
-*@param[in] playerLifeString : 
-*@param[in] nameStr : 
+*@param[in] ovni: Correspond to the UFO and their informations
+*@param[in] playerLifeString : Correspond to how many lifes the player has
+*@param[in] nameStr : Correspond to the current name of the player
 *@returns void
 *
 */
